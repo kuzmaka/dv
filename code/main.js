@@ -14,6 +14,11 @@ add([
 	area(),
 ])
 
+add([
+  pos(0),
+  text('hello')
+])
+
 // add a kaboom on mouse click
 onClick(() => {
 	addKaboom(mousePos())
