@@ -5,7 +5,7 @@ export default () => {
     ])
 
     add([
-        pos(center().add(50, 45)),
-        sprite('bean')
+        pos(center().add(50, 56)),
+        sprite('dog', {anim: 'dead'}),
     ])
 }
