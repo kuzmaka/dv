@@ -13,7 +13,6 @@ export default () => {
         scale: Math.max(1, Math.min(wScale, hScale)),
         crisp: true,
         canvas: canvasElem,
-        background: [0, 0, 0],
     })
     canvas.focus()
 }
