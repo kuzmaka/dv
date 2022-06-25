@@ -1,9 +1,8 @@
-import kaboom from "kaboom"
-import loadAssets from './loadAssets.js'
-import intro from './intro.js'
+import init from './init'
+import loadAssets from './loadAssets'
+import intro from './intro'
 
-// initialize context
-kaboom()
+init()
 
 loadAssets()
 

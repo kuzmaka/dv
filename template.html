@@ -13,7 +13,14 @@
 		body {
 			width: 100%;
 			height: 100%;
-			overflow: hidden;
+		}
+		main {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: black;
 		}
 		canvas {
 			display: block;
@@ -22,12 +29,14 @@
 </head>
 
 <body>
+<main><canvas id="canvas"></canvas></main>
+
 {{kaboom}}
   
 <!--
 This script places a badge on your repl's full-browser view back to your repl's cover page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green, teal, blue, blurple, magenta, pink!
 -->
-<script src="https://replit.com/public/js/replit-badge.js" theme="blue" defer></script> 
+<script src="https://replit.com/public/js/replit-badge.js" theme="orange" defer></script>
 </body>
 
 </html>
