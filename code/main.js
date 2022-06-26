@@ -1,4 +1,4 @@
-import init from './init'
+import init, {SKIP_START} from './init'
 import loadAssets from './loadAssets'
 import start from './start'
 import intro from './intro'
@@ -10,5 +10,8 @@ loadAssets()
 scene('start', start)
 scene('intro', intro)
 
-go('start')
-// go('intro')
+if (!SKIP_START) {
+    go('start')
+} else {
+    go('intro')
+}

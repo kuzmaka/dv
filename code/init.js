@@ -1,5 +1,8 @@
 import kaboom from "kaboom"
 
+export const SKIP_START = false
+export const SKIP_CUTS = true
+
 export const W = 640
 export const H = 360
 

@@ -1,4 +1,4 @@
-import {W, H} from './init'
+import {W, H, SKIP_CUTS} from './init'
 
 export default () => {
     add([
@@ -11,7 +11,9 @@ export default () => {
         sprite('dog', {anim: 'dead', flipX: true}),
     ])
 
-    wakeUp()
+    if (!SKIP_CUTS) {
+        wakeUp()
+    }
 }
 
 function wakeUp() {
