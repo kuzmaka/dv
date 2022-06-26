@@ -2,6 +2,15 @@ export default () => {
     loadSprite('lab0', 'sprites/lab0.png')
     loadSprite('lab1', 'sprites/lab1.png')
     loadSprite('lab2-exit', 'sprites/lab2-exit.png')
+    loadRoot('sprites/office/')
+    loadSprite('office1-1', 'office1-1.png')
+    loadSprite('office1-2', 'office1-2.png')
+    loadSprite('office1-3', 'office1-3.png')
+    loadSprite('office2-1', 'office1-1.png')
+    loadSprite('office2-2', 'office2-2.png')
+    loadSprite('office2-3', 'office2-3.png')
+
+    loadRoot('../../')
 
     loadSprite('dog', 'sprites/greyhound.png', {
         sliceX: 1,

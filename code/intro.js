@@ -1,9 +1,13 @@
 import {W, H, SKIP_CUTS} from './init'
+import {addTiles} from "./addTiles";
 
 const PLAYER_SPEED = 400;
 
 export default () => {
-    addTiles()
+    const tiles = [
+        ['lab0', 'lab1', 'lab1', 'lab2-exit', 'lab1']
+    ];
+    addTiles(tiles)
 
     const player = addPlayer()
 
@@ -12,55 +16,6 @@ export default () => {
     if (!SKIP_CUTS) {
         wakeUp()
     }
-}
-
-function addTiles() {
-    const tiles = ['lab0', 'lab1', 'lab1', 'lab2-exit', 'lab1'];
-
-    tiles.forEach((tile, i) => {
-        add([
-            pos(i * W, 0),
-            sprite(tile)
-        ])
-        add([
-            pos(i * W, 0),
-            text(i)
-        ])
-        if (tile === 'lab0') {
-            // bed
-            add([
-                pos(345, 291),
-                area({
-                    width: 88,
-                    height: 10
-                }),
-                solid()
-            ])
-        }
-        if (tile === 'lab1') {
-            // some parkour stuff :)
-            for (let j=0; j < 5; j++) {
-                add([
-                    pos(randi(i * W, (i + 1) * W), randi(80, H - 80)),
-                    rect(100, 10),
-                    color(BLACK),
-                    opacity(0.5),
-                    area(),
-                    solid(),
-                    z(100)
-                ])
-            }
-        }
-    })
-
-    // floor
-    add([
-        pos(0, H - 8),
-        rect(1000*W, 100),
-        opacity(0),
-        area(),
-        solid()
-    ])
 }
 
 function setupCamera(player) {
