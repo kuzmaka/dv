@@ -3,28 +3,15 @@ import {W, H, SKIP_CUTS} from './init'
 const PLAYER_SPEED = 400;
 
 export default () => {
-    add([
-        pos(0),
-        sprite('lab0')
-    ])
-    add([
-        pos(W, 0),
-        sprite('lab1')
-    ])
-    // floor
-    add([
-        pos(0, H - 8),
-        rect(2*W, 100),
-        opacity(0),
-        area(),
-        solid()
-    ])
+    addTiles()
+
     // bed
     add([
         pos(345, 291),
-        rect(88, 10),
-        opacity(0),
-        area(),
+        area({
+            width: 88,
+            height: 10
+        }),
         solid()
     ])
 
@@ -35,6 +22,52 @@ export default () => {
     if (!SKIP_CUTS) {
         wakeUp()
     }
+}
+
+function addTiles() {
+
+    add([
+        pos(0),
+        sprite('lab0')
+    ])
+
+    const n = 2
+    for (let i = 0; i < 2; i++) {
+        add([
+            pos((i+1)*W, 0),
+            sprite('lab1')
+        ])
+        add([
+            pos((i+1)*W, 0),
+            text((i + 1))
+        ])
+        // some parkour stuff :)
+        for (let j=0; j < 5; j++) {
+            add([
+                pos(randi((i + 1) * W, (i + 2) * W), randi(80, H - 80)),
+                rect(100, 10),
+                color(BLACK),
+                opacity(0.5),
+                area(),
+                solid(),
+                z(1)
+            ])
+        }
+    }
+
+    add([
+        pos((n+1)*W, 0),
+        sprite('lab2-exit')
+    ])
+
+    // floor
+    add([
+        pos(0, H - 8),
+        rect(1000*W, 100),
+        opacity(0),
+        area(),
+        solid()
+    ])
 }
 
 function setupCamera(player) {
