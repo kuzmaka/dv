@@ -1,14 +1,20 @@
 import {W, H, SKIP_CUTS} from './init'
 
+const PLAYER_SPEED = 400;
+
 export default () => {
     add([
         pos(0),
         sprite('lab0')
     ])
+    add([
+        pos(W, 0),
+        sprite('lab1')
+    ])
     // floor
     add([
         pos(0, H - 8),
-        rect(W, 100),
+        rect(2*W, 100),
         opacity(0),
         area(),
         solid()
@@ -22,32 +28,45 @@ export default () => {
         solid()
     ])
 
-    addPlayer()
+    const player = addPlayer()
+
+    setupCamera(player)
 
     if (!SKIP_CUTS) {
         wakeUp()
     }
 }
 
-function addPlayer()
-{
+function setupCamera(player) {
+    player.onUpdate(() => {
+        if (player.dead) {
+            return
+        }
+        const from = camPos().x
+        const to = Math.max(player.pos.x + player.width/2 + (player.flip ? 80 : -80))
+        camPos(vec2(from + Math.sign(to-from)*Math.min(Math.abs(to - from), 1.5*PLAYER_SPEED*dt()), camPos().y))
+    })
+}
+
+function addPlayer() {
     const player = add([
-        pos(348, 251),
+        pos(330, 180),
         sprite("dog", {
             anim: 'dead',
             flipX: true
         }),
         area({
-            offset: vec2(10, 20),
-            width: 54,
+            offset: vec2(20, 30),
+            width: 40,
             height: 35
         }),
         body(),
         {
             speed: 0,
             flip: true,
-            dead: true
+            dead: true,
         },
+        scale(1.5),
         'player'
     ]);
     player.flipX(player.flip = true)
@@ -60,7 +79,7 @@ function addPlayer()
         // }
     })
 
-    const SPEED = 250;
+    const SPEED = PLAYER_SPEED;
     onKeyPress('left', () => {
         if (player.dead) return;
         player.speed = -SPEED
@@ -115,6 +134,7 @@ function addPlayer()
     player.onGround(() => {
         player.play(player.speed ? 'run' : (player.dead ? 'dead' : 'idle'))
     })
+    return player
 }
 
 function wakeUp() {

@@ -1,5 +1,6 @@
 export default () => {
     loadSprite('lab0', 'sprites/lab0.png')
+    loadSprite('lab1', 'sprites/lab1.png')
 
     loadSprite('dog', 'sprites/greyhound.png', {
         sliceX: 1,
