@@ -15,3 +15,4 @@ if (!SKIP_START) {
 } else {
     go('intro')
 }
+
