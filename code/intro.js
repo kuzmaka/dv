@@ -5,16 +5,6 @@ const PLAYER_SPEED = 400;
 export default () => {
     addTiles()
 
-    // bed
-    add([
-        pos(345, 291),
-        area({
-            width: 88,
-            height: 10
-        }),
-        solid()
-    ])
-
     const player = addPlayer()
 
     setupCamera(player)
@@ -36,6 +26,17 @@ function addTiles() {
             pos(i * W, 0),
             text(i)
         ])
+        if (tile === 'lab0') {
+            // bed
+            add([
+                pos(345, 291),
+                area({
+                    width: 88,
+                    height: 10
+                }),
+                solid()
+            ])
+        }
         if (tile === 'lab1') {
             // some parkour stuff :)
             for (let j=0; j < 5; j++) {
