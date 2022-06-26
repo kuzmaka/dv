@@ -25,40 +25,32 @@ export default () => {
 }
 
 function addTiles() {
+    const tiles = ['lab0', 'lab1', 'lab1', 'lab2-exit', 'lab1'];
 
-    add([
-        pos(0),
-        sprite('lab0')
-    ])
-
-    const n = 2
-    for (let i = 0; i < 2; i++) {
+    tiles.forEach((tile, i) => {
         add([
-            pos((i+1)*W, 0),
-            sprite('lab1')
+            pos(i * W, 0),
+            sprite(tile)
         ])
         add([
-            pos((i+1)*W, 0),
-            text((i + 1))
+            pos(i * W, 0),
+            text(i)
         ])
-        // some parkour stuff :)
-        for (let j=0; j < 5; j++) {
-            add([
-                pos(randi((i + 1) * W, (i + 2) * W), randi(80, H - 80)),
-                rect(100, 10),
-                color(BLACK),
-                opacity(0.5),
-                area(),
-                solid(),
-                z(1)
-            ])
+        if (tile === 'lab1') {
+            // some parkour stuff :)
+            for (let j=0; j < 5; j++) {
+                add([
+                    pos(randi(i * W, (i + 1) * W), randi(80, H - 80)),
+                    rect(100, 10),
+                    color(BLACK),
+                    opacity(0.5),
+                    area(),
+                    solid(),
+                    z(100)
+                ])
+            }
         }
-    }
-
-    add([
-        pos((n+1)*W, 0),
-        sprite('lab2-exit')
-    ])
+    })
 
     // floor
     add([
