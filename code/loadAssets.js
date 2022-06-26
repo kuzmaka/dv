@@ -8,8 +8,6 @@ export default () => {
             idle: {
                 from: 0,
                 to: 0,
-                speed: 1,
-                loop: true
             },
             lay: {
                 from: 1,
@@ -31,7 +29,7 @@ export default () => {
             },
             dead: {
                 from: 8,
-                to: 8
+                to: 8,
             }
         }
     })

@@ -1,7 +1,7 @@
 import kaboom from "kaboom"
 
-export const SKIP_START = false
-export const SKIP_CUTS = true
+export const SKIP_START = 1
+export const SKIP_CUTS = 1
 
 export const W = 640
 export const H = 360
@@ -17,7 +17,7 @@ export default () => {
         scale: Math.max(1, Math.min(wScale, hScale)),
         crisp: true,
         canvas: canvasElem,
-        background: [0, 0, 0]
+        background: [0, 0, 0],
     })
     canvas.focus()
 }
