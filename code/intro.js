@@ -28,6 +28,10 @@ export default () => {
                         pos(x + 360, y + 160),
                         sprite('heart', {anim: 'on'})
                     ])
+                    add([
+                        pos(x, y),
+                        sprite('lamp')
+                    ])
                     // bed collision box
                     add([
                         pos(x + 345, y + 291),
