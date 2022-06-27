@@ -47,6 +47,7 @@ export default () => {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+                    // boost
                     const supepper = add([
                         pos(x + 320, y + H - 40),
                         sprite('supepper'),
@@ -58,6 +59,31 @@ export default () => {
                         supepper.pos.y += b*dt()
                         if (Math.abs(supepper.pos.y - a) > 5) {
                             b = -b
+                        }
+                    })
+                    // gas
+                    const gasx = x+320;
+                    const gasy = y+180;
+                    // add([
+                    //     pos(gasx, gasy),
+                    //     origin('center'),
+                    //     rect(100, 100),
+                    // ])
+                    tile.onUpdate(() => {
+                        add([
+                            pos(gasx + rand(-50, 50), gasy + rand(-50, 50)),
+                            sprite('gas'),
+                            origin('center'),
+                            scale(rand(0.5, 2)),
+                            lifespan(1, {fade: 0.5}),
+                            move(rand(0, 360), rand(20, 60)),
+                            rotate(rand(0, 360)),
+                            opacity(rand(0, 1))
+                        ])
+                        if (gasx - 50 < player.pos.x + player.width && player.pos.x < gasx + 50
+                            && gasy - 50 < player.pos.y + player.height && player.pos.y < gasy + 50
+                        ) {
+                            addKaboom(player.pos)
                         }
                     })
                     // some parkour stuff :)
