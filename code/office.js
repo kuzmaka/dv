@@ -55,15 +55,7 @@ export default () => {
                 name: 'office2-3',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    let t = add([
-                        sprite('teleport'),
-                        pos(x + 576, y + 349),
-                        area()
-                    ])
-                    t.onCollide('player', (p) => {
-                        p.pos = vec2(x + 470, y + H + 250)
-                        camPos(camPos().add(0, H))
-                    })
+                    addTeleport(vec2(x + 576, y + 349), vec2(x + 470, y + H + 250))
                     addGasLattice(vec2(x + 360, y + 350))
                     addGasLattice(vec2(x + 250, y + 350))
                 }
@@ -80,15 +72,7 @@ export default () => {
                 name: 'office1-3',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    let t = add([
-                        sprite('teleport'),
-                        pos(x + 579, y + 349),
-                        area()
-                    ])
-                    t.onCollide('player', (p) => {
-                        p.pos = vec2(x + 470, y - H + 250)
-                        camPos(camPos().add(0, -H))
-                    })
+                    addTeleport(vec2(x + 579, y + 349), vec2(x + 470, y - H + 250))
                     addLevel(parkour[0], {
                         pos: vec2(x, y),
                         width: 32,
@@ -160,6 +144,22 @@ export default () => {
             camScale(camScale().lerp(vec2(1), dt()*3))
         }
     })
+}
+
+function addTeleport(pos1, pos2) {
+    add([
+        sprite('teleport'),
+        pos(pos1),
+        area(),
+        {
+            load() {
+                this.onCollide('player', (p) => {
+                    p.pos = pos2
+                    camPos(camPos().add(0, (Math.floor(pos2.y/H) - Math.floor(pos1.y/H)) * H))
+                })
+            }
+        }
+    ])
 }
 
 function addGasLattice(_pos, opt) {
