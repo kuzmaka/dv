@@ -14,7 +14,6 @@ export default () => {
     loadSprite('office2-3', 'office2-3.png')
 
     loadRoot('../../')
-
     loadSprite('doggy', 'sprites/doggy.png', {
         sliceX: 1,
         sliceY: 2,
