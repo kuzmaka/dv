@@ -33,7 +33,7 @@ export function addTiles(tiles, opt) {
 
 export function setupCamera(player) {
     camPos(vec2(Math.max(player.pos.x + player.width/2 + (player.flip ? 80 : -80)), camPos().y))
-    // let scale = 100
+    // let scale = 1000
     player.onUpdate(() => {
         // if (player.dead) {
         //     camPos(vec2(player.pos.x + 78, player.pos.y + 80))

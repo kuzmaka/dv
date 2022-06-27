@@ -62,7 +62,19 @@ export default () => {
             },
             'lab2-exit',
             {
-                name: 'dock',
+                name: 'dock1',
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    // floor
+                    add([
+                        pos(x+451, y+296),
+                        area({width: W-451, height: 100}),
+                        solid()
+                    ])
+                }
+            },
+            {
+                name: 'ship0',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     // floor
@@ -109,6 +121,16 @@ export default () => {
     })
 
     setupCamera(player)
+
+    let background = add([
+        pos(0),
+        sprite('sky-night'),
+        z(-100)
+    ])
+    // update background pos after camera pos updated to avoid jitter
+    player.onUpdate(() => {
+        background.pos = camPos().sub(width()/2, height()/2)
+    })
 
     if (!SKIP_CUTS) {
         wakeUp()
