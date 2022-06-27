@@ -17,6 +17,7 @@ export default () => {
 
     loadRoot('sprites/lab/')
     loadSprite('lab0', 'lab0.png')
+    loadSprite('lamp', 'lamp.png')
     loadSprite('lab1', 'lab1.png')
     loadSprite('lab2-exit', 'lab2-exit.png')
     loadSprite('lab-dock', 'lab-dock.png', {
