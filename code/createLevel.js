@@ -32,19 +32,28 @@ export function addTiles(tiles, opt) {
 }
 
 export function setupCamera(player) {
+    camPos(vec2(Math.max(player.pos.x + player.width/2 + (player.flip ? 80 : -80)), camPos().y))
+    // let scale = 100
     player.onUpdate(() => {
-        if (player.dead) {
-            return
-        }
+        // if (player.dead) {
+        //     camPos(vec2(player.pos.x + 78, player.pos.y + 80))
+        //     if (scale > 1) {
+        //         scale -= scale * dt()
+        //     } else {
+        //         scale = 1
+        //     }
+        //     camScale(scale)
+        //     return
+        // }
         const from = camPos().x
         const to = Math.max(player.pos.x + player.width/2 + (player.flip ? 80 : -80))
         camPos(vec2(from + Math.sign(to-from)*Math.min(Math.abs(to - from), 1.5*PLAYER_SPEED*dt()), camPos().y))
     })
 }
 
-export function addPlayer(x, y) {
+export function addPlayer(opt) {
     const player = add([
-        pos(x, y),
+        pos(opt.x, opt.y),
         sprite("dog", {
             anim: 'dead',
             flipX: true

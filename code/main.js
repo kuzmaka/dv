@@ -15,6 +15,6 @@ scene('office', office)
 if (!SKIP_START) {
     go('start')
 } else {
-    go('office')
+    go('intro')
 }
 
