@@ -100,32 +100,22 @@ export default () => {
                 }
             },
             {
-                name: 'ship0',
+                name: 'dock2',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     darkAreas.push([x, x+W])
                     // floor
                     add([
                         pos(x, y),
-                        sprite('ship0'),
+                        sprite('dock2'),
                         area(),
-                        z(100)
                     ])
                     add([
                         pos(x, y+H-64),
-                        area({width: W, height: 100}),
+                        area({width: 339, height: 100}),
                         solid()
                     ])
-                    add([
-                        pos(x+300, y+H-140),
-                        area({width: 220, height: 100}),
-                        solid()
-                    ])
-                    add([
-                        pos(x+300, y+H-110),
-                        area({width: W-300, height: 100}),
-                        solid()
-                    ])
+                    addShip(x, y)
                 }
             }
         ]
@@ -165,6 +155,32 @@ export default () => {
 
     if (!SKIP_CUTS) {
         wakeUp()
+    }
+
+    function addShip(x, y) {
+        const ship = add([
+            pos(x, y),
+            sprite('ship0'),
+            z(100)
+        ])
+        // floor
+        const f1 = add([
+            pos(x+300, y + H-130),
+            area({width: 220, height: 50}),
+            solid()
+        ])
+        const f2 = add([
+            pos(x+300+220, y+H-140+40),
+            area({width: 120, height: 50}),
+            solid()
+        ])
+        ship.onUpdate(() => {
+            if (player.pos.x + player.width > x+300) {
+                ship.move(100, 0)
+                f1.moveTo(ship.pos.add(300, 230))
+                f2.moveTo(ship.pos.add(520, 260))
+            }
+        })
     }
 }
 

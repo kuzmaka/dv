@@ -22,6 +22,7 @@ export default () => {
         }
     })
     loadSprite('dock1', 'dock1.png')
+    loadSprite('dock2', 'dock2.png')
     loadSprite('ship0', 'ship0.png')
     loadSprite('cage', 'cage.png')
     loadSprite('heart', 'heart.png', {
