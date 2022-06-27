@@ -74,6 +74,19 @@ export default () => {
             },
             'lab2-exit',
             {
+                name: 'lab-dock',
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    tile.play('close')
+                    darkAreas.push([x + 300, x + W])
+
+                    // door
+                    tile.onUpdate(() => {
+                        tile.play( x + 250 < player.pos.x + player.width && player.pos.x < x + 430 ? 'open' : 'close')
+                    })
+                }
+            },
+            {
                 name: 'dock1',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];

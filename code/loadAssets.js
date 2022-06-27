@@ -7,6 +7,20 @@ export default () => {
     loadSprite('lab0', 'lab0.png')
     loadSprite('lab1', 'lab1.png')
     loadSprite('lab2-exit', 'lab2-exit.png')
+    loadSprite('lab-dock', 'lab-dock.png', {
+        sliceX: 1,
+        sliceY: 2,
+        anims: {
+            close: {
+                from: 0,
+                to: 0,
+            },
+            open: {
+                from: 1,
+                to: 1
+            }
+        }
+    })
     loadSprite('dock1', 'dock1.png')
     loadSprite('ship0', 'ship0.png')
     loadSprite('cage', 'cage.png')
