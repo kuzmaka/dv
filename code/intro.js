@@ -4,14 +4,23 @@ import {addTiles} from "./addTiles";
 const PLAYER_SPEED = 400;
 
 export default () => {
+
+    let heart;
+
     const tiles = [
         [
             {
                 name: 'lab0',
                 onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    // heart monitor
+                    heart = add([
+                        pos(x + 360, y + 160),
+                        sprite('heart', {anim: 'on'})
+                    ])
                     // bed collision box
                     add([
-                        pos(tile.pos.x + 345, tile.pos.y + 291),
+                        pos(x + 345, y + 291),
                         area({
                             width: 88,
                             height: 10
@@ -60,6 +69,13 @@ export default () => {
     addTiles(tiles)
 
     const player = addPlayer()
+
+    const cancel = player.onUpdate(() => {
+        if (!player.dead) {
+            heart.play('off')
+            cancel()
+        }
+    })
 
     setupCamera(player)
 

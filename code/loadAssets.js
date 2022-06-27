@@ -1,9 +1,27 @@
 export default () => {
-    loadRoot('sprites/')
+    loadRoot('sprites/lab/')
     loadSprite('lab0', 'lab0.png')
     loadSprite('lab1', 'lab1.png')
     loadSprite('lab2-exit', 'lab2-exit.png')
     loadSprite('cage', 'cage.png')
+    loadSprite('heart', 'heart.png', {
+        sliceX: 6,
+        sliceY: 2,
+        anims: {
+            on: {
+                from: 6,
+                to: 11,
+                loop: true,
+                speed: 3
+            },
+            off: {
+                from: 0,
+                to: 5,
+                loop: true,
+                speed: 3
+            }
+        }
+    })
 
     loadRoot('sprites/office/')
     loadSprite('office1-1', 'office1-1.png')
