@@ -81,7 +81,7 @@ export default () => {
             run: {
                 from: 1,
                 to: 4,
-                speed: 7,
+                speed: 10,
                 loop: true
             }
         }

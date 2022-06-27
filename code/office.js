@@ -64,6 +64,8 @@ export default () => {
                         p.pos = vec2(x + 470, y + H + 250)
                         camPos(camPos().add(0, H))
                     })
+                    addGasLattice(vec2(x + 360, y + 350))
+                    addGasLattice(vec2(x + 250, y + 350))
                 }
             }
         ],
@@ -86,26 +88,6 @@ export default () => {
                     t.onCollide('player', (p) => {
                         p.pos = vec2(x + 470, y - H + 250)
                         camPos(camPos().add(0, -H))
-                    })
-                    let l = add([
-                        sprite('lattice'),
-                        pos(x + 541, y + 350),
-                        {
-                            cooldown: 3
-                        }
-                    ])
-                    l.onUpdate(() => {
-                        if(l.cooldown > 0) l.cooldown -= dt()
-                        else {
-                            add([
-                                sprite('gas'),
-                                pos(l.pos.sub(0, 32)),
-                                area(),
-                                move(-90, 100),
-                                lifespan(1, {fade: 0.5})
-                            ])
-                            l.cooldown = 3
-                        }
                     })
                     addLevel(parkour[0], {
                         pos: vec2(x, y),
@@ -144,12 +126,15 @@ export default () => {
                             }),
                             body(),
                             solid(),
+                            move(0, 150),
                             origin('center'),
+                            {
+                                load() {
+                                    this.play('run')
+                                }
+                            },
                             'enemy'
                         ]
-                    })
-                    get('enemy').forEach((enemy) => {
-                        enemy.play('run')
                     })
                 }
             }
@@ -175,6 +160,34 @@ export default () => {
             camScale(camScale().lerp(vec2(1), dt()*3))
         }
     })
+}
+
+function addGasLattice(_pos, opt) {
+    add([
+        sprite('lattice'),
+        pos(_pos),
+        {
+            cooldown: 3,
+            attack: 0,
+            update() {
+                if(this.attack > 0) this.attack -= dt()
+                if(this.cooldown > 0) this.cooldown -= dt()
+                else {
+                    this.cooldown = 3
+                    this.attack = 0.5
+                }
+                if(this.attack > 0) {
+                    add([
+                        sprite('gas'),
+                        pos(this.pos.sub(0, 32)),
+                        area(),
+                        move(-90 + rand(-10, 10), 100),
+                        lifespan(1, {fade: 0.5})
+                    ])
+                }
+            }
+        }
+    ])
 }
 
 const parkour = [
