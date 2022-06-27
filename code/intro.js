@@ -5,7 +5,57 @@ const PLAYER_SPEED = 400;
 
 export default () => {
     const tiles = [
-        ['lab0', 'lab1', 'lab1', 'lab2-exit', 'lab1']
+        [
+            {
+                name: 'lab0',
+                onAdded: (tile, i, j) => {
+                    // bed collision box
+                    add([
+                        pos(tile.pos.x + 345, tile.pos.y + 291),
+                        area({
+                            width: 88,
+                            height: 10
+                        }),
+                        solid()
+                    ])
+                }
+            },
+            {
+                name: 'lab1',
+                onAdded: (tile, i, j) => {
+                    // some parkour stuff :)
+                    // for (let k=0; k < 5; k++) {
+                    //     add([
+                    //         pos(randi(j * W, (j + 1) * W), randi(80, H - 80)),
+                    //         rect(100, 10),
+                    //         color(BLACK),
+                    //         opacity(0.5),
+                    //         area(),
+                    //         solid(),
+                    //         z(100)
+                    //     ])
+                    // }
+                }
+            },
+            {
+                name: 'lab1',
+                onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    add([
+                        pos(x + 150, y + H - 8),
+                        origin('botleft'),
+                        sprite('doggy')
+                    ])
+                    add([
+                        pos(x + 100, y + H - 8),
+                        origin('botleft'),
+                        sprite('cage')
+                    ])
+                }
+            },
+            'lab2-exit',
+            'lab1'
+        ]
     ];
     addTiles(tiles)
 

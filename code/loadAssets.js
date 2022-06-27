@@ -1,7 +1,10 @@
 export default () => {
-    loadSprite('lab0', 'sprites/lab0.png')
-    loadSprite('lab1', 'sprites/lab1.png')
-    loadSprite('lab2-exit', 'sprites/lab2-exit.png')
+    loadRoot('sprites/')
+    loadSprite('lab0', 'lab0.png')
+    loadSprite('lab1', 'lab1.png')
+    loadSprite('lab2-exit', 'lab2-exit.png')
+    loadSprite('cage', 'cage.png')
+
     loadRoot('sprites/office/')
     loadSprite('office1-1', 'office1-1.png')
     loadSprite('office1-2', 'office1-2.png')
@@ -11,6 +14,21 @@ export default () => {
     loadSprite('office2-3', 'office2-3.png')
 
     loadRoot('../../')
+
+    loadSprite('doggy', 'sprites/doggy.png', {
+        sliceX: 1,
+        sliceY: 2,
+        anims: {
+            sit: {
+                from: 0,
+                to: 0,
+            },
+            stay: {
+                from: 1,
+                to: 1,
+            },
+        }
+    })
 
     loadSprite('dog', 'sprites/greyhound.png', {
         sliceX: 1,

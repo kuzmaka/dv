@@ -4,39 +4,18 @@ export function addTiles(tiles) {
 
     tiles.forEach((Tiles, i) => {
         Tiles.forEach((tile, j) => {
+            const name = typeof tile === 'string' ? tile : tile.name;
+            const t = add([
+                pos(j * W, i * H),
+                sprite(name)
+            ])
             add([
                 pos(j * W, i * H),
-                sprite(tile)
+                text(i + '-' + j, {size: 24})
             ])
-            add([
-                pos(j * W, i * H),
-                text(i)
-            ])
-        if (tile === 'lab0') {
-            // bed
-            add([
-                pos(345, 291),
-                area({
-                    width: 88,
-                    height: 10
-                }),
-                solid()
-            ])
-        }
-        if (tile === 'lab1') {
-            // some parkour stuff :)
-            for (let k=0; k < 5; k++) {
-                add([
-                    pos(randi(j * W, (j + 1) * W), randi(80, H - 80)),
-                    rect(100, 10),
-                    color(BLACK),
-                    opacity(0.5),
-                    area(),
-                    solid(),
-                    z(100)
-                ])
+            if (typeof tile === 'object' && tile.onAdded) {
+                tile.onAdded(t, i, j)
             }
-        }
         })
         // floor
         add([
