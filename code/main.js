@@ -12,6 +12,8 @@ scene('start', start)
 scene('intro', intro)
 scene('office', office)
 
+debug.inspect = false
+
 if (!SKIP_START) {
     go('start')
 } else {

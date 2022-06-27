@@ -9,7 +9,8 @@ export function addTiles(tiles, opt) {
             const name = typeof tile === 'string' ? tile : tile.name;
             const t = add([
                 pos(j * W, i * H),
-                sprite(name)
+                sprite(name),
+                z(-1)
             ])
             add([
                 pos(j * W, i * H),
@@ -22,7 +23,7 @@ export function addTiles(tiles, opt) {
         // floor
         add([
             pos(0, (i + 1) * H - (opt.floor ? opt.floor : 8)),
-            rect(1000*W, 100),
+            rect(1000*W, 10),
             opacity(0),
             area(),
             solid()

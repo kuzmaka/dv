@@ -65,6 +65,27 @@ export default () => {
     loadSprite('office2-1', 'office1-1.png')
     loadSprite('office2-2', 'office2-2.png')
     loadSprite('office2-3', 'office2-3.png')
+    loadSprite('teleport', 'teleport2.png')
+    loadSprite('lattice', 'lattice.png')
+    loadSprite('shelf-edge', 'shelf-edge.png')
+    loadSprite('shelf-books', 'shelf-books.png')
+    loadSprite('shelf-middle', 'shelf-middle.png')
+    loadSprite('office-rat', 'office-rat.png', {
+        sliceX: 5,
+        sliceY: 1,
+        anims: {
+            idle: {
+                from: 0,
+                to: 0
+            },
+            run: {
+                from: 1,
+                to: 4,
+                speed: 7,
+                loop: true
+            }
+        }
+    })
 
     loadRoot('../../')
     loadSprite('doggy', 'sprites/doggy.png', {
