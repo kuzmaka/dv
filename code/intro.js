@@ -42,6 +42,20 @@ export default () => {
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    const supepper = add([
+                        pos(x + 320, y + H - 40),
+                        sprite('supepper'),
+                        origin('center')
+                    ])
+                    let a = supepper.pos.y
+                    let b = 20
+                    supepper.onUpdate(() => {
+                        supepper.pos.y += b*dt()
+                        if (Math.abs(supepper.pos.y - a) > 5) {
+                            b = -b
+                        }
+                    })
                     // some parkour stuff :)
                     // for (let k=0; k < 5; k++) {
                     //     add([
