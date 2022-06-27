@@ -63,7 +63,12 @@ export default () => {
                     add([
                         pos(x + 150, y + H - 8),
                         origin('botleft'),
-                        sprite('doggy')
+                        sprite('doggy'),
+                    ])
+                    add([
+                        pos(x + 200, y + H),
+                        origin('botleft'),
+                        sprite('dog2', {anim: 'tongue'})
                     ])
                     add([
                         pos(x + 100, y + H - 8),
@@ -145,7 +150,7 @@ export default () => {
 
     let background = add([
         pos(0),
-        sprite('sky-night'),
+        sprite('sky-night', {anim: 'blink'}),
         z(-100)
     ])
     // update background pos after camera pos updated to avoid jitter

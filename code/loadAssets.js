@@ -1,6 +1,17 @@
 export default () => {
     loadRoot('sprites/')
-    loadSprite('sky-night', 'sky-night.png')
+    loadSprite('sky-night', 'sky-night.png', {
+        sliceX: 1,
+        sliceY: 3,
+        anims: {
+            blink: {
+                from: 0,
+                to: 2,
+                loop: true,
+                speed: 0.5
+            }
+        }
+    })
     loadSprite('light', 'light.png')
 
     loadRoot('sprites/lab/')
@@ -64,6 +75,18 @@ export default () => {
             stay: {
                 from: 1,
                 to: 1,
+            },
+        }
+    })
+    loadSprite('dog2', 'sprites/dog2.png', {
+        sliceX: 1,
+        sliceY: 2,
+        anims: {
+            tongue: {
+                from: 0,
+                to: 1,
+                speed: 2,
+                loop: true
             },
         }
     })
