@@ -70,6 +70,7 @@ export function addPlayer(opt) {
             dead: opt.dead ? opt.dead : false,
         },
         scale(1.5),
+        z(50),
         'player'
     ]);
     player.flipX(player.flip = true)

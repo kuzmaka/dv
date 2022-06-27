@@ -1,6 +1,7 @@
 export default () => {
     loadRoot('sprites/')
     loadSprite('sky-night', 'sky-night.png')
+    loadSprite('light', 'light.png')
 
     loadRoot('sprites/lab/')
     loadSprite('lab0', 'lab0.png')

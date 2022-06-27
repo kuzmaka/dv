@@ -5,6 +5,18 @@ export default () => {
 
     let heart;
 
+    const light = add([
+        pos(0),
+        sprite('light'),
+        z(0),
+    ])
+    light.hidden = true
+
+    let darkAreas = [];
+    function inDarkArea(x) {
+        return !!darkAreas.find(area => area[0] <= x && x <= area[1])
+    }
+
     const tiles = [
         [
             {
@@ -65,6 +77,7 @@ export default () => {
                 name: 'dock1',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+                    darkAreas.push([x, x+W])
                     // floor
                     add([
                         pos(x+451, y+296),
@@ -77,6 +90,7 @@ export default () => {
                 name: 'ship0',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+                    darkAreas.push([x, x+W])
                     // floor
                     add([
                         pos(x, y),
@@ -118,6 +132,10 @@ export default () => {
             heart.play('off')
             cancel()
         }
+    })
+    player.onUpdate(() => {
+        light.hidden = !inDarkArea(player.pos.x)
+        light.moveTo(player.pos)
     })
 
     setupCamera(player)
