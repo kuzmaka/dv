@@ -67,7 +67,7 @@ export function addPlayer(opt) {
         {
             speed: 0,
             flip: true,
-            dead: true,
+            dead: opt.dead ? opt.dead : false,
         },
         scale(1.5),
         'player'

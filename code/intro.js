@@ -97,7 +97,8 @@ export default () => {
 
     const player = addPlayer({
         x: 330,
-        y: 180
+        y: 180,
+        dead: true
     })
 
     const cancel = player.onUpdate(() => {
