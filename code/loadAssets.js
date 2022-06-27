@@ -3,6 +3,8 @@ export default () => {
     loadSprite('lab0', 'lab0.png')
     loadSprite('lab1', 'lab1.png')
     loadSprite('lab2-exit', 'lab2-exit.png')
+    loadSprite('ship0', 'ship0.png')
+    loadSprite('dock', 'dock.png')
     loadSprite('cage', 'cage.png')
     loadSprite('heart', 'heart.png', {
         sliceX: 6,
