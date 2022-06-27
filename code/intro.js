@@ -41,6 +41,21 @@ export default () => {
                         }),
                         solid()
                     ])
+                    // left wall
+                    add([
+                        pos(x, y),
+                        area({
+                            width: 8,
+                            height: H
+                        }),
+                        solid()
+                    ])
+                    add([
+                        pos(x,y),
+                        origin('topright'),
+                        rect(W, H),
+                        color(BLACK)
+                    ])
                 }
             },
             {
