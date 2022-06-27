@@ -238,11 +238,16 @@ export default () => {
             area({width: 120, height: 50}),
             solid()
         ])
-        ship.onUpdate(() => {
+        const cnc = ship.onUpdate(() => {
+            // departure after player jumps to ship
             if (player.pos.x + player.width > x+300) {
                 ship.move(100, 0)
                 f1.moveTo(ship.pos.add(300, 230))
                 f2.moveTo(ship.pos.add(520, 260))
+            }
+            // stop after one tile
+            if (ship.pos.x > x + W) {
+                cnc()
             }
         })
     }
