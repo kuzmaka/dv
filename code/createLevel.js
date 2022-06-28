@@ -51,7 +51,7 @@ export function setupCamera(player) {
         //     camScale(scale)
         //     return
         // }
-        const playerFloor = Math.floor(player.pos.y/H)
+        const playerFloor = Math.floor((player.pos.y + player.area.offset.y)/H)
         const from = camPos().x
         const to = Math.max(player.pos.x + player.width/2 + (player.flip ? 80 : -80))
         camPos(vec2(from + Math.sign(to-from)*Math.min(Math.abs(to - from), 1.5*PLAYER_SPEED*dt()), (playerFloor + 0.5) * H))

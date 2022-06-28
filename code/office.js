@@ -5,12 +5,34 @@ export default () => {
     const tiles = [
         [
             {
-                name: 'office2-1'
-
+                name: 'office2-1',
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    add([
+                        sprite('table', {frame: randi(2)}),
+                        pos(x + 290, y + 291),
+                        area({
+                            // width: this.width,
+                            height: 2,
+                            offset: vec2(0, 22)
+                        }),
+                        solid()
+                    ])
+                    add([
+                        sprite('table', {frame: randi(2)}),
+                        pos(x + 400, y + 291),
+                        area({
+                            // width: this.width,
+                            height: 2,
+                            offset: vec2(0, 22)
+                        }),
+                        solid()
+                    ])
+                }
             },
             {
                 name: 'office2-2',
-                onAdded: (tile, i, j) => {
+                onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     add([
                         pos(x + 200, y + 115),
@@ -25,7 +47,7 @@ export default () => {
             },
             {
                 name: 'office2-3',
-                onAdded: (tile, i, j) => {
+                onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     addTeleport(vec2(x + 576, y + 349), vec2(x + 470, y + H + 250))
                     addGasLattice(vec2(x + 360, y + 350))
@@ -49,7 +71,7 @@ export default () => {
             },
             {
                 name: 'office2-3',
-                onAdded: (tile, i, j) => {
+                onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     addTeleport(vec2(x + 579, y + 349), vec2(x + 470, y - H + 250))
                     add([
@@ -66,8 +88,8 @@ export default () => {
     })
 
     const player = addPlayer({
-        x: 1400,
-        y: 540
+        x: 500,
+        y: 180
     })
 
     setupCamera(player)

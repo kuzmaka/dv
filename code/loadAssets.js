@@ -63,11 +63,25 @@ export default () => {
     loadSprite('office1-1', 'office1-1.png')
     loadSprite('office1-2', 'office1-2.png')
     loadSprite('office1-3', 'office1-3.png')
-    loadSprite('office2-1', 'office1-1.png')
+    loadSprite('office2-1', 'office2-1.png')
     loadSprite('office2-2', 'office2-2.png')
     loadSprite('office2-3', 'office2-3.png')
     loadSprite('teleport', 'teleport2.png')
     loadSprite('lattice', 'lattice.png')
+    loadSprite('table', 'table(offset22).png', {
+        sliceX: 2,
+        sliceY: 1,
+        anims: {
+            t1: {
+                from: 0,
+                to: 0
+            },
+            t2: {
+                from: 1,
+                to: 1
+            }
+        }
+    })
     loadSprite('arrow-1', 'arrow-1.png', {
         sliceX: 8,
         sliceY: 1,
@@ -80,7 +94,7 @@ export default () => {
             }
         }
     })
-    loadSprite('arrow-2', 'arrow-2.png', {
+    loadSprite('arrow-2', 'arrow-2-1.png', {
         sliceX: 8,
         sliceY: 1,
         anims: {
