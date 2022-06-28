@@ -126,6 +126,8 @@ export default () => {
                         pos(x + 250, y + H - 8),
                         origin('botleft'),
                         sprite('doggy', {anim: 'sit'}),
+                        area(),
+                        outview(),
                         jitter(),
                         'doggy'
                     ])
@@ -133,6 +135,8 @@ export default () => {
                         pos(x + 150, y + H - 8),
                         origin('botleft'),
                         sprite('doggy', {anim: 'stay'}),
+                        area(),
+                        outview(),
                         jitter(),
                         'doggy'
                     ])
@@ -140,6 +144,8 @@ export default () => {
                         pos(x + 350, y + H),
                         origin('botleft'),
                         sprite('dog2', {anim: 'tongue'}),
+                        area(),
+                        outview(),
                         jitter(),
                         'doggy'
                     ])

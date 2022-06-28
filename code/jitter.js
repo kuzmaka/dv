@@ -3,11 +3,14 @@ export function jitter() {
     let moveOut = true;
     return {
         id: 'jitter',
-        require: ['pos'],
+        require: ['pos', 'outview'],
         add() {
             p = this.pos.clone();
         },
         update() {
+            if (this.isOutOfView()) {
+                return
+            }
             if (moveOut) {
                 this.move(choose([LEFT, RIGHT, UP, DOWN]).scale(20))
                 if (this.pos.dist(p) > 4) {
