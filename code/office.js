@@ -8,6 +8,10 @@ export default () => {
                 name: 'office2-1',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+                    addObjects(parkour[2], {pos: vec2(x + 4, y)})
+                    addGasLattice(vec2(x + 300, y), {flip: true})
+                    addGasLattice(vec2(x + 260, y), {flip: true})
+                    addGasLattice(vec2(x + 480, y), {flip: true})
                     add([
                         sprite('table', {frame: randi(2)}),
                         pos(x + 290, y + 291),
@@ -120,7 +124,7 @@ function addTeleport(pos1, pos2) {
     ])
 }
 
-function addGasLattice(_pos, opt) {
+function addGasLattice(_pos, opt = {}) {
     add([
         sprite('lattice'),
         pos(_pos),
@@ -128,6 +132,7 @@ function addGasLattice(_pos, opt) {
             cooldown: 3,
             attack: 0,
             microcd: 3,
+            gasSpeed: 100 * (opt.flip ? -1 : 1),
             update() {
                 if(this.attack > 0) this.attack -= dt()
                 if(this.microcd > 0) this.microcd -= 1
@@ -141,7 +146,7 @@ function addGasLattice(_pos, opt) {
                         sprite('gas'),
                         pos(this.pos.sub(0, 32)),
                         area(),
-                        move(-90 + rand(-10, 10), 100),
+                        move(-90 + rand(-10, 10), this.gasSpeed),
                         lifespan(1, {fade: 0.5})
                     ])
                     this.microcd = 3
@@ -174,6 +179,17 @@ const parkour = [
         "    !bb=!              ",
         "                       ",
         " !=====!=====!         ",
+    ],
+    [
+        "                       ",
+        "!====!=====!====!      ",
+        "                       ",
+        "                       ",
+        "           !==b!b==!   ",
+        "                       ",
+        "!===!                  ",
+        "                       ",
+        "                       ",
     ]
 ]
 

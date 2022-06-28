@@ -2,7 +2,7 @@ import {H, SHOW_TILE_INDEX, W} from "./init";
 
 const PLAYER_SPEED = 400;
 
-export function addTiles(tiles, opt) {
+export function addTiles(tiles, opt = {}) {
 
     tiles.forEach((Tiles, i) => {
         Tiles.forEach((tile, j) => {
@@ -15,8 +15,8 @@ export function addTiles(tiles, opt) {
 
             // floor
             add([
-                pos(t.pos.x, t.pos.y + H - (opt.floor ? opt.floor : 8)),
-                rect(W, 10),
+                pos(t.pos.x, t.pos.y + H - (typeof opt.floor !== 'undefined' ? opt.floor : 0)),
+                rect(W, typeof opt.floor !== 'undefined' ? opt.floor : 0),
                 opacity(0),
                 area(),
                 solid()
