@@ -121,17 +121,29 @@ export default () => {
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     add([
-                        pos(x + 150, y + H - 8),
+                        pos(x + 250, y + H - 8),
                         origin('botleft'),
-                        sprite('doggy'),
-                        jitter()
+                        sprite('doggy', {anim: 'sit'}),
+                        jitter(),
+                        'doggy'
                     ])
                     add([
-                        pos(x + 200, y + H),
+                        pos(x + 150, y + H - 8),
+                        origin('botleft'),
+                        sprite('doggy', {anim: 'stay'}),
+                        jitter(),
+                        'doggy'
+                    ])
+                    add([
+                        pos(x + 350, y + H),
                         origin('botleft'),
                         sprite('dog2', {anim: 'tongue'}),
-                        jitter()
+                        jitter(),
+                        'doggy'
                     ])
+                    onUpdate('doggy', (doggy) => {
+                        doggy.flipX(player.pos.x < doggy.pos.x)
+                    })
                     add([
                         pos(x + 100, y + H - 8),
                         origin('botleft'),
