@@ -52,6 +52,15 @@ export default () => {
                         solid()
                     ])
                     add([
+                        pos(x, y + H),
+                        origin('botleft'),
+                        area({
+                            width: 120,
+                            height: 90
+                        }),
+                        solid()
+                    ])
+                    add([
                         pos(x,y),
                         origin('topright'),
                         rect(W, H),
