@@ -26,3 +26,16 @@ export function jitter() {
     }
 }
 
+export function swing() {
+    let p;
+    return {
+        id: 'swing',
+        require: ['pos'],
+        add() {
+            p = this.pos.clone()
+        },
+        update() {
+            this.moveTo(p.add(0, 10*Math.sin(time()*5)))
+        }
+    }
+}

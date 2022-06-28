@@ -1,6 +1,6 @@
 import {W, H, SKIP_CUTS} from './init'
 import {addPlayer, addTiles, setupCamera} from "./createLevel";
-import {jitter} from "./jitter";
+import {jitter, swing} from "./components";
 
 export default () => {
 
@@ -64,19 +64,12 @@ export default () => {
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     // boost
-                    const supepper = add([
+                    add([
                         pos(x + 320, y + H - 40),
                         sprite('supepper'),
-                        origin('center')
+                        origin('center'),
+                        swing()
                     ])
-                    let a = supepper.pos.y
-                    let b = 20
-                    supepper.onUpdate(() => {
-                        supepper.pos.y += b*dt()
-                        if (Math.abs(supepper.pos.y - a) > 5) {
-                            b = -b
-                        }
-                    })
                     // gas
                     const gasArea = add([
                         pos(x+320, y+180),
@@ -123,7 +116,7 @@ export default () => {
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     add([
-                        pos(x + 250, y + H - 8),
+                        pos(x + 400, y + H - 8),
                         origin('botleft'),
                         sprite('doggy', {anim: 'sit'}),
                         area(),
@@ -141,7 +134,7 @@ export default () => {
                         'doggy'
                     ])
                     add([
-                        pos(x + 350, y + H),
+                        pos(x + 250, y + H - 4),
                         origin('botleft'),
                         sprite('dog2', {anim: 'tongue'}),
                         area(),
