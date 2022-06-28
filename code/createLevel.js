@@ -225,7 +225,7 @@ export function addPlayer(opt) {
             }
         }
     })
-    onKeyPress(['w', 'space'], () => {
+    onKeyPress(['w', 'up', 'space'], () => {
         if (player.dead) return;
         if (player.curPlatform()) {
             if (player.sleeping) {

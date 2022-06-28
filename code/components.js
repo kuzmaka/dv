@@ -65,11 +65,11 @@ export function myLifespan(time, opt = {}) {
 
 export function fade(time, opt = {}) {
     if (time == null) {
-        throw new Error("fadeIn() requires time");
+        throw new Error("fade() requires time");
     }
     let timer = 0;
     return {
-        id: "fadeIn",
+        id: "fade",
         update() {
             if (timer < time) {
                 timer += dt();

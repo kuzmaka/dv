@@ -5,6 +5,7 @@ import {fade, jitter, myLifespan, swing} from "./components";
 export default () => {
 
     let heart;
+    let isAlarm = false;
 
     const light = add([
         pos(0),
@@ -232,6 +233,7 @@ export default () => {
 
     player.on('firstMoved', () => {
         heart.play('off')
+        isAlarm = true
     })
 
     player.onUpdate(() => {
@@ -283,7 +285,7 @@ export default () => {
 
         let t = 0;
         gasArea.onUpdate(() => {
-            if (gasArea.isOutOfView()) {
+            if (gasArea.isOutOfView() || !isAlarm) {
                 return
             }
             t += dt()
