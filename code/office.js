@@ -92,7 +92,6 @@ function addTeleport(pos1, pos2) {
             load() {
                 this.onCollide('player', (p) => {
                     p.pos = pos2
-                    camPos(camPos().add(0, (Math.floor(pos2.y/H) - Math.floor(pos1.y/H)) * H))
                 })
             }
         }
