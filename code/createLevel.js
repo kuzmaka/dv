@@ -69,7 +69,15 @@ export function addTiles(tiles, opt = {}) {
             solid()
         ])
     }
-
+    if(opt.ceil == true) {
+        add([
+            pos(0, -5),
+            area({
+                width: tiles[0].length * W,
+                height: 5
+            })
+        ])
+    }
 }
 
 export function setupCamera(player) {

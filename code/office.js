@@ -5,10 +5,32 @@ export default () => {
     const tiles = [
         [
             {
-                name: "office3-1"
+                name: "office3-1",
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    add([
+                        pos(x + 100, y + 350),
+                        area({
+                            width: 540,
+                            height: 10
+                        }),
+                        solid()
+                    ])
+                }
             },
             {
-                name: "office3-2"
+                name: "office3-2",
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    add([
+                        pos(x + 120, y + 115),
+                        area({
+                            width: 300,
+                            height: 240
+                        }),
+                        'camscale'
+                    ])
+                }
             },
             {
                 name: "office3-3"
@@ -42,6 +64,10 @@ export default () => {
                             offset: vec2(0, 22)
                         }),
                         solid()
+                    ])
+                    add([
+                        sprite('arrow-3', {anim: 'idle'}),
+                        pos(x, y)
                     ])
                 }
             },
@@ -109,7 +135,8 @@ export default () => {
         floor: 10,
         floorMap: fm,
         lwall: 4,
-        rwall: 4
+        rwall: 4,
+        ceil: true
     })
 
     const player = addPlayer({
@@ -120,13 +147,14 @@ export default () => {
     setupCamera(player)
     camPos(vec2(camPos().x, H * 1.5))
 
-    const scaleobj = get('camscale')[0]
+    const scaleobjs = get('camscale')
     player.onUpdate(() => {
-        if(player.isColliding(scaleobj)) {
-            camScale(camScale().lerp(vec2(0.5), dt()*3))
-        } else {
-            camScale(camScale().lerp(vec2(1), dt()*3))
-        }
+        let collides = false
+        scaleobjs.forEach((scaleobj) => {
+            if(player.isColliding(scaleobj)) collides = true
+        })
+        if(collides) camScale(camScale().lerp(vec2(0.5), dt()*3))
+        else camScale(camScale().lerp(vec2(1), dt()*3))
     })
 }
 
@@ -153,14 +181,14 @@ function addGasLattice(_pos, opt = {}) {
             cooldown: 3,
             attack: 0,
             microcd: 3,
-            gasSpeed: 100 * (opt.flip ? -1 : 1),
+            gasSpeed: 150 * (opt.flip ? -1 : 1),
             update() {
                 if(this.attack > 0) this.attack -= dt()
                 if(this.microcd > 0) this.microcd -= 1
                 if(this.cooldown > 0) this.cooldown -= dt()
                 else {
                     this.cooldown = 3
-                    this.attack = 1
+                    this.attack = 1.5
                 }
                 if(this.attack > 0 && this.microcd <= 0) {
                     add([

@@ -254,8 +254,7 @@ export default () => {
         wakeUp()
     }
 
-    function addGrille(x, y)
-    {
+    function addGrille(x, y) {
         add([
             pos(x, y),
             sprite('grille'),
