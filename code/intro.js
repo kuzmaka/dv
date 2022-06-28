@@ -253,9 +253,12 @@ export default () => {
             }
             t += dt()
             if (t > 0.02) {
-                t = 0
+                t = 0;
+                const r = rand(0, w/2);
+                const a = rand(0, 2*Math.PI);
                 add([
-                    pos(x + rand(0, w), y + rand(0, w)),
+                    // pos(x + rand(0, w), y + rand(0, w)),
+                    pos(x + w/2 + r * Math.cos(a), y + w/2 + r * Math.sin(a)),
                     sprite('gas'),
                     origin('center'),
                     scale(rand(0.5, 2)),
