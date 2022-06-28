@@ -7,6 +7,7 @@ init()
 
 loadAssets()
 
+// scene('start', start)
 scene('intro', intro)
 scene('office', office)
 

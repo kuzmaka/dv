@@ -106,8 +106,10 @@ export default () => {
     ]
 
     addTiles(tiles, {
-        floor: 10,
-        floorMap: fm
+        Floor: 10,
+        floorMap: fm,
+        lwall: 4,
+        rwall: 4
     })
 
     const player = addPlayer({
