@@ -1,5 +1,6 @@
 import {W, H, SKIP_CUTS} from './init'
 import {addPlayer, addTiles, setupCamera} from "./createLevel";
+import {jitter} from "./jitter";
 
 export default () => {
 
@@ -123,11 +124,13 @@ export default () => {
                         pos(x + 150, y + H - 8),
                         origin('botleft'),
                         sprite('doggy'),
+                        jitter()
                     ])
                     add([
                         pos(x + 200, y + H),
                         origin('botleft'),
-                        sprite('dog2', {anim: 'tongue'})
+                        sprite('dog2', {anim: 'tongue'}),
+                        jitter()
                     ])
                     add([
                         pos(x + 100, y + H - 8),
