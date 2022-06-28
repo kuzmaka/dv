@@ -10,7 +10,7 @@ export function addTiles(tiles, opt) {
             const t = add([
                 pos(j * W, i * H),
                 sprite(name),
-                z(-1)
+                z(-10)
             ])
 
             // floor
@@ -145,4 +145,49 @@ export function addPlayer(opt) {
         player.play(player.speed ? 'run' : (player.dead ? 'dead' : 'idle'))
     })
     return player
+}
+
+export function addObjects(map, opt) {
+    addLevel(map, {
+        pos: opt.pos,
+        width: opt.width ? opt.width : 32,
+        height: opt.height ? opt.height : 32,
+        "!": () => [
+            sprite('shelf-edge'),
+            area({
+                offset: vec2(0, 28),
+                height: 4
+            }),
+            solid()
+        ],
+        "=": () => [
+            sprite('shelf-middle'),
+            area({
+                offset: vec2(0, 28),
+                height: 4
+            }),
+            solid()
+        ],
+        "b": () => [
+            sprite('shelf-books'),
+            area({
+                offset: vec2(0, 28),
+                height: 4
+            }),
+            solid()
+        ],
+        "r": () => [
+            sprite('office-rat', {anim: 'run'}),
+            area({
+                width: 54,
+                height: 54,
+                offset: vec2(0, 20)
+            }),
+            body(),
+            solid(),
+            move(0, 150),
+            origin('center'),
+            'enemy'
+        ]
+    })
 }

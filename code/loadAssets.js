@@ -67,6 +67,30 @@ export default () => {
     loadSprite('office2-3', 'office2-3.png')
     loadSprite('teleport', 'teleport2.png')
     loadSprite('lattice', 'lattice.png')
+    loadSprite('arrow-1', 'arrow-1.png', {
+        sliceX: 8,
+        sliceY: 1,
+        anims: {
+            idle: {
+                from: 0,
+                to: 3,
+                speed: 5,
+                loop: true
+            }
+        }
+    })
+    loadSprite('arrow-2', 'arrow-2.png', {
+        sliceX: 8,
+        sliceY: 1,
+        anims: {
+            idle: {
+                from: 0,
+                to: 3,
+                speed: 5,
+                loop: true
+            }
+        }
+    })
     loadSprite('shelf-edge', 'shelf-edge.png')
     loadSprite('shelf-books', 'shelf-books.png')
     loadSprite('shelf-middle', 'shelf-middle.png')
