@@ -83,7 +83,7 @@ export function addTiles(tiles, opt = {}) {
 export function setupCamera(player) {
     camPos(vec2(Math.max(player.pos.x + player.width/2 + (player.flip ? 80 : -80)), camPos().y))
     // let scale = 1000
-    player.onUpdate(() => {
+    player.camSetup = player.onUpdate(() => {
         // if (player.dead) {
         //     camPos(vec2(player.pos.x + 78, player.pos.y + 80))
         //     if (scale > 1) {
@@ -120,6 +120,7 @@ export function addPlayer(opt) {
             dead: false,
             sleeping: opt.sleeping ? opt.sleeping : false,
             lastCheckpoint: null,
+            camSetup: () => {},
             resetArea() {
                 player.area.offset.y = 30
                 player.area.height = 35
@@ -155,6 +156,7 @@ export function addPlayer(opt) {
                     shade.destroy()
                     hint.destroy()
                     player.moveTo(player.lastCheckpoint.playerPos)
+                    this.camSetup()
                     setupCamera(player)
                     cnc()
                 })
