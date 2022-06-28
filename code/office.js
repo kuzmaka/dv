@@ -106,7 +106,7 @@ export default () => {
     ]
 
     addTiles(tiles, {
-        Floor: 10,
+        floor: 10,
         floorMap: fm,
         lwall: 4,
         rwall: 4

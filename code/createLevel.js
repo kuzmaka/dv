@@ -26,12 +26,12 @@ export function addTiles(tiles, opt = {}) {
             }
 
             // floor
-            if((typeof opt.floorMap === 'undefined' || opt.floorMap[i][j] === '_') && typeof opt.Floor !== 'undefined')
+            if((typeof opt.floorMap === 'undefined' || opt.floorMap[i][j] === '_') && typeof opt.floor !== 'undefined')
                 add([
-                    pos(t.pos.x, t.pos.y + H - opt.Floor),
+                    pos(t.pos.x, t.pos.y + H - opt.floor),
                     area({
                         width: W,
-                        height: opt.Floor
+                        height: opt.floor
                     }),
                     solid()
                 ])
@@ -49,26 +49,26 @@ export function addTiles(tiles, opt = {}) {
         })
     })
 
-    // if(opt.lwall !== 'undefined') {
-    //     add([
-    //         pos(0, 0),
-    //         area({
-    //             width: opt.lwall,
-    //             height: tiles.length * H
-    //         }),
-    //         solid()
-    //     ])
-    // }
-    // if(opt.rwall !== 'undefined') {
-    //     add([
-    //         pos(tiles[0].length * W - opt.rwall, 0),
-    //         area({
-    //             width: opt.rwall,
-    //             height: tiles.length * H
-    //         }),
-    //         solid()
-    //     ])
-    // }
+    if(opt.lwall !== undefined) {
+        add([
+            pos(0, 0),
+            area({
+                width: opt.lwall,
+                height: tiles.length * H
+            }),
+            solid()
+        ])
+    }
+    if(opt.rwall !== undefined) {
+        add([
+            pos(tiles[0].length * W - opt.rwall, 0),
+            area({
+                width: opt.rwall,
+                height: tiles.length * H
+            }),
+            solid()
+        ])
+    }
 
 }
 

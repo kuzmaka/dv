@@ -215,7 +215,8 @@ export default () => {
         ]
     ];
     addTiles(tiles, {
-        Floor: 8
+        floor: 8,
+
     })
 
     const player = addPlayer({
