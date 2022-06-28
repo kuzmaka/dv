@@ -5,6 +5,17 @@ export default () => {
     const tiles = [
         [
             {
+                name: "office3-1"
+            },
+            {
+                name: "office3-2"
+            },
+            {
+                name: "office3-3"
+            }
+        ],
+        [
+            {
                 name: 'office2-1',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
@@ -87,8 +98,16 @@ export default () => {
             }
         ]
     ]
+
+    const fm = [
+        " __",
+        "___",
+        "___"
+    ]
+
     addTiles(tiles, {
-        floor: 10
+        floor: 10,
+        floorMap: fm
     })
 
     const player = addPlayer({
@@ -144,7 +163,7 @@ function addGasLattice(_pos, opt = {}) {
                 if(this.attack > 0 && this.microcd <= 0) {
                     add([
                         sprite('gas'),
-                        pos(this.pos.sub(0, 32)),
+                        pos(this.pos.sub(0, opt.flip ? -4 : 32)),
                         area(),
                         move(-90 + rand(-10, 10), this.gasSpeed),
                         lifespan(1, {fade: 0.5})

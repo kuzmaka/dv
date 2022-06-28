@@ -14,6 +14,7 @@ export function addTiles(tiles, opt = {}) {
             ])
 
             // floor
+            if(typeof opt.floorMap[i][j] === 'undefined' || opt.floorMap[i][j] === '_')
             add([
                 pos(t.pos.x, t.pos.y + H - (typeof opt.floor !== 'undefined' ? opt.floor : 0)),
                 rect(W, typeof opt.floor !== 'undefined' ? opt.floor : 0),
