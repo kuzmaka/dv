@@ -72,35 +72,50 @@ export default () => {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGasArea(x+100, y+H-100, 100)
+                    addGrille(x, y+310)
+                    addGasArea(x, y+310, 50)
+                    addGrille(x+320, y+250)
+                    addGasArea(x+320, y+250, 50)
                 }
             },
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGasArea(x+100, y+H-110, 100)
+                    addGrille(x, y+310)
+                    addGasArea(x, y+310, 50)
+                    addGrille(x+320, y+250)
+                    addGasArea(x+320, y+250, 50)
                 }
             },
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGasArea(x+100, y+H-120, 100)
+                    addGrille(x, y+310)
+                    addGasArea(x, y+310, 50)
+                    addGrille(x+320, y+250)
+                    addGasArea(x+320, y+250, 50)
                 }
             },
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGasArea(x+100, y+H-130, 100)
+                    addGrille(x, y+310)
+                    addGasArea(x, y+310, 50)
+                    addGrille(x+320, y+250)
+                    addGasArea(x+320, y+250, 50)
                 }
             },
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGasArea(x+100, y+H-140, 100)
+                    addGrille(x, y+310)
+                    addGasArea(x, y+310, 50)
+                    addGrille(x+320, y+250)
+                    addGasArea(x+320, y+250, 50)
                 }
             },
             {
@@ -234,11 +249,20 @@ export default () => {
         wakeUp()
     }
 
-    function addGasArea(x, y, w, h) {
-        h = h || w;
+    function addGrille(x, y)
+    {
+        add([
+            pos(x, y),
+            sprite('grille'),
+            origin('center')
+        ])
+    }
+
+    function addGasArea(x, y, r) {
         const gasArea = add([
             pos(x, y),
-            area({width: w, height: h}),
+            origin('center'),
+            area({width: 2*r, height: 2*r}),
             outview()
         ])
 
@@ -249,8 +273,8 @@ export default () => {
             worldArea() {
                 return {
                     shape: 'circle',
-                    center: gasArea.pos.add(w/2, h/2),
-                    radius: w/2
+                    center: gasArea.pos,
+                    radius: r
                 }
             }
         }
@@ -263,11 +287,11 @@ export default () => {
             t += dt()
             if (t > 0.02) {
                 t = 0;
-                const r = rand(0, w/2);
-                const a = rand(0, 2*Math.PI);
+                const _r = rand(0, r);
+                const _a = rand(0, 2*Math.PI);
                 add([
                     // pos(x + rand(0, w), y + rand(0, w)),
-                    pos(x + w/2 + r * Math.cos(a), y + w/2 + r * Math.sin(a)),
+                    pos(x + _r * Math.cos(_a), y + _r * Math.sin(_a)),
                     sprite('gas'),
                     origin('center'),
                     scale(rand(0.5, 2)),

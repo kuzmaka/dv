@@ -75,6 +75,14 @@ export function addPlayer(opt) {
             speed: 0,
             flip: true,
             dead: opt.dead ? opt.dead : false,
+            resetArea() {
+                player.area.offset.y = 30
+                player.area.height = 35
+            },
+            layArea() {
+                player.area.offset.y = 58
+                player.area.height = 18
+            }
         },
         scale(1.5),
         z(50),
@@ -97,6 +105,7 @@ export function addPlayer(opt) {
         player.flipX(player.flip = false)
         if (player.curPlatform()) {
             player.play('run')
+            player.resetArea()
         }
     })
     onKeyRelease('left', () => {
@@ -105,6 +114,7 @@ export function addPlayer(opt) {
             player.speed = 0
             if (player.curPlatform()) {
                 player.play('idle')
+                player.resetArea()
             }
         }
     })
@@ -114,6 +124,7 @@ export function addPlayer(opt) {
         player.flipX(player.flip = true)
         if (player.curPlatform()) {
             player.play('run')
+            player.resetArea()
         }
     })
     onKeyRelease('right', () => {
@@ -122,6 +133,7 @@ export function addPlayer(opt) {
             player.speed = 0
             if (player.curPlatform()) {
                 player.play('idle')
+                player.resetArea()
             }
         }
     })
@@ -130,9 +142,11 @@ export function addPlayer(opt) {
             if (player.dead) {
                 player.dead = false
                 player.play('lay')
+                player.layArea()
             } else {
                 player.jump()
                 player.play('jump')
+                player.resetArea()
             }
         }
     })
@@ -140,6 +154,7 @@ export function addPlayer(opt) {
         if (player.dead) return;
         if (player.curPlatform()) {
             player.play('lay')
+            player.layArea()
         }
     })
     player.onGround(() => {
