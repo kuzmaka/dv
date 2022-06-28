@@ -50,7 +50,7 @@ export function myLifespan(time, opt = {}) {
     const startFade = Math.max((time - fade), 0);
     const startOpacity = opt.opacity ?? 1;
     return {
-        id: "lifespan",
+        id: "myLifespan",
         update() {
             timer += dt();
             if (timer >= startFade) {
@@ -61,4 +61,28 @@ export function myLifespan(time, opt = {}) {
             }
         },
     };
+}
+
+export function fade(time, opt = {}) {
+    if (time == null) {
+        throw new Error("fadeIn() requires time");
+    }
+    let timer = 0;
+    return {
+        id: "fadeIn",
+        update() {
+            if (timer < time) {
+                timer += dt();
+                this.opacity = map(timer, 0, time, typeof opt.from === 'undefined' ? 0 : opt.from, typeof opt.to === 'undefined' ? 1 : opt.to);
+            }
+        },
+    };
+}
+
+export function checkpoint(playerPos) {
+    return {
+        id: 'checkpoint',
+        require: ['area'],
+        playerPos: playerPos.clone()
+    }
 }

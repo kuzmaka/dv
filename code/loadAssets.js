@@ -156,6 +156,7 @@ export default () => {
             },
         }
     })
+    loadSprite('dog3', 'sprites/dog3.png')
 
     loadSprite('dog', 'sprites/greyhound.png', {
         sliceX: 1,

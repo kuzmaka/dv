@@ -1,6 +1,6 @@
 import {W, H, SKIP_CUTS} from './init'
 import {addPlayer, addTiles, setupCamera} from "./createLevel";
-import {jitter, myLifespan, swing} from "./components";
+import {fade, jitter, myLifespan, swing} from "./components";
 
 export default () => {
 
@@ -22,6 +22,7 @@ export default () => {
         [
             {
                 name: 'lab0',
+                checkpoint: vec2(330, 180),
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     // heart monitor
@@ -72,50 +73,27 @@ export default () => {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGrille(x, y+310)
-                    addGasArea(x, y+310, 50)
-                    addGrille(x+320, y+250)
-                    addGasArea(x+320, y+250, 50)
+                    let gx = x
+                    addGrille(gx, y+310)
+                    addGasArea(gx, y+310, 50)
+                    gx = x + 320
+                    addGrille(gx, y+250)
+                    addGasArea(gx, y+250, 50)
                 }
             },
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGrille(x, y+310)
-                    addGasArea(x, y+310, 50)
-                    addGrille(x+320, y+250)
-                    addGasArea(x+320, y+250, 50)
-                }
-            },
-            {
-                name: 'lab1',
-                onAdded: (tile, i, j) => {
-                    const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGrille(x, y+310)
-                    addGasArea(x, y+310, 50)
-                    addGrille(x+320, y+250)
-                    addGasArea(x+320, y+250, 50)
-                }
-            },
-            {
-                name: 'lab1',
-                onAdded: (tile, i, j) => {
-                    const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGrille(x, y+310)
-                    addGasArea(x, y+310, 50)
-                    addGrille(x+320, y+250)
-                    addGasArea(x+320, y+250, 50)
-                }
-            },
-            {
-                name: 'lab1',
-                onAdded: (tile, i, j) => {
-                    const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGrille(x, y+310)
-                    addGasArea(x, y+310, 50)
-                    addGrille(x+320, y+250)
-                    addGasArea(x+320, y+250, 50)
+                    let gx = x + 100
+                    addGrille(gx, y+310)
+                    addGasArea(gx, y+310, 50)
+                    gx = x + 320
+                    addGrille(gx, y+250)
+                    addGasArea(gx, y+250, 50)
+                    gx = x + 540
+                    addGrille(gx, y+250)
+                    addGasArea(gx, y+250, 50)
                 }
             },
             {
@@ -123,8 +101,7 @@ export default () => {
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     add([
-                        pos(x + 400, y + H - 8),
-                        origin('botleft'),
+                        pos(x + 400, y + 200),
                         sprite('doggy', {anim: 'sit'}),
                         area(),
                         outview(),
@@ -132,8 +109,7 @@ export default () => {
                         'doggy'
                     ])
                     add([
-                        pos(x + 150, y + H - 8),
-                        origin('botleft'),
+                        pos(x + 150, y + 200),
                         sprite('doggy', {anim: 'stay'}),
                         area(),
                         outview(),
@@ -141,9 +117,17 @@ export default () => {
                         'doggy'
                     ])
                     add([
-                        pos(x + 250, y + H - 4),
-                        origin('botleft'),
+                        pos(x + 250, y + 200),
                         sprite('dog2', {anim: 'tongue'}),
+                        area(),
+                        outview(),
+                        jitter(),
+                        'doggy'
+                    ])
+                    add([
+                        pos(x + 200, y + H + 2),
+                        origin('botleft'),
+                        sprite('dog3'),
                         area(),
                         outview(),
                         jitter(),
@@ -157,6 +141,21 @@ export default () => {
                         origin('botleft'),
                         sprite('cage')
                     ])
+                }
+            },
+            {
+                name: 'lab1',
+                onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    let gx = x + 100
+                    addGrille(gx, y+310)
+                    addGasArea(gx, y+310, 50)
+                    gx = x + 340
+                    addGrille(gx, y+310)
+                    addGasArea(gx, y+310, 50)
+                    gx = x + 560
+                    addGrille(gx, y+310)
+                    addGasArea(gx, y+310, 50)
                 }
             },
             'lab2-exit',
@@ -222,15 +221,16 @@ export default () => {
     const player = addPlayer({
         x: 330,
         y: 180,
-        dead: true
+        sleeping: true
     })
 
     const cancel = player.onUpdate(() => {
-        if (!player.dead && heart) {
+        if (!player.sleeping && heart) {
             heart.play('off')
             cancel()
         }
     })
+
     player.onUpdate(() => {
         light.hidden = !inDarkArea(player.pos.x)
         light.moveTo(player.pos)
@@ -302,7 +302,7 @@ export default () => {
                 ])
             }
             if (player.isColliding(gasCircle)) {
-                addKaboom(player.pos)
+                player.die()
             }
         })
     }
@@ -342,56 +342,11 @@ export default () => {
 
 
 function wakeUp() {
-    const cover1 = add([
-        pos(0),
-        rect(W, H),
-        color(WHITE),
-        opacity(1)
-    ])
-    const cover2 = add([
-        pos(0),
-        rect(W, H),
+    add([
+        pos(-200, -200),
+        rect(W+400, H+400),
+        fade(2, {from: 1, to: 0}),
         color(BLACK),
-        opacity(1)
+        z(1000)
     ])
-    let dizzed = false
-    const cancel = onUpdate(() => {
-        if (cover2.opacity > 0) {
-            cover2.opacity = Math.max(0, cover2.opacity - 0.3*dt())
-        } else {
-            if (cover1.opacity > 0) {
-                if (!dizzed) {
-                    // camDizz()
-                    dizzed = true
-                }
-                cover1.opacity = Math.max(0, cover1.opacity - 0.3 * dt())
-            } else {
-                cancel()
-            }
-        }
-    })
-}
-
-function camDizz()
-{
-    let angle = 0
-    let scale = 10
-    const cancel = onUpdate(() => {
-        if (angle < 360) {
-            angle += 120 * dt()
-        } else {
-            angle = 360
-        }
-        if (scale > 1) {
-            scale -= 3 * dt()
-        } else {
-            scale = 1
-        }
-        camRot(angle)
-        camScale(scale)
-        if (angle === 360 && scale === 1) {
-            camRot(0)
-            cancel()
-        }
-    })
 }

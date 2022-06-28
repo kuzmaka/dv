@@ -1,4 +1,5 @@
 import {H, SHOW_TILE_INDEX, W} from "./init";
+import {checkpoint, fade} from "./components";
 
 const PLAYER_SPEED = 400;
 
@@ -12,6 +13,17 @@ export function addTiles(tiles, opt = {}) {
                 sprite(name),
                 z(-10)
             ])
+
+            if (typeof tile.checkpoint !== 'undefined') {
+                add([
+                    pos(j * W, i * H),
+                    area({
+                        width: W,
+                        height: H
+                    }),
+                    checkpoint(tile.checkpoint)
+                ])
+            }
 
             // floor
             if(typeof opt.floorMap[i][j] === 'undefined' || opt.floorMap[i][j] === '_')
@@ -75,7 +87,9 @@ export function addPlayer(opt) {
         {
             speed: 0,
             flip: true,
-            dead: opt.dead ? opt.dead : false,
+            dead: false,
+            sleeping: opt.sleeping ? opt.sleeping : false,
+            lastCheckpoint: null,
             resetArea() {
                 player.area.offset.y = 30
                 player.area.height = 35
@@ -83,6 +97,37 @@ export function addPlayer(opt) {
             layArea() {
                 player.area.offset.y = 58
                 player.area.height = 18
+            },
+            die() {
+                if (player.dead) return;
+                player.dead = true
+                player.speed = 0
+                player.play('dead')
+                shake()
+                const shade = add([
+                    pos(toWorld(vec2(0, 0).sub(100, 100))),
+                    rect(W + 200, H + 200),
+                    fade(1, {from: 0, to: 0.5}),
+                    color(BLACK),
+                    z(1000)
+                ])
+                const hint = add([
+                    pos(toWorld(center())),
+                    origin('center'),
+                    text('Press R to restart', {size: 24}),
+                    z(10000)
+                ])
+                const cnc = onKeyPress('r', () => {
+                    // respawn
+                    player.dead = false
+                    player.speed = 0
+                    player.play('idle')
+                    shade.destroy()
+                    hint.destroy()
+                    player.moveTo(player.lastCheckpoint.playerPos)
+                    setupCamera(player)
+                    cnc()
+                })
             }
         },
         scale(1.5),
@@ -101,7 +146,7 @@ export function addPlayer(opt) {
 
     const SPEED = PLAYER_SPEED;
     onKeyPress('left', () => {
-        if (player.dead) return;
+        if (player.dead || player.sleeping) return;
         player.speed = -SPEED
         player.flipX(player.flip = false)
         if (player.curPlatform()) {
@@ -110,7 +155,7 @@ export function addPlayer(opt) {
         }
     })
     onKeyRelease('left', () => {
-        if (player.dead) return;
+        if (player.dead || player.sleeping) return;
         if (player.speed < 0) {
             player.speed = 0
             if (player.curPlatform()) {
@@ -120,7 +165,7 @@ export function addPlayer(opt) {
         }
     })
     onKeyPress('right', () => {
-        if (player.dead) return;
+        if (player.dead || player.sleeping) return;
         player.speed = SPEED
         player.flipX(player.flip = true)
         if (player.curPlatform()) {
@@ -129,7 +174,7 @@ export function addPlayer(opt) {
         }
     })
     onKeyRelease('right', () => {
-        if (player.dead) return;
+        if (player.dead || player.sleeping) return;
         if (player.speed > 0) {
             player.speed = 0
             if (player.curPlatform()) {
@@ -139,9 +184,10 @@ export function addPlayer(opt) {
         }
     })
     onKeyPress(['up', 'space'], () => {
+        if (player.dead) return;
         if (player.curPlatform()) {
-            if (player.dead) {
-                player.dead = false
+            if (player.sleeping) {
+                player.sleeping = false
                 player.play('lay')
                 player.layArea()
             } else {
@@ -152,15 +198,20 @@ export function addPlayer(opt) {
         }
     })
     onKeyPress(['down'], () => {
-        if (player.dead) return;
+        if (player.dead || player.sleeping) return;
         if (player.curPlatform()) {
             player.play('lay')
             player.layArea()
         }
     })
     player.onGround(() => {
-        player.play(player.speed ? 'run' : (player.dead ? 'dead' : 'idle'))
+        player.play(player.speed ? 'run' : (player.dead || player.sleeping ? 'dead' : 'idle'))
     })
+
+    player.onCollide('checkpoint', (checkpoint) => {
+        player.lastCheckpoint = checkpoint
+    })
+
     return player
 }
 
