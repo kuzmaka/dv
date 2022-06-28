@@ -78,14 +78,18 @@ export default () => {
                         }
                     })
                     // gas
+                    const gasArea = add([
+                        pos(x+320, y+180),
+                        origin('center'),
+                        area({width: 100, height: 100}),
+                        outview()
+                    ])
                     const gasx = x+320;
                     const gasy = y+180;
-                    // add([
-                    //     pos(gasx, gasy),
-                    //     origin('center'),
-                    //     rect(100, 100),
-                    // ])
-                    tile.onUpdate(() => {
+                    gasArea.onUpdate(() => {
+                        if (gasArea.isOutOfView()) {
+                            return
+                        }
                         add([
                             pos(gasx + rand(-50, 50), gasy + rand(-50, 50)),
                             sprite('gas'),
@@ -96,9 +100,7 @@ export default () => {
                             rotate(rand(0, 360)),
                             opacity(rand(0, 1))
                         ])
-                        if (gasx - 50 < player.pos.x + player.width && player.pos.x < gasx + 50
-                            && gasy - 50 < player.pos.y + player.height && player.pos.y < gasy + 50
-                        ) {
+                        if (player.isColliding(gasArea)) {
                             addKaboom(player.pos)
                         }
                     })
@@ -225,12 +227,9 @@ export default () => {
     let background = add([
         pos(0),
         sprite('sky-night', {anim: 'blink'}),
-        z(-100)
+        z(-100),
+        fixed()
     ])
-    // update background pos after camera pos updated to avoid jitter
-    player.onUpdate(() => {
-        background.pos = camPos().sub(width()/2, height()/2)
-    })
 
     if (!SKIP_CUTS) {
         wakeUp()

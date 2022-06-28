@@ -2,6 +2,7 @@ import kaboom from "kaboom"
 
 export const SKIP_START = 1
 export const SKIP_CUTS = 1
+export const SHOW_TILE_INDEX = 1
 
 export const W = 640
 export const H = 360

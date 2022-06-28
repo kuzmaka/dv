@@ -1,4 +1,4 @@
-import {H, W} from "./init";
+import {H, SHOW_TILE_INDEX, W} from "./init";
 
 const PLAYER_SPEED = 400;
 
@@ -12,22 +12,27 @@ export function addTiles(tiles, opt) {
                 sprite(name),
                 z(-1)
             ])
+
+            // floor
             add([
-                pos(j * W, i * H),
-                text(i + '-' + j, {size: 24})
+                pos(t.pos.x, t.pos.y + H - (opt.floor ? opt.floor : 8)),
+                rect(W, 10),
+                opacity(0),
+                area(),
+                solid()
             ])
+
+            if (SHOW_TILE_INDEX) {
+                add([
+                    pos(j * W, i * H),
+                    text(i + '-' + j, {size: 24})
+                ])
+            }
+
             if (typeof tile === 'object' && tile.onAdded) {
                 tile.onAdded(t, i, j)
             }
         })
-        // floor
-        add([
-            pos(0, (i + 1) * H - (opt.floor ? opt.floor : 8)),
-            rect(1000*W, 10),
-            opacity(0),
-            area(),
-            solid()
-        ])
     })
 
 }
