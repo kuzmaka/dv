@@ -63,13 +63,6 @@ export default () => {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    // boost
-                    add([
-                        pos(x + 320, y + H - 40),
-                        sprite('supepper'),
-                        origin('center'),
-                        swing()
-                    ])
                     // gas
                     const gasArea = add([
                         pos(x+320, y+180),
@@ -164,6 +157,14 @@ export default () => {
                     tile.onUpdate(() => {
                         tile.play( x + 250 < player.pos.x + player.width && player.pos.x < x + 430 ? 'open' : 'close')
                     })
+
+                    // boost
+                    add([
+                        pos(x + 120, y + H - 40),
+                        sprite('supepper'),
+                        origin('center'),
+                        swing()
+                    ])
                 }
             },
             {
