@@ -119,6 +119,7 @@ export function addPlayer(opt) {
             flip: true,
             dead: false,
             sleeping: opt.sleeping ? opt.sleeping : false,
+            firstMoved: false,
             lastCheckpoint: null,
             camSetup: () => {},
             resetArea() {
@@ -151,6 +152,7 @@ export function addPlayer(opt) {
                 const cnc = onKeyPress('r', () => {
                     // respawn
                     player.dead = false
+                    player.firstMoved = false
                     player.speed = 0
                     player.play('idle')
                     shade.destroy()
@@ -160,6 +162,12 @@ export function addPlayer(opt) {
                     setupCamera(player)
                     cnc()
                 })
+            },
+            handleFirstMoved() {
+                if (!player.firstMoved) {
+                    player.firstMoved = true;
+                    this.trigger('firstMoved')
+                }
             }
         },
         scale(1.5),
@@ -177,8 +185,9 @@ export function addPlayer(opt) {
     })
 
     const SPEED = PLAYER_SPEED;
-    onKeyPress('left', () => {
+    onKeyPress(['a', 'left'], () => {
         if (player.dead || player.sleeping) return;
+        player.handleFirstMoved()
         player.speed = -SPEED
         player.flipX(player.flip = false)
         if (player.curPlatform()) {
@@ -186,7 +195,7 @@ export function addPlayer(opt) {
             player.resetArea()
         }
     })
-    onKeyRelease('left', () => {
+    onKeyRelease(['a', 'left'], () => {
         if (player.dead || player.sleeping) return;
         if (player.speed < 0) {
             player.speed = 0
@@ -196,8 +205,9 @@ export function addPlayer(opt) {
             }
         }
     })
-    onKeyPress('right', () => {
+    onKeyPress(['d', 'right'], () => {
         if (player.dead || player.sleeping) return;
+        player.handleFirstMoved()
         player.speed = SPEED
         player.flipX(player.flip = true)
         if (player.curPlatform()) {
@@ -205,7 +215,7 @@ export function addPlayer(opt) {
             player.resetArea()
         }
     })
-    onKeyRelease('right', () => {
+    onKeyRelease(['d', 'right'], () => {
         if (player.dead || player.sleeping) return;
         if (player.speed > 0) {
             player.speed = 0
@@ -215,7 +225,7 @@ export function addPlayer(opt) {
             }
         }
     })
-    onKeyPress(['up', 'space'], () => {
+    onKeyPress(['w', 'space'], () => {
         if (player.dead) return;
         if (player.curPlatform()) {
             if (player.sleeping) {
@@ -223,13 +233,14 @@ export function addPlayer(opt) {
                 player.play('lay')
                 player.layArea()
             } else {
+                player.handleFirstMoved()
                 player.jump()
                 player.play('jump')
                 player.resetArea()
             }
         }
     })
-    onKeyPress(['down'], () => {
+    onKeyPress(['s', 'down'], () => {
         if (player.dead || player.sleeping) return;
         if (player.curPlatform()) {
             player.play('lay')
