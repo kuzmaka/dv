@@ -1,6 +1,6 @@
 import {W, H, SKIP_CUTS} from './init'
 import {addPlayer, addTiles, setupCamera} from "./createLevel";
-import {jitter, swing} from "./components";
+import {jitter, myLifespan, swing} from "./components";
 
 export default () => {
 
@@ -63,45 +63,35 @@ export default () => {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    // gas
-                    const gasArea = add([
-                        pos(x+320, y+180),
-                        origin('center'),
-                        area({width: 100, height: 100}),
-                        outview()
-                    ])
-                    const gasx = x+320;
-                    const gasy = y+180;
-                    gasArea.onUpdate(() => {
-                        if (gasArea.isOutOfView()) {
-                            return
-                        }
-                        add([
-                            pos(gasx + rand(-50, 50), gasy + rand(-50, 50)),
-                            sprite('gas'),
-                            origin('center'),
-                            scale(rand(0.5, 2)),
-                            lifespan(1, {fade: 0.5}),
-                            move(rand(0, 360), rand(20, 60)),
-                            rotate(rand(0, 360)),
-                            opacity(rand(0, 1))
-                        ])
-                        if (player.isColliding(gasArea)) {
-                            addKaboom(player.pos)
-                        }
-                    })
-                    // some parkour stuff :)
-                    // for (let k=0; k < 5; k++) {
-                    //     add([
-                    //         pos(randi(j * W, (j + 1) * W), randi(80, H - 80)),
-                    //         rect(100, 10),
-                    //         color(BLACK),
-                    //         opacity(0.5),
-                    //         area(),
-                    //         solid(),
-                    //         z(100)
-                    //     ])
-                    // }
+                    addGasArea(x+100, y+H-100, 100)
+                }
+            },
+            {
+                name: 'lab1',
+                onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    addGasArea(x+100, y+H-110, 100)
+                }
+            },
+            {
+                name: 'lab1',
+                onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    addGasArea(x+100, y+H-120, 100)
+                }
+            },
+            {
+                name: 'lab1',
+                onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    addGasArea(x+100, y+H-130, 100)
+                }
+            },
+            {
+                name: 'lab1',
+                onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    addGasArea(x+100, y+H-140, 100)
                 }
             },
             {
@@ -234,6 +224,53 @@ export default () => {
     if (!SKIP_CUTS) {
         wakeUp()
     }
+
+    function addGasArea(x, y, w, h) {
+        h = h || w;
+        const gasArea = add([
+            pos(x, y),
+            area({width: w, height: h}),
+            outview()
+        ])
+
+        // hack to check collision with circle
+        const gasCircle = {
+            exists() {return true},
+            area: true,
+            worldArea() {
+                return {
+                    shape: 'circle',
+                    center: gasArea.pos.add(w/2, h/2),
+                    radius: w/2
+                }
+            }
+        }
+
+        let t = 0;
+        gasArea.onUpdate(() => {
+            if (gasArea.isOutOfView()) {
+                return
+            }
+            t += dt()
+            if (t > 0.02) {
+                t = 0
+                add([
+                    pos(x + rand(0, w), y + rand(0, w)),
+                    sprite('gas'),
+                    origin('center'),
+                    scale(rand(0.5, 2)),
+                    myLifespan(1, {fade: 0.5, opacity: 0.4}),
+                    move(rand(0, 360), rand(20, 60)),
+                    rotate(rand(0, 360)),
+                    opacity(0.4)
+                ])
+            }
+            if (player.isColliding(gasCircle)) {
+                addKaboom(player.pos)
+            }
+        })
+    }
+
 
     function addShip(x, y) {
         const ship = add([

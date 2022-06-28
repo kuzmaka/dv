@@ -39,3 +39,26 @@ export function swing() {
         }
     }
 }
+
+// added startOpacity
+export function myLifespan(time, opt = {}) {
+    if (time == null) {
+        throw new Error("lifespan() requires time");
+    }
+    let timer = 0;
+    const fade = opt.fade ?? 0;
+    const startFade = Math.max((time - fade), 0);
+    const startOpacity = opt.opacity ?? 1;
+    return {
+        id: "lifespan",
+        update() {
+            timer += dt();
+            if (timer >= startFade) {
+                this.opacity = map(timer, startFade, time, startOpacity, 0);
+            }
+            if (timer >= time) {
+                this.destroy();
+            }
+        },
+    };
+}
