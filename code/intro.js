@@ -67,13 +67,17 @@ export default () => {
                         rect(W, H),
                         color(BLACK)
                     ])
+
+                    let gx = x+170
+                    addGrille(gx, y+310)
+                    addGasArea(gx, y+310, 50)
                 }
             },
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    let gx = x
+                    let gx = x+100
                     addGrille(gx, y+310)
                     addGasArea(gx, y+310, 50)
                     gx = x + 320
@@ -88,10 +92,10 @@ export default () => {
                     let gx = x + 100
                     addGrille(gx, y+310)
                     addGasArea(gx, y+310, 50)
-                    gx = x + 320
+                    gx = x + 340
                     addGrille(gx, y+250)
                     addGasArea(gx, y+250, 50)
-                    gx = x + 540
+                    gx = x + 580
                     addGrille(gx, y+250)
                     addGasArea(gx, y+250, 50)
                 }
@@ -153,7 +157,7 @@ export default () => {
                     gx = x + 340
                     addGrille(gx, y+310)
                     addGasArea(gx, y+310, 50)
-                    gx = x + 560
+                    gx = x + 580
                     addGrille(gx, y+310)
                     addGasArea(gx, y+310, 50)
                 }
