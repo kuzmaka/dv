@@ -22,6 +22,7 @@ export default () => {
     loadSprite('lamp', 'lamp.png')
     loadSprite('lab1', 'lab1.png')
     loadSprite('lab2-exit', 'lab2-exit.png')
+    loadSprite('lab-final', 'lab-final.png')
     loadSprite('lab-dock', 'lab-dock.png', {
         sliceX: 1,
         sliceY: 2,

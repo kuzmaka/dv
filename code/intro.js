@@ -1,11 +1,12 @@
-import {W, H, SKIP_CUTS} from './init'
+import {W, H} from './init'
 import {addPlayer, addTiles, setupCamera} from "./createLevel";
 import {fade, jitter, myLifespan, swing} from "./components";
 
-export default () => {
+export default ({final}) => {
 
     let heart;
     let isAlarm = false;
+    let lab2ExitTile;
 
     const light = add([
         pos(0),
@@ -83,9 +84,6 @@ export default () => {
                     addGasArea(gx, y+310, 50)
                 }
             },
-            'lab1',
-            'lab1',
-            'lab1',
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
@@ -175,7 +173,13 @@ export default () => {
                     addGasArea(gx, y+310, 50)
                 }
             },
-            'lab2-exit',
+            {
+                name: 'lab2-exit',
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    lab2ExitTile = tile
+                }
+            },
             {
                 name: 'lab-dock',
                 onAdded: (tile) => {
@@ -228,16 +232,42 @@ export default () => {
 
     })
 
-    const player = addPlayer({
-        x: 330,
-        y: 180,
-        sleeping: true
-    })
+    let player;
+    if (final) {
+        player = addPlayer({
+            x: lab2ExitTile.pos.x + 100,
+            y: H - 94,
+        })
 
-    player.on('firstMoved', () => {
-        heart.play('off')
-        isAlarm = true
-    })
+        // fade in
+        add([
+            pos(lab2ExitTile.pos.x - W, lab2ExitTile.pos.y - H),
+            rect(3*W, 3*H),
+            fade(0.5, {from: 1, to: 0}),
+            color(BLACK),
+            z(1000)
+        ])
+    } else {
+        player = addPlayer({
+            x: 330,
+            y: 180,
+            sleeping: true
+        })
+
+        // fade in
+        add([
+            pos(-W, -H),
+            rect(3*W, 3*H),
+            fade(2, {from: 1, to: 0}),
+            color(BLACK),
+            z(1000)
+        ])
+
+        player.on('firstMoved', () => {
+            heart.play('off')
+            isAlarm = true
+        })
+    }
 
     player.onUpdate(() => {
         light.hidden = !inDarkArea(player.pos.x)
@@ -252,10 +282,6 @@ export default () => {
         z(-100),
         fixed()
     ])
-
-    if (!SKIP_CUTS) {
-        wakeUp()
-    }
 
     function addGrille(x, y) {
         add([
@@ -345,15 +371,4 @@ export default () => {
             }
         })
     }
-}
-
-
-function wakeUp() {
-    add([
-        pos(-200, -200),
-        rect(W+400, H+400),
-        fade(2, {from: 1, to: 0}),
-        color(BLACK),
-        z(1000)
-    ])
 }

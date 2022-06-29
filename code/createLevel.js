@@ -112,7 +112,7 @@ export function addPlayer(opt) {
         area({
             offset: vec2(22, 40),
             width: 47,
-            height: 34
+            height: 46
         }),
         body(),
         {
@@ -121,7 +121,7 @@ export function addPlayer(opt) {
             dead: false,
             sleeping: opt.sleeping ? opt.sleeping : false,
             firstMoved: false,
-            isDown: true,
+            isDown: opt.sleeping ? opt.sleeping : false,
             lastCheckpoint: null,
             camSetup: () => {},
             resetArea() {
