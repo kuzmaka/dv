@@ -5,9 +5,42 @@ export default () => {
     const tiles = [
         [
             {
+                name: "office4-1"
+            },
+            {
+                name: "office4-2"
+            },
+            {
+                name: "office4-3",
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    //floor
+                    add([
+                        pos(x, y + 350),
+                        area({
+                            width: 240,
+                            height: 10
+                        }),
+                        solid()
+                    ])
+                    add([
+                        pos(x + 330, y + 350),
+                        area({
+                            width: 310,
+                            height: 10
+                        }),
+                        solid()
+                    ])
+                    addObjects(parkour[4], {pos: vec2(x, y)})
+                }
+            }
+        ],
+        [
+            {
                 name: "office3-1",
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+                    //floor
                     add([
                         pos(x + 100, y + 350),
                         area({
@@ -16,6 +49,13 @@ export default () => {
                         }),
                         solid()
                     ])
+                    table(vec2(x + 200, y + 291))
+                    addGasLattice(vec2(x + 265, y + 350))
+                    table(vec2(x + 300, y + 291))
+                    addGasLattice(vec2(x + 365, y + 350))
+                    table(vec2(x + 400, y + 291))
+                    addGasLattice(vec2(x + 465, y + 350))
+                    table(vec2(x + 500, y + 291))
                 }
             },
             {
@@ -28,12 +68,17 @@ export default () => {
                             width: 300,
                             height: 240
                         }),
-                        'camscale'
+                        'camTrigger'
                     ])
+                    addObjects(parkour[3], {pos: vec2(x + 400, y)})
                 }
             },
             {
-                name: "office3-3"
+                name: "office3-3",
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    addGasLattice()
+                }
             }
         ],
         [
@@ -45,26 +90,8 @@ export default () => {
                     addGasLattice(vec2(x + 300, y), {flip: true})
                     addGasLattice(vec2(x + 260, y), {flip: true})
                     addGasLattice(vec2(x + 480, y), {flip: true})
-                    add([
-                        sprite('table', {frame: randi(2)}),
-                        pos(x + 290, y + 291),
-                        area({
-                            // width: this.width,
-                            height: 2,
-                            offset: vec2(0, 22)
-                        }),
-                        solid()
-                    ])
-                    add([
-                        sprite('table', {frame: randi(2)}),
-                        pos(x + 400, y + 291),
-                        area({
-                            // width: this.width,
-                            height: 2,
-                            offset: vec2(0, 22)
-                        }),
-                        solid()
-                    ])
+                    table(vec2(x + 290, y + 291))
+                    table(vec2(x + 400, y + 291))
                     add([
                         sprite('arrow-3', {anim: 'idle'}),
                         pos(x, y)
@@ -81,7 +108,7 @@ export default () => {
                             width: 300,
                             height: 240
                         }),
-                        'camscale'
+                        'camTrigger'
                     ])
                     addObjects(parkour[1], {pos: vec2(x + 400, y)})
                 }
@@ -103,6 +130,7 @@ export default () => {
         [
             {
                 name: 'office1-1',
+                checkpoint: vec2(100, 200),
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                 }
@@ -126,6 +154,7 @@ export default () => {
     ]
 
     const fm = [
+        "__ ",
         " __",
         "___",
         "___"
@@ -140,20 +169,20 @@ export default () => {
     })
 
     const player = addPlayer({
-        x: 500,
+        x: 1000,
         y: 180
     })
 
     setupCamera(player)
     camPos(vec2(camPos().x, H * 1.5))
 
-    const scaleobjs = get('camscale')
+    const scaleTriggers = get('camTrigger')
     player.onUpdate(() => {
-        let collides = false
-        scaleobjs.forEach((scaleobj) => {
-            if(player.isColliding(scaleobj)) collides = true
+        let triggered = false
+        scaleTriggers.forEach((trigger) => {
+            if(player.isColliding(trigger)) triggered = true
         })
-        if(collides) camScale(camScale().lerp(vec2(0.5), dt()*3))
+        if(triggered) camScale(camScale().lerp(vec2(0.5), dt()*3))
         else camScale(camScale().lerp(vec2(1), dt()*3))
     })
 }
@@ -173,15 +202,15 @@ function addTeleport(pos1, pos2) {
     ])
 }
 
-function addGasLattice(_pos, opt = {}) {
+function addGasLattice(p, opt = {}) {
     add([
-        sprite('lattice'),
-        pos(_pos),
+        sprite(opt.rotate ? 'lattice-y' : 'lattice-x', {flipY: !opt.flip, flipX: opt.flip}),
+        pos(p),
         {
-            cooldown: 3,
+            cooldown: opt.scd !== undefined ? opt.scd : opt.cd !== undefined ? opt.cd : 3,
             attack: 0,
             microcd: 3,
-            gasSpeed: 150 * (opt.flip ? -1 : 1),
+            gasSpeed: 150,
             update() {
                 if(this.attack > 0) this.attack -= dt()
                 if(this.microcd > 0) this.microcd -= 1
@@ -193,10 +222,17 @@ function addGasLattice(_pos, opt = {}) {
                 if(this.attack > 0 && this.microcd <= 0) {
                     add([
                         sprite('gas'),
-                        pos(this.pos.sub(0, opt.flip ? -4 : 32)),
+                        pos(this.pos.sub(opt.rotate ? (opt.flip ? 32 : -4) : 0, opt.rotate ? 0 : opt.flip ? -4 : 32)),
                         area(),
-                        move(-90 + rand(-10, 10), this.gasSpeed),
-                        lifespan(1, {fade: 0.5})
+                        move(-90 * (opt.flip ? -1 : 1) + 90 * (opt.rotate ? 1 : 0) + rand(-10, 10), this.gasSpeed),
+                        lifespan(1, {fade: 0.5}),
+                        {
+                            load() {
+                                this.onCollide('player', (p) => {
+                                    p.die()
+                                })
+                            }
+                        }
                     ])
                     this.microcd = 3
                 }
@@ -205,7 +241,20 @@ function addGasLattice(_pos, opt = {}) {
     ])
 }
 
+function table(p) {
+    add([
+        sprite('table', {frame: randi(2)}),
+        pos(p),
+        area({
+            height: 2,
+            offset: vec2(0, 22)
+        }),
+        solid()
+    ])
+}
+
 const parkour = [
+    //1-3   [0]
     [
         "                    ",
         "                    ",
@@ -218,6 +267,7 @@ const parkour = [
         "                    ",
         "                    ",
     ],
+    //2-3   [1]
     [
         "                       ",
         "!=====================!",
@@ -229,6 +279,7 @@ const parkour = [
         "                       ",
         " !=====!=====!         ",
     ],
+    //2-1   [2]
     [
         "                       ",
         "!====!=====!====!      ",
@@ -239,6 +290,32 @@ const parkour = [
         "!===!                  ",
         "                       ",
         "                       ",
-    ]
+    ],
+    //3-3   [3]
+    [
+        "                           ",
+        "!======!========!=======!  ",
+        "                           ",
+        "                           ",
+        "                           ",
+        "                 !=======b!",
+        "                           ",
+        "                           ",
+        "     !=b==b==!             ",
+        "                           ",
+    ],
+    //4-3   [4]
+    [
+        "              ==   ",
+        "                   ",
+        "  r                ",
+        "!===!    !=b==!    ",
+        "                   ",
+        "                   ",
+        "!===bb!====!=======",
+        "                   ",
+        "                   ",
+        "              ==   ",
+    ],
 ]
 

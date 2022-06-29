@@ -69,8 +69,12 @@ export default () => {
     loadSprite('office3-1', 'office3-1.png')
     loadSprite('office3-2', 'office3-2.png')
     loadSprite('office3-3', 'office2-3.png')
+    loadSprite('office4-1', 'office2-3.png')
+    loadSprite('office4-2', 'office3-2.png')
+    loadSprite('office4-3', 'office4-3.png')
     loadSprite('teleport', 'teleport2.png')
-    loadSprite('lattice', 'lattice.png')
+    loadSprite('lattice-x', 'lattice-x.png')
+    loadSprite('lattice-y', 'lattice-y.png')
     loadSprite('table', 'table(offset22).png', {
         sliceX: 2,
         sliceY: 1,
