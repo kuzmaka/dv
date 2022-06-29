@@ -121,6 +121,7 @@ export function addPlayer(opt) {
             dead: false,
             sleeping: opt.sleeping ? opt.sleeping : false,
             firstMoved: false,
+            isDown: true,
             lastCheckpoint: null,
             camSetup: () => {},
             resetArea() {
@@ -195,83 +196,64 @@ export function addPlayer(opt) {
     })
 
     const SPEED = PLAYER_SPEED;
+    const CRAWL_SPEED = PLAYER_SPEED/4;
     onKeyPress(['a', 'left'], () => {
         if (player.dead || player.sleeping) return;
         player.handleFirstMoved()
-        player.speed = -SPEED
+        player.speed = player.isDown ? -CRAWL_SPEED : -SPEED;
         player.flipX(player.flip = true)
-        if(player.curAnim() === 'crawl' && checkStanding(player)) {
-            player.play('run')
-            player.resetArea()
-            return
-        }
-        if (player.curPlatform() && player.curAnim() !== 'crawl') {
-            player.play('run')
-            player.resetArea()
+        if (player.curPlatform()) {
+            player.play(player.isDown ? 'crawl' : 'run')
+            player.isDown ? player.layArea() : player.resetArea()
         }
     })
     onKeyRelease(['a', 'left'], () => {
         if (player.dead || player.sleeping) return;
         if (player.speed < 0) {
             player.speed = 0
-            if(player.curAnim() === 'run') {
-                player.play('idle')
-                return
-            }
-            if (player.curPlatform() && checkStanding(player)) {
-                player.play('idle')
-                player.resetArea()
+            if (player.curPlatform()) {
+                player.play(player.isDown ? 'lay' : 'idle')
+                player.isDown ? player.layArea() : player.resetArea()
             }
         }
     })
     onKeyPress(['d', 'right'], () => {
         if (player.dead || player.sleeping) return;
         player.handleFirstMoved()
-        player.speed = SPEED
+        player.speed = player.isDown ? CRAWL_SPEED : SPEED;
         player.flipX(player.flip = false)
-        if(player.curAnim() === 'crawl' && checkStanding(player)) {
-            player.play('run')
-            player.resetArea()
-            return
-        }
-        if (player.curPlatform() && player.curAnim() !== 'crawl') {
-            player.play('run')
-            player.resetArea()
+        if (player.curPlatform()) {
+            player.play(player.isDown ? 'crawl' : 'run')
+            player.isDown ? player.layArea() : player.resetArea()
         }
     })
     onKeyRelease(['d', 'right'], () => {
         if (player.dead || player.sleeping) return;
         if (player.speed > 0) {
             player.speed = 0
-            if(player.curAnim() === 'run') {
-                player.play('idle')
-                return
-            }
-            if (player.curPlatform() && checkStanding(player)) {
-                player.play('idle')
-                player.resetArea()
+            if (player.curPlatform()) {
+                player.play(player.isDown ? 'lay' : 'idle')
+                player.isDown ? player.layArea() : player.resetArea()
             }
         }
     })
     onKeyPress(['w', 'up', 'space'], () => {
         if (player.dead) return;
         if (player.curPlatform()) {
-            if (player.sleeping) {
-                player.sleeping = false
-                player.play('lay')
-                player.layArea()
-            } else if (player.curAnim() !== 'crawl' || checkStanding(player)) {
-                player.handleFirstMoved()
-                player.jump()
-                player.play('jump')
-                player.resetArea()
-            }
+            player.sleeping = false
+            player.handleFirstMoved()
+            player.jump()
+            player.play('jump')
+            player.resetArea()
+            player.isDown = false
         }
     })
     onKeyPress(['s', 'down'], () => {
+        player.isDown = true
         if (player.dead || player.sleeping) return;
         if (player.curPlatform()) {
             if (player.speed) {
+                player.speed = player.flip ? -CRAWL_SPEED : CRAWL_SPEED
                 player.play('crawl')
             } else {
                 player.play('lay')
@@ -279,15 +261,30 @@ export function addPlayer(opt) {
             player.layArea()
         }
     })
+    onKeyRelease(['s', 'down'], () => {
+        player.isDown = false
+        if (player.dead || player.sleeping) return;
+        if (player.curPlatform()) {
+            if (player.speed) {
+                player.speed = player.flip ? -SPEED : SPEED
+                player.play(player.isDown ? 'crawl' : 'run')
+            } else {
+                player.play(player.isDown ? 'lay' : 'idle')
+            }
+            player.isDown ? player.layArea() : player.resetArea()
+        }
+    })
     player.onGround(() => {
         if (player.speed) {
-            player.play('run')
+            player.play(player.isDown ? 'crawl' : 'run')
+            player.isDown ? player.layArea() : player.resetArea()
         } else {
             if (player.dead || player.sleeping) {
                 player.play('dead')
                 player.layArea()
             } else {
-                player.play('idle')
+                player.play(player.isDown ? 'lay' : 'idle')
+                player.isDown ? player.layArea() : player.resetArea()
             }
         }
     })

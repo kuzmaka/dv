@@ -83,9 +83,9 @@ export default () => {
                     addGasArea(gx, y+310, 50)
                 }
             },
-            // 'lab1',
-            // 'lab1',
-            // 'lab1',
+            'lab1',
+            'lab1',
+            'lab1',
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
