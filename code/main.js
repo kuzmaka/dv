@@ -13,5 +13,5 @@ scene('office', office)
 
 debug.inspect = false
 
-go('intro')
-// go('office')
+// go('intro')
+go('office')

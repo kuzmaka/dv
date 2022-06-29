@@ -320,8 +320,7 @@ function canStand(player) {
     ])
     tmp.moveBy(0, 0)    // using moveBy instead of pushOutAll because moveBy checks if colliding object is solid
     player.solid = true
-
-    let res = tmp.pos.dist(px, py) <= 1
+    let res = tmp.pos.dist(px, py) <= 2
     destroy(tmp)
     return res
 }

@@ -8,7 +8,27 @@ export default () => {
                 name: "office4-1"
             },
             {
-                name: "office4-2"
+                name: "office4-2",
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    gasSystem([
+                        [vec2(x - 2, y + 350), {scd: 0, cd: 6.5, atkTime: 3}],
+                        [vec2(x + 29, y + 350), {scd: 0, cd: 6.2}],
+                        [vec2(x + 60, y + 350), {scd: 0, cd: 5.9}],
+                        [vec2(x + 91, y + 350), {scd: 0, cd: 5.5}],
+                        [vec2(x + 122, y + 350), {scd: 0, cd: 5}],
+                        [vec2(x + 153, y + 350), {scd: 2.7, cd: 5, atkTime: 5}],
+                        [vec2(x + 184, y + 350), {scd: 2.4, cd: 2}],
+                        [vec2(x + 215, y + 350), {scd: 2.1, cd: 2.3}],
+                        [vec2(x + 246, y + 350), {scd: 1.8, cd: 2.6}],
+                        [vec2(x + 277, y + 350), {scd: 1.5, cd: 5.8}],
+                        [vec2(x + 308, y + 350), {scd: 1.2, cd: 5.6}],
+                        [vec2(x + 339, y + 350), {scd: 0.9, cd: 5.4}],
+                        [vec2(x + 370, y + 350), {scd: 0.6, cd: 5.2}],
+                        [vec2(x + 401, y + 350), {scd: 0.3, cd: 5}],
+                        [vec2(x + 432, y + 350), {scd: 5, atkTime: 10}]
+                    ], 18)
+                }
             },
             {
                 name: "office4-3",
@@ -77,7 +97,17 @@ export default () => {
                 name: "office3-3",
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    addGasLattice()
+                    addGasLattice(vec2(x + 250, y + 350))
+                    addGasLattice(vec2(x + 636, y + 150), {
+                        rotate: true,
+                        flip: true,
+                        scd: 4
+                    })
+                    addGasLattice(vec2(x + 636, y + 20), {
+                        rotate: true,
+                        flip: true,
+                        scd: 4.5
+                    })
                 }
             }
         ],
@@ -169,12 +199,19 @@ export default () => {
     })
 
     const player = addPlayer({
-        x: 1000,
-        y: 540
+        x: 1300,
+        y: 180
     })
 
     setupCamera(player)
     camPos(vec2(camPos().x, H * 1.5))
+
+    add([
+        pos(0),
+        sprite('sky-night', {anim: 'blink'}),
+        z(-100),
+        fixed()
+    ])
 
     const scaleTriggers = get('camTrigger')
     player.onUpdate(() => {
@@ -202,8 +239,27 @@ function addTeleport(pos1, pos2) {
     ])
 }
 
-function addGasLattice(p, opt = {}) {
+function gasSystem(gases = [], cd) {
     add([
+        {
+            cooldown: 0,
+            gases: [],
+            update() {
+                if(this.cooldown > 0) this.cooldown -= dt()
+                if(this.cooldown <= 0) {
+                    this.gases.forEach((gas) => {destroy(gas)})
+                    gases.forEach((gas) => {
+                        this.gases.push(addGasLattice(gas[0], gas[1]))
+                    })
+                    this.cooldown = cd
+                }
+            }
+        }
+    ])
+}
+
+function addGasLattice(p, opt = {}) {
+    return add([
         sprite(opt.rotate ? 'lattice-y' : 'lattice-x', {flipY: !opt.flip, flipX: opt.flip}),
         pos(p),
         {
@@ -214,10 +270,10 @@ function addGasLattice(p, opt = {}) {
             update() {
                 if(this.attack > 0) this.attack -= dt()
                 if(this.microcd > 0) this.microcd -= 1
-                if(this.cooldown > 0) this.cooldown -= dt()
-                else {
-                    this.cooldown = 3
-                    this.attack = 1.5
+                if(this.attack <= 0 && this.cooldown > 0) this.cooldown -= dt()
+                else if(this.cooldown <= 0) {
+                    this.cooldown = opt.cd !== undefined ? opt.cd : 1.5
+                    this.attack = opt.atkTime !== undefined ? opt.atkTime : 1.5
                 }
                 if(this.attack > 0 && this.microcd <= 0) {
                     add([
