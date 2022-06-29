@@ -8,6 +8,7 @@ export default ({final, hasBlueKey}) => {
     let heart;
     let isAlarm = false;
     let lab2ExitTile;
+    let hasRedKey = true;
 
     const light = add([
         pos(0),
@@ -85,7 +86,7 @@ export default ({final, hasBlueKey}) => {
                     addGasArea(gx, y+310, 50)
                 }
             },
-            /*{
+            {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
@@ -116,47 +117,10 @@ export default ({final, hasBlueKey}) => {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    add([
-                        pos(x + 400, y + 200),
-                        sprite('doggy', {anim: 'sit'}),
-                        area(),
-                        outview(),
-                        jitter(),
-                        'doggy'
-                    ])
-                    add([
-                        pos(x + 150, y + 200),
-                        sprite('doggy', {anim: 'stay'}),
-                        area(),
-                        outview(),
-                        jitter(),
-                        'doggy'
-                    ])
-                    add([
-                        pos(x + 250, y + 200),
-                        sprite('dog2', {anim: 'tongue'}),
-                        area(),
-                        outview(),
-                        jitter(),
-                        'doggy'
-                    ])
-                    add([
-                        pos(x + 200, y + H + 2),
-                        origin('botleft'),
-                        sprite('dog3'),
-                        area(),
-                        outview(),
-                        jitter(),
-                        'doggy'
-                    ])
-                    onUpdate('doggy', (doggy) => {
-                        doggy.flipX(player.pos.x < doggy.pos.x)
-                    })
-                    add([
-                        pos(x + 100, y + H - 8),
-                        origin('botleft'),
-                        sprite('cage')
-                    ])
+                    addDoggyInCage(x, y, sprite('doggy', {anim: 'sit'}))
+                    addDoggyInCage(x + 160, y, sprite('doggy', {anim: 'stay'}))
+                    addDoggyInCage(x + 320, y, sprite('dog2', {anim: 'tongue'}))
+                    addDoggyInCage(x + 480, y, sprite('dog3', {quad: quad(0, 0, 1, 0.87)}))
                 }
             },
             {
@@ -302,6 +266,10 @@ export default ({final, hasBlueKey}) => {
         light.moveTo(player.pos)
     })
 
+    player.onCollide('cage', (cage) => {
+        cage.collision = true
+    })
+
     setupCamera(player)
 
     add([
@@ -368,6 +336,42 @@ export default ({final, hasBlueKey}) => {
         })
     }
 
+    function addDoggyInCage(x, y, _sprite) {
+        const doggy = add([
+            pos(x, H-8),
+            origin('bot'),
+            _sprite,
+            area(),
+            outview(),
+            jitter(),
+            body(),
+            'doggy'
+        ])
+        onUpdate('doggy', (doggy) => {
+            doggy.flipX(player.pos.x < doggy.pos.x)
+        })
+        const cage = add([
+            pos(x, y + H - 8),
+            origin('bot'),
+            sprite('cage'),
+            area(),
+            {
+                collision: false,
+            },
+            'cage'
+        ])
+        cage.onUpdate(() => {
+            if (hasRedKey && cage.collision) {
+                cage.moveTo(cage.pos.x, y + H + cage.height, 50)
+                if (cage.pos.y > y + H + cage.height - 10) {
+                    doggy.stopJitter()
+                    if (doggy.curPlatform()) {
+                        doggy.jump()
+                    }
+                }
+            }
+        })
+    }
 
     function addShip(x, y) {
         const ship = add([

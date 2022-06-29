@@ -1,6 +1,7 @@
 export function jitter() {
     let p;
     let moveOut = true;
+    let enabled = true;
     return {
         id: 'jitter',
         require: ['pos', 'outview'],
@@ -8,7 +9,7 @@ export function jitter() {
             p = this.pos.clone();
         },
         update() {
-            if (this.isOutOfView()) {
+            if (!enabled || this.isOutOfView()) {
                 return
             }
             if (moveOut) {
@@ -23,6 +24,10 @@ export function jitter() {
                 }
             }
         },
+        stopJitter() {
+            enabled = false
+        }
+
     }
 }
 
