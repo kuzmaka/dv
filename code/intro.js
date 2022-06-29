@@ -137,7 +137,7 @@ export default ({final, hasBlueKey}) => {
                     addGrille(gx, y+310)
                     addGasArea(gx, y+310, 50)
                 }
-            },*/
+            },
             {
                 name: 'lab2-exit',
                 onAdded: (tile) => {
