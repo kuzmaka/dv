@@ -81,7 +81,7 @@ export function addTiles(tiles, opt = {}) {
 }
 
 export function setupCamera(player) {
-    camPos(vec2(Math.max(player.pos.x + player.width/2 + (player.flip ? 80 : -80)), camPos().y))
+    camPos(vec2(Math.max(player.pos.x + player.width/2 + (player.flip ? -80 : 80)), camPos().y))
     // let scale = 1000
     player.camSetup = player.onUpdate(() => {
         // if (player.dead) {
@@ -96,7 +96,7 @@ export function setupCamera(player) {
         // }
         const playerFloor = Math.floor((player.pos.y + player.area.offset.y)/H)
         const from = camPos().x
-        const to = Math.max(player.pos.x + player.width/2 + (player.flip ? 80 : -80))
+        const to = Math.max(player.pos.x + player.width/2 + (player.flip ? -80 : 80))
         camPos(vec2(from + Math.sign(to-from)*Math.min(Math.abs(to - from), 1.5*PLAYER_SPEED*dt()), (playerFloor + 0.5) * H))
     })
 }
@@ -106,29 +106,40 @@ export function addPlayer(opt) {
         pos(opt.x, opt.y),
         sprite("dog", {
             anim: 'dead',
-            flipX: true
+            flipX: false
         }),
         area({
-            offset: vec2(20, 30),
-            width: 40,
-            height: 35
+            offset: vec2(22, 40),
+            width: 47,
+            height: 34
         }),
         body(),
         {
             speed: 0,
-            flip: true,
+            flip: false,
             dead: false,
             sleeping: opt.sleeping ? opt.sleeping : false,
             firstMoved: false,
             lastCheckpoint: null,
             camSetup: () => {},
             resetArea() {
-                player.area.offset.y = 30
-                player.area.height = 35
+                if (player.flip) {
+                    player.area.offset.x = 40
+                    player.area.offset.y = 40
+                    player.area.width = 47
+                    player.area.height = 46
+                } else {
+                    player.area.offset.x = 22
+                    player.area.offset.y = 40
+                    player.area.width = 47
+                    player.area.height = 46
+                }
             },
             layArea() {
-                player.area.offset.y = 58
-                player.area.height = 18
+                player.area.offset.x = 20
+                player.area.offset.y = 67
+                player.area.width = 69
+                player.area.height = 20
             },
             die() {
                 if (player.dead) return;
@@ -170,11 +181,9 @@ export function addPlayer(opt) {
                 }
             }
         },
-        scale(1.5),
         z(50),
         'player'
     ]);
-    player.flipX(player.flip = true)
     player.onUpdate(() => {
         if (player.speed) {
             player.move(player.speed, 0)
@@ -189,7 +198,7 @@ export function addPlayer(opt) {
         if (player.dead || player.sleeping) return;
         player.handleFirstMoved()
         player.speed = -SPEED
-        player.flipX(player.flip = false)
+        player.flipX(player.flip = true)
         if (player.curPlatform()) {
             player.play('run')
             player.resetArea()
@@ -209,7 +218,7 @@ export function addPlayer(opt) {
         if (player.dead || player.sleeping) return;
         player.handleFirstMoved()
         player.speed = SPEED
-        player.flipX(player.flip = true)
+        player.flipX(player.flip = false)
         if (player.curPlatform()) {
             player.play('run')
             player.resetArea()
@@ -243,12 +252,25 @@ export function addPlayer(opt) {
     onKeyPress(['s', 'down'], () => {
         if (player.dead || player.sleeping) return;
         if (player.curPlatform()) {
-            player.play('lay')
+            if (player.speed) {
+                player.play('crawl')
+            } else {
+                player.play('lay')
+            }
             player.layArea()
         }
     })
     player.onGround(() => {
-        player.play(player.speed ? 'run' : (player.dead || player.sleeping ? 'dead' : 'idle'))
+        if (player.speed) {
+            player.play('run')
+        } else {
+            if (player.dead || player.sleeping) {
+                player.play('dead')
+                player.layArea()
+            } else {
+                player.play('idle')
+            }
+        }
     })
 
     player.onCollide('checkpoint', (checkpoint) => {
