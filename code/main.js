@@ -14,6 +14,7 @@ scene('lab-final', lab_final)
 
 debug.inspect = false
 
-// go('intro')
-go('office')
+// go('intro', {})
+go('intro', {hasBlueKey: true})
+// go('office')
 // go('lab-final')

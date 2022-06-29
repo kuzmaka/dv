@@ -1,8 +1,9 @@
 import {W, H} from './init'
 import {addPlayer, addTiles, setupCamera} from "./createLevel";
 import {fade, jitter, myLifespan, swing} from "./components";
+import {goto} from "./functions";
 
-export default ({final}) => {
+export default ({final, hasBlueKey}) => {
 
     let heart;
     let isAlarm = false;
@@ -84,7 +85,7 @@ export default ({final}) => {
                     addGasArea(gx, y+310, 50)
                 }
             },
-            {
+            /*{
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
@@ -172,12 +173,39 @@ export default ({final}) => {
                     addGrille(gx, y+310)
                     addGasArea(gx, y+310, 50)
                 }
-            },
+            },*/
             {
                 name: 'lab2-exit',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     lab2ExitTile = tile
+
+                    // door
+                    const door = add([
+                        pos(x + 82 + 30, y + 188),
+                        area({
+                            width: 87 - 30,
+                            height: 165
+                        })
+                    ])
+                    let justArrived = true;
+                    const cancel1 = door.onUpdate(() => {
+                        if (justArrived) {
+                            if (!door.isColliding(player)) {
+                                justArrived = false;
+                                cancel1()
+                            }
+                        }
+                    })
+                    const cancel2 = door.onCollide('player', (p) => {
+                        if (justArrived) return;
+
+                        if (hasBlueKey) {
+                            player.hidden = true
+                            goto('lab-final')
+                            cancel2()
+                        }
+                    })
                 }
             },
             {

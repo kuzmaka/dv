@@ -1,6 +1,6 @@
 import {W, H} from './init'
 import {addPlayer, addTiles, setupCamera} from "./createLevel";
-import {fade} from "./components";
+import {goto} from "./functions";
 
 export default () => {
 
@@ -38,30 +38,10 @@ export default () => {
                             height: H - 8
                         }),
                     ])
-                    // screen darkness
-                    const dark = add([
-                        pos(x - W, y - H),
-                        rect(3*W, 3*H),
-                        opacity(0),
-                        color(BLACK),
-                        z(100)
-                    ])
-                    let exit = false;
-                    let timer = 0;
-                    let dur = 0.5;
-                    dark.onUpdate(() => {
-                        if (exit) {
-                            if (timer < dur) {
 
-                                timer += dt();
-                                dark.opacity = map(timer, 0, dur, 0, 1);
-                            } else {
-                                go('intro', {final: true})
-                            }
-                        }
-                    })
-                    door.onCollide('player', (p) => {
-                        exit = true;
+                    const cancel = door.onCollide('player', (p) => {
+                        goto('intro', {final: true, hasBlueKey: true})
+                        cancel()
                     })
 
                     // right wall
