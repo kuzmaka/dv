@@ -186,6 +186,7 @@ export function addPlayer(opt) {
         z(50),
         'player'
     ]);
+    player.layArea()
     player.onUpdate(() => {
         if (player.speed) {
             player.move(player.speed, 0)
@@ -238,7 +239,7 @@ export function addPlayer(opt) {
         }
     })
     onKeyPress(['w', 'up', 'space'], () => {
-        if (player.dead) return;
+        if (player.dead || player.isDown && !canStand(player)) return;
         if (player.curPlatform()) {
             player.sleeping = false
             player.handleFirstMoved()
@@ -262,7 +263,7 @@ export function addPlayer(opt) {
         }
     })
     onKeyRelease(['s', 'down'], () => {
-        player.isDown = false
+        player.isDown = !canStand(player)
         if (player.dead || player.sleeping) return;
         if (player.curPlatform()) {
             if (player.speed) {
@@ -296,21 +297,31 @@ export function addPlayer(opt) {
     return player
 }
 
-//check if player can stand
-function checkStanding(player) {
-    let tmp = add([
-        pos(player.pos),
-        area({
-            offset: vec2(21, 40),
-            width: 60,
-            height: 46
-        }),
-        solid()
-    ])
+function canStand(player) {
+    const standArea = player.flip ? {
+        offset: vec2(40, 40),
+        width: 47,
+        height: 46
+    } : {
+        offset: vec2(22, 40),
+        width: 47,
+        height: 46
+    }
+
     player.solid = false
-    tmp.pushOutAll()
+    const px = player.pos.x + player.area.offset.x;
+    const py = player.curPlatform() ? player.curPlatform().pos.y : player.pos.y + player.area.offset.y + player.area.height;
+    const tmp = add([
+        pos(px, py),
+        origin("botleft"),
+        area(),
+        solid(),
+        rect(standArea.width, standArea.height)
+    ])
+    tmp.moveBy(0, 0)    // using moveBy instead of pushOutAll because moveBy checks if colliding object is solid
     player.solid = true
-    let res = (tmp.pos.y - player.pos.y) <= 1
+
+    let res = tmp.pos.dist(px, py) <= 1
     destroy(tmp)
     return res
 }
