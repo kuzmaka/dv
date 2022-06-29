@@ -188,9 +188,9 @@ export function addPlayer(opt) {
         if (player.speed) {
             player.move(player.speed, 0)
         }
-        // if (player.curAnim() !== 'fall' && !player.curPlatform() && player.isFalling()) {
-        //     player.play('fall')
-        // }
+        if (player.curAnim() !== 'fall' && !player.curPlatform() && player.isFalling()) {
+            player.play('fall')
+        }
     })
 
     const SPEED = PLAYER_SPEED;

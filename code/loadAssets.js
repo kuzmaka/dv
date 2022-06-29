@@ -172,7 +172,7 @@ export default () => {
 
     loadSprite('dog', 'sprites/grey.png', {
         sliceX: 1,
-        sliceY: 9,
+        sliceY: 12,
         anims: {
             idle: {
                 from: 0,
@@ -197,12 +197,14 @@ export default () => {
                 loop: true
             },
             jump: {
-                from: 0,
-                to: 0,
+                from: 9,
+                to: 9,
             },
             fall: {
-                from: 0,
-                to: 0,
+                from: 10,
+                to: 11,
+                speed: 12,
+                loop: true
             },
             dead: {
                 from: 8,

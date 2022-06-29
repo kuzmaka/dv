@@ -83,6 +83,9 @@ export default () => {
                     addGasArea(gx, y+310, 50)
                 }
             },
+            // 'lab1',
+            // 'lab1',
+            // 'lab1',
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
@@ -91,8 +94,8 @@ export default () => {
                     addGrille(gx, y+310)
                     addGasArea(gx, y+310, 50)
                     gx = x + 320
-                    addGrille(gx, y+250)
-                    addGasArea(gx, y+250, 50)
+                    addGrille(gx, y+260)
+                    addGasArea(gx, y+260, 50)
                 }
             },
             {
@@ -103,11 +106,11 @@ export default () => {
                     addGrille(gx, y+310)
                     addGasArea(gx, y+310, 50)
                     gx = x + 340
-                    addGrille(gx, y+250)
-                    addGasArea(gx, y+250, 50)
+                    addGrille(gx, y+260)
+                    addGasArea(gx, y+260, 50)
                     gx = x + 580
-                    addGrille(gx, y+250)
-                    addGasArea(gx, y+250, 50)
+                    addGrille(gx, y+260)
+                    addGasArea(gx, y+260, 50)
                 }
             },
             {
