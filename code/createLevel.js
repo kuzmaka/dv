@@ -294,6 +294,10 @@ export function addPlayer(opt) {
         player.lastCheckpoint = checkpoint
     })
 
+    onKeyPress("f", (c) => {
+        fullscreen(!isFullscreen())
+    })
+
     return player
 }
 

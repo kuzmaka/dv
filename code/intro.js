@@ -113,6 +113,7 @@ export default ({final, hasBlueKey}) => {
                     addGasArea(gx, y+260, 50)
                 }
             },
+            'lab1',
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
@@ -123,6 +124,7 @@ export default ({final, hasBlueKey}) => {
                     addDoggyInCage(x + 480, y, sprite('dog3', {quad: quad(0, 0, 1, 0.87)}))
                 }
             },
+            'lab1',
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
