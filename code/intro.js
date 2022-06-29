@@ -337,6 +337,7 @@ export default ({final, hasBlueKey}) => {
     }
 
     function addDoggyInCage(x, y, _sprite) {
+        let isFree = false;
         const doggy = add([
             pos(x, H-8),
             origin('bot'),
@@ -344,12 +345,25 @@ export default ({final, hasBlueKey}) => {
             area(),
             outview(),
             jitter(),
-            body(),
             'doggy'
         ])
-        onUpdate('doggy', (doggy) => {
-            doggy.flipX(player.pos.x < doggy.pos.x)
+
+        // jumping for non-solid object
+        let timer = 0;
+        const dur = 1;
+        doggy.onUpdate( () => {
+            if (isFree) {
+                timer += dt()
+                if (timer > 1) {
+                    timer = 0
+                }
+                // doggy.moveTo(vec2(x, H-8+10*Math.sin(time()*5)))
+                doggy.moveTo(vec2(x, H-8 - 200*(dur-timer)*timer))
+            } else {
+                doggy.flipX(player.pos.x < doggy.pos.x)
+            }
         })
+
         const cage = add([
             pos(x, y + H - 8),
             origin('bot'),
@@ -365,9 +379,7 @@ export default ({final, hasBlueKey}) => {
                 cage.moveTo(cage.pos.x, y + H + cage.height, 50)
                 if (cage.pos.y > y + H + cage.height - 10) {
                     doggy.stopJitter()
-                    if (doggy.curPlatform()) {
-                        doggy.jump()
-                    }
+                    isFree = true
                 }
             }
         })
