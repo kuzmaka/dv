@@ -21,7 +21,7 @@ export function addTiles(tiles, opt = {}) {
                         width: W,
                         height: H
                     }),
-                    checkpoint(tile.checkpoint)
+                    checkpoint(tile.checkpoint.add(j * W, i * H))
                 ])
             }
 
@@ -69,13 +69,14 @@ export function addTiles(tiles, opt = {}) {
             solid()
         ])
     }
-    if(opt.ceil == true) {
+    if(opt.ceil === true) {
         add([
             pos(0, -5),
             area({
                 width: tiles[0].length * W,
                 height: 5
-            })
+            }),
+            solid()
         ])
     }
 }
@@ -199,7 +200,12 @@ export function addPlayer(opt) {
         player.handleFirstMoved()
         player.speed = -SPEED
         player.flipX(player.flip = true)
-        if (player.curPlatform()) {
+        if(player.curAnim() === 'crawl' && checkStanding(player)) {
+            player.play('run')
+            player.resetArea()
+            return
+        }
+        if (player.curPlatform() && player.curAnim() !== 'crawl') {
             player.play('run')
             player.resetArea()
         }
@@ -208,7 +214,11 @@ export function addPlayer(opt) {
         if (player.dead || player.sleeping) return;
         if (player.speed < 0) {
             player.speed = 0
-            if (player.curPlatform()) {
+            if(player.curAnim() === 'run') {
+                player.play('idle')
+                return
+            }
+            if (player.curPlatform() && checkStanding(player)) {
                 player.play('idle')
                 player.resetArea()
             }
@@ -219,7 +229,12 @@ export function addPlayer(opt) {
         player.handleFirstMoved()
         player.speed = SPEED
         player.flipX(player.flip = false)
-        if (player.curPlatform()) {
+        if(player.curAnim() === 'crawl' && checkStanding(player)) {
+            player.play('run')
+            player.resetArea()
+            return
+        }
+        if (player.curPlatform() && player.curAnim() !== 'crawl') {
             player.play('run')
             player.resetArea()
         }
@@ -228,7 +243,11 @@ export function addPlayer(opt) {
         if (player.dead || player.sleeping) return;
         if (player.speed > 0) {
             player.speed = 0
-            if (player.curPlatform()) {
+            if(player.curAnim() === 'run') {
+                player.play('idle')
+                return
+            }
+            if (player.curPlatform() && checkStanding(player)) {
                 player.play('idle')
                 player.resetArea()
             }
@@ -241,7 +260,7 @@ export function addPlayer(opt) {
                 player.sleeping = false
                 player.play('lay')
                 player.layArea()
-            } else {
+            } else if (player.curAnim() !== 'crawl' || checkStanding(player)) {
                 player.handleFirstMoved()
                 player.jump()
                 player.play('jump')
@@ -278,6 +297,25 @@ export function addPlayer(opt) {
     })
 
     return player
+}
+
+//check if player can stand
+function checkStanding(player) {
+    let tmp = add([
+        pos(player.pos),
+        area({
+            offset: vec2(21, 40),
+            width: 60,
+            height: 46
+        }),
+        solid()
+    ])
+    player.solid = false
+    tmp.pushOutAll()
+    player.solid = true
+    let res = (tmp.pos.y - player.pos.y) <= 1
+    destroy(tmp)
+    return res
 }
 
 export function addObjects(map, opt) {
@@ -321,6 +359,14 @@ export function addObjects(map, opt) {
             move(0, 150),
             origin('center'),
             'enemy'
+        ],
+        "t": () => [
+            sprite('table', {frame: randi(2)}),
+            area({
+                height: 2,
+                offset: vec2(0, 22)
+            }),
+            solid()
         ]
     })
 }
