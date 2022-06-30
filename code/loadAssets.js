@@ -98,6 +98,42 @@ export default () => {
     loadSprite('office4-1', 'office4-1.png')
     loadSprite('office4-2', 'office4-2.png')
     loadSprite('office4-3', 'office4-3.png')
+    loadSprite('office5-1', 'office5-1.png', {
+        sliceX: 0,
+        sliceY: 2,
+        anims: {
+            light: {
+                from: 0,
+                to: 1,
+                speed: 1,
+                loop: true
+            }
+        }
+    })
+    loadSprite('office5-2', 'office5-2.png', {
+        sliceX: 0,
+        sliceY: 2,
+        anims: {
+            light: {
+                from: 0,
+                to: 1,
+                speed: 1,
+                loop: true
+            }
+        }
+    })
+    loadSprite('office5-3', 'office5-3.png', {
+        sliceX: 0,
+        sliceY: 2,
+        anims: {
+            light: {
+                from: 0,
+                to: 1,
+                speed: 1,
+                loop: true
+            }
+        }
+    })
     loadSprite('teleport', 'teleport2.png')
     loadSprite('lattice-x', 'lattice-x.png')
     loadSprite('lattice-y', 'lattice-y.png')

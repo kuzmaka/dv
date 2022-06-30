@@ -6,6 +6,35 @@ export default () => {
     const tiles = [
         [
             {
+                name: "office5-1",
+                onAdded: (tile) => {
+                    tile.play('light')
+                }
+            },
+            {
+                name: "office5-2",
+                onAdded: (tile) => {
+                    tile.play('light')
+                }
+            },
+            {
+                name: "office5-3",
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    tile.play('light')
+                    add([
+                        pos(x, y + 350),
+                        area({
+                            width: 575,
+                            height: 10
+                        }),
+                        solid()
+                    ])
+                }
+            }
+        ],
+        [
+            {
                 name: "office4-1",
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
@@ -206,6 +235,7 @@ export default () => {
     ]
 
     const fm = [
+        "__ ",
         "__ ",
         " __",
         "___",
