@@ -49,6 +49,20 @@ export function addTiles(tiles, opt = {}) {
                 tile.onAdded(t, i, j)
             }
         })
+
+        // dark tiles to the left and to the right to hide background
+        add([
+            pos(0, i * H),
+            origin('topright'),
+            rect(W, H),
+            color(BLACK),
+        ])
+        add([
+            pos(Tiles.length * W, i * H),
+            origin('topleft'),
+            rect(W, H),
+            color(BLACK),
+        ])
     })
 
     if(opt.lwall !== undefined) {

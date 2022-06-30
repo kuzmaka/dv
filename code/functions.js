@@ -21,7 +21,18 @@ export function goto(scene, args) {
     })
 }
 
-export function addLift(tilePos, player) {
+export function addLift(tilePos, player, liftwall = null) {
+
+    if (liftwall) {
+        add([
+            pos(tilePos),
+            sprite(liftwall)
+        ])
+        add([
+            pos(tilePos.add(0, H)),
+            sprite(liftwall)
+        ])
+    }
 
     const p = tilePos.add(0, H)
 

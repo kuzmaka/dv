@@ -17,6 +17,7 @@ export default () => {
     loadSprite('gas', 'gas.png')
     loadSprite('grille', 'grille.png')
     loadSprite('container', 'container.png')
+    loadSprite('liftwall', 'liftwall.png')
     loadSprite('lift', 'lift.png', {
         sliceX: 1,
         sliceY: 3,
@@ -66,6 +67,9 @@ export default () => {
     loadSprite('ship0', 'ship0.png')
     loadSprite('cage', 'cage2.png')
     loadSprite('blueprint', 'blueprint.png')
+    loadSprite('doorwall', 'doorwall.png')
+    loadSprite('door', 'door.png')
+    loadSprite('bluelock', 'bluelock.png')
     loadSprite('heart', 'heart.png', {
         sliceX: 6,
         sliceY: 2,

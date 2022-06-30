@@ -1,7 +1,7 @@
-import {W, H} from './init'
+import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP} from './init'
 import {addPlayer, addTiles, setupCamera} from "./createLevel";
 import {fade, jitter, myLifespan, swing} from "./components";
-import {goto} from "./functions";
+import {addLift, goto} from "./functions";
 
 export default ({final, hasBlueKey}) => {
 
@@ -9,6 +9,7 @@ export default ({final, hasBlueKey}) => {
     let isAlarm = false;
     let lab2ExitTile;
     let hasRedKey = true;
+    let liftTilePos;
 
     const light = add([
         pos(0),
@@ -24,6 +25,37 @@ export default ({final, hasBlueKey}) => {
 
     const tiles = [
         [
+            {
+                name: 'lab1',
+                onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    liftTilePos = tile.pos
+
+                    // door to lift with lock
+                    add([
+                        pos(tile.pos.add(0, H-8)),
+                        origin('botleft'),
+                        area({
+                            width: 8,
+                            height: H-8
+                        }),
+                        solid()
+                    ])
+                    add([
+                        pos(x + 24, y + 275),
+                        sprite('bluelock')
+                    ])
+                    add([
+                        pos(x, y),
+                        origin("topright"),
+                        rect(W, H),
+                        color(BLACK),
+                        opacity(0.7),
+                        z(1000)
+                    ])
+                }
+            },
             {
                 name: 'lab0',
                 checkpoint: vec2(330, 180),
@@ -64,12 +96,6 @@ export default ({final, hasBlueKey}) => {
                             height: 90
                         }),
                         solid()
-                    ])
-                    add([
-                        pos(x,y),
-                        origin('topright'),
-                        rect(W, H),
-                        color(BLACK)
                     ])
 
                     // boost
@@ -219,6 +245,53 @@ export default ({final, hasBlueKey}) => {
                     addShip(x, y)
                 }
             }
+        ],
+        [
+            {
+                name: 'lab1',
+                onAdded(tile, i, j) {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    add([
+                        pos(x+W, y),
+                        origin('topright'),
+                        sprite('doorwall', {flipX: true}),
+                    ])
+                    add([
+                        pos(x+W, y),
+                        origin('topleft'),
+                        sprite('doorwall'),
+                    ])
+                    add([
+                        pos(x+W, y+H-8),
+                        origin('bot'),
+                        sprite('door')
+                    ])
+
+                    add([
+                        pos(x + W/2, y + 190),
+                        origin('top'),
+                        sprite('blueprint')
+                    ])
+                }
+            },
+            {
+                name: 'lab-final',
+                // checkpoint: vec2(20, H-110),
+                onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    // right wall
+                    add([
+                        pos(x + W - 8, y),
+                        area({
+                            width: 8,
+                            height: H - 8
+                        }),
+                        solid()
+                    ])
+                }
+            }
         ]
     ];
     addTiles(tiles, {
@@ -245,7 +318,7 @@ export default ({final, hasBlueKey}) => {
         player = addPlayer({
             x: 330,
             y: 180,
-            sleeping: true
+            sleeping: !DEBUG_NO_SLEEP
         })
 
         // fade in
@@ -259,9 +332,11 @@ export default ({final, hasBlueKey}) => {
 
         player.on('firstMoved', () => {
             heart.play('off')
-            isAlarm = true
+            isAlarm = !DEBUG_NO_ALARM
         })
     }
+
+    addLift(liftTilePos, player, 'liftwall')
 
     player.onUpdate(() => {
         light.hidden = !inDarkArea(player.pos.x)
