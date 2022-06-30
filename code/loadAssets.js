@@ -41,6 +41,7 @@ export default () => {
     loadSprite('dock2', 'dock2.png')
     loadSprite('ship0', 'ship0.png')
     loadSprite('cage', 'cage2.png')
+    loadSprite('blueprint', 'blueprint.png')
     loadSprite('heart', 'heart.png', {
         sliceX: 6,
         sliceY: 2,
