@@ -30,7 +30,7 @@ export function addLift(tilePos, player) {
         origin('botright'),
         sprite('lift'),
         area({
-            offset: vec2(-50, 0),
+            offset: vec2(-70, 0),
             width: 150
         }),
     ])
@@ -44,6 +44,16 @@ export function addLift(tilePos, player) {
         }),
         solid()
     ])
+
+    const door = add([
+        pos(p.x, p.y - 8),
+        origin('botright'),
+        area({
+            width: 8,
+            height: lift.height - 16
+        }),
+    ])
+    door.hidden = true
 
     const floor = add([
         pos(p),
@@ -62,10 +72,14 @@ export function addLift(tilePos, player) {
         if (state === 'top') {
             state = 'down';
             fromY = lift.pos.y;
+            door.solid = true
+            door.hidden = false
         }
         if (state === 'bottom') {
             state = 'up'
             fromY = lift.pos.y;
+            door.solid = true
+            door.hidden = false
         }
     })
 
@@ -76,9 +90,12 @@ export function addLift(tilePos, player) {
 
             lift.moveTo(p.add(0, (state === 'down' ? H : 0)), 100)
             wall.pos = vec2(lift.pos.x - lift.width, lift.pos.y - 8)
+            door.pos = vec2(lift.pos.x, lift.pos.y - 8)
             floor.pos = vec2(lift.pos)
             if (lift.pos.y === p.y + (state === 'down' ? H : 0)) {
                 state = state === 'down' ? 'bottom' : 'top';
+                door.solid = false
+                door.hidden = true
             }
 
             if (inLift) {
