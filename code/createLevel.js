@@ -267,7 +267,7 @@ export function addPlayer(opt) {
         if (player.dead || player.sleeping) return;
         if (player.curPlatform()) {
             if (player.speed) {
-                player.speed = player.flip ? -SPEED : SPEED
+                player.speed = (player.flip ? -1 : 1) * (player.isDown ? CRAWL_SPEED : SPEED)
                 player.play(player.isDown ? 'crawl' : 'run')
             } else {
                 player.play(player.isDown ? 'lay' : 'idle')
