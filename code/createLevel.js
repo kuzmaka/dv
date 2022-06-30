@@ -188,6 +188,21 @@ export function addPlayer(opt) {
     ]);
     player.layArea()
     player.onUpdate(() => {
+        // stand up after narrow corridor
+        if (!player.dead && !player.sleeping && player.isDown && !isKeyDown('s') && !isKeyDown('down') && canStand(player)) {
+            // copied from onKeyRelease('down')
+            player.isDown = false;
+            if (player.curPlatform()) {
+                if (player.speed) {
+                    player.speed = (player.flip ? -1 : 1) * (player.isDown ? CRAWL_SPEED : SPEED)
+                    player.play(player.isDown ? 'crawl' : 'run')
+                } else {
+                    player.play(player.isDown ? 'lay' : 'idle')
+                }
+                player.isDown ? player.layArea() : player.resetArea()
+            }
+        }
+
         if (player.speed) {
             player.move(player.speed, 0)
         }
