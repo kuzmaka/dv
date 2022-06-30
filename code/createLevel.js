@@ -26,15 +26,17 @@ export function addTiles(tiles, opt = {}) {
             }
 
             // floor
-            if((typeof opt.floorMap === 'undefined' || opt.floorMap[i][j] === '_') && typeof opt.floor !== 'undefined')
+            if((typeof opt.floorMap === 'undefined' || opt.floorMap[i][j] === '_') && (typeof opt.floor !== 'undefined' || typeof tile.floor !== 'undefined')) {
+                const flr = typeof opt.floor !== 'undefined' ? opt.floor : tile.floor;
                 add([
-                    pos(t.pos.x, t.pos.y + H - opt.floor),
+                    pos(t.pos.x, t.pos.y + H - flr),
                     area({
                         width: W,
-                        height: opt.floor
+                        height: flr
                     }),
                     solid()
                 ])
+            }
 
             if (SHOW_TILE_INDEX) {
                 add([
