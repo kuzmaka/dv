@@ -9,6 +9,7 @@ export default ({final, hasBlueKey}) => {
     let isAlarm = false;
     let lab2ExitTile;
     let hasRedKey = true;
+    let playerStartPos;
     let liftTilePos;
 
     const light = add([
@@ -61,6 +62,9 @@ export default ({final, hasBlueKey}) => {
                 checkpoint: vec2(330, 180),
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    playerStartPos = vec2(x + 330, y + 180)
+
                     // heart monitor
                     heart = add([
                         pos(x + 360, y + 160),
@@ -166,7 +170,7 @@ export default ({final, hasBlueKey}) => {
                     addGasArea(gx, y+310, 50)
                 }
             },
-            {
+            /*{
                 name: 'lab2-exit',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
@@ -199,7 +203,7 @@ export default ({final, hasBlueKey}) => {
                         }
                     })
                 }
-            },
+            },*/
             {
                 name: 'lab-dock',
                 onAdded: (tile) => {
@@ -301,29 +305,30 @@ export default ({final, hasBlueKey}) => {
 
     let player;
     if (final) {
-        player = addPlayer({
-            x: lab2ExitTile.pos.x + 100,
-            y: H - 94,
-        })
-
-        // fade in
-        add([
-            pos(lab2ExitTile.pos.x - W, lab2ExitTile.pos.y - H),
-            rect(3*W, 3*H),
-            fade(0.5, {from: 1, to: 0}),
-            color(BLACK),
-            z(1000)
-        ])
+        // TODO: player spawns in dock location
+        // player = addPlayer({
+        //     x: lab2ExitTile.pos.x + 100,
+        //     y: H - 94,
+        // })
+        //
+        // // fade in
+        // add([
+        //     pos(lab2ExitTile.pos.x - W, lab2ExitTile.pos.y - H),
+        //     rect(3*W, 3*H),
+        //     fade(0.5, {from: 1, to: 0}),
+        //     color(BLACK),
+        //     z(1000)
+        // ])
     } else {
         player = addPlayer({
-            x: 330,
-            y: 180,
+            x: playerStartPos.x,
+            y: playerStartPos.y,
             sleeping: !DEBUG_NO_SLEEP
         })
 
         // fade in
         add([
-            pos(-W, -H),
+            pos(player.pos.x-W, player.pos.y-H),
             rect(3*W, 3*H),
             fade(2, {from: 1, to: 0}),
             color(BLACK),
