@@ -210,7 +210,7 @@ export function addObjects(map, opt) {
             sprite('office-rat', {anim: 'run'}),
             area({
                 width: 54,
-                height: 54,
+                height: 55,
                 offset: vec2(0, 20)
             }),
             ratBehaviour(),
