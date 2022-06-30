@@ -238,9 +238,24 @@ export default ({final, hasBlueKey}) => {
                     tile.play('close')
                     darkAreas.push([x + 300, x + W])
 
+                    // playerStartPos = vec2(x + 10, y + 10)
+
                     // door
-                    tile.onUpdate(() => {
-                        tile.play( x + 250 < player.pos.x + player.width && player.pos.x < x + 430 ? 'open' : 'close')
+                    const door = add([
+                        pos(x + 298, y),
+                        area({
+                            width: 16,
+                            height: H,
+                        }),
+                        solid()
+                    ])
+                    // tile.onUpdate(() => {
+                    //     // auto open door
+                    //     tile.play( x + 250 < player.pos.x + player.width && player.pos.x < x + 430 ? 'left' : 'close')
+                    // })
+                    door.onCollide('woof', () => {
+                        tile.play(player.pos.x + player.width/2 < 306 ? 'left' : 'right')
+                        door.destroy()
                     })
                 }
             },
@@ -283,6 +298,8 @@ export default ({final, hasBlueKey}) => {
                 onAdded(tile, i, j) {
                     const [x, y] = [tile.pos.x, tile.pos.y];
 
+                    // playerStartPos = vec2(x + 10, y + 10)
+
                     add([
                         pos(x+W, y),
                         origin('topright'),
@@ -293,11 +310,20 @@ export default ({final, hasBlueKey}) => {
                         origin('topleft'),
                         sprite('doorwall'),
                     ])
-                    add([
+
+                    const door = add([
                         pos(x+W, y+H-8),
                         origin('bot'),
-                        sprite('door')
+                        sprite('door', {anim: 'close'}),
+                        area({
+                            width: 16,
+                        }),
+                        solid()
                     ])
+                    door.onCollide('woof', () => {
+                        door.play(player.pos.x + player.width/2 < door.pos ? 'left' : 'right')
+                        door.solid = false
+                    })
 
                     add([
                         pos(x + W/2, y + 190),
@@ -312,7 +338,7 @@ export default ({final, hasBlueKey}) => {
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
 
-                    playerStartPos = vec2(x + 10, y + 10)
+                    // playerStartPos = vec2(x + 10, y + 10)
 
                     // right wall
                     add([

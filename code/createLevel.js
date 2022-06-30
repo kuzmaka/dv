@@ -1,5 +1,6 @@
-import {H, DEBUG_SHOW_TILE_INDEX, W} from "./init";
+import {H, DEBUG_SHOW_TILE_INDEX, W, DEBUG_SUPER_WOOF} from "./init";
 import {checkpoint, fade} from "./components";
+import {shakeObj} from "./functions";
 
 const PLAYER_SPEED = 400;
 
@@ -140,7 +141,7 @@ export function addPlayer(opt) {
             firstMoved: false,
             isDown: opt.sleeping ? opt.sleeping : false,
             lastCheckpoint: null,
-            canSuperWoof: false,
+            canSuperWoof: DEBUG_SUPER_WOOF,
             camSetup: () => {},
             resetArea() {
                 if (player.flip) {
@@ -342,6 +343,7 @@ export function addPlayer(opt) {
     onKeyPress(['q'], () => {
         if (player.dead || player.sleeping || !player.canSuperWoof) return;
         play('woof')
+        shakeObj(player, 0.5)
         multiWave(player)
     })
 
@@ -390,7 +392,8 @@ function wave(player)
         outview(),
         opacity(0.8),
         scale(),
-        z(100)
+        z(100),
+        'woof'
     ])
     const speed = 800
     let scalex = 1

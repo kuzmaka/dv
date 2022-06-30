@@ -22,6 +22,31 @@ export function goto(scene, args) {
     })
 }
 
+export function shakeObj(obj, time, strength = 4) {
+    let p = obj.pos.clone();
+    let moveOut = true;
+    let timer = 0;
+    const cancel = obj.onUpdate(() => {
+        timer += dt()
+        if (timer < time) {
+            if (moveOut) {
+                obj.move(choose([LEFT, RIGHT, UP, DOWN]).scale(20))
+                if (obj.pos.dist(p) > strength) {
+                    moveOut = false
+                }
+            } else {
+                obj.moveTo(p.x, p.y, 20)
+                if (obj.pos.dist(p) < 1) {
+                    moveOut = true
+                }
+            }
+        } else {
+            obj.moveTo(p)
+            cancel()
+        }
+    })
+}
+
 export function addLift(tilePos, player, liftwall = null) {
 
     if (liftwall) {

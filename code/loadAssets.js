@@ -65,15 +65,19 @@ export default () => {
     })
     loadSprite('lab-dock', 'lab-dock.png', {
         sliceX: 1,
-        sliceY: 2,
+        sliceY: 3,
         anims: {
             close: {
                 from: 0,
                 to: 0,
             },
-            open: {
+            right: {
                 from: 1,
                 to: 1
+            },
+            left: {
+                from: 2,
+                to: 2
             }
         }
     })
@@ -83,7 +87,24 @@ export default () => {
     loadSprite('cage', 'cage2.png')
     loadSprite('blueprint', 'blueprint.png')
     loadSprite('doorwall', 'doorwall.png')
-    loadSprite('door', 'door.png')
+    loadSprite('door', 'door.png', {
+        sliceX: 1,
+        sliceY: 3,
+        anims: {
+            close: {
+                from: 0,
+                to: 0,
+            },
+            left: {
+                from: 1,
+                to: 1
+            },
+            right: {
+                from: 2,
+                to: 2
+            }
+        }
+    })
     loadSprite('bluelock', 'bluelock.png')
     loadSprite('heart', 'heart.png', {
         sliceX: 6,
