@@ -1,4 +1,4 @@
-import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP} from './init'
+import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP, DEBUG_RED_KEY} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {fade, jitter, myLifespan, swing} from "./components";
 import {addLift} from "./functions";
@@ -8,7 +8,7 @@ export default ({final, hasBlueKey}) => {
     let heart;
     let isAlarm = false;
     let lab2ExitTile;
-    let hasRedKey = true;
+    let hasRedKey = DEBUG_RED_KEY;
     let playerStartPos;
     let liftTilePos;
 
