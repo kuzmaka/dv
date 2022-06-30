@@ -1,8 +1,9 @@
 import kaboom from "kaboom"
 
-export const SHOW_TILE_INDEX = 1
-export const DEBUG_NO_ALARM = 1
-export const DEBUG_NO_SLEEP = 1
+export const DEBUG_SHOW_TILE_INDEX = 1
+export const DEBUG_NO_ALARM = 0
+export const DEBUG_NO_SLEEP = 0
+export const DEBUG_NO_SOUNDS = 0
 
 export const W = 640
 export const H = 360

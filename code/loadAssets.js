@@ -41,11 +41,14 @@ export default () => {
         }
     })
     loadSprite('empty', 'empty.png')
+    loadSprite('wave', 'wave.png')
 
     loadRoot('sprites/lab/')
     loadSprite('lab0', 'lab0.png')
     loadSprite('lamp', 'lamp.png')
+    loadSprite('xray', 'xray.png')
     loadSprite('lab1', 'lab1.png')
+    loadSprite('cabinet-bottles', 'cabinet-bottles.png')
     loadSprite('lab2-exit', 'lab2-exit.png')
     loadSprite('lab-final', 'lab-final.png')
     loadSprite('lab-dock', 'lab-dock.png', {

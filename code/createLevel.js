@@ -1,4 +1,4 @@
-import {H, SHOW_TILE_INDEX, W} from "./init";
+import {H, DEBUG_SHOW_TILE_INDEX, W} from "./init";
 import {checkpoint, fade} from "./components";
 
 const PLAYER_SPEED = 400;
@@ -38,7 +38,7 @@ export function addTiles(tiles, opt = {}) {
                 ])
             }
 
-            if (SHOW_TILE_INDEX) {
+            if (DEBUG_SHOW_TILE_INDEX) {
                 add([
                     pos(j * W, i * H),
                     text(i + '-' + j, {size: 24})
@@ -140,6 +140,7 @@ export function addPlayer(opt) {
             firstMoved: false,
             isDown: opt.sleeping ? opt.sleeping : false,
             lastCheckpoint: null,
+            canSuperWoof: false,
             camSetup: () => {},
             resetArea() {
                 if (player.flip) {
@@ -338,6 +339,12 @@ export function addPlayer(opt) {
         fullscreen(!isFullscreen())
     })
 
+    onKeyPress(['q'], () => {
+        if (player.dead || player.sleeping || !player.canSuperWoof) return;
+        play('woof')
+        multiWave(player)
+    })
+
     return player
 }
 
@@ -369,5 +376,39 @@ function canStand(player) {
     let res = tmp.pos.dist(px, py) <= 2
     destroy(tmp)
     return res
+}
+
+function wave(player)
+{
+    const wave = add([
+        sprite('wave', {
+            flipX: player.flip
+        }),
+        pos(vec2(player.pos.add(player.flip?0:player.width, (player.isDown ? 80 : 36)))),
+        origin(player.flip ? 'left' : 'right'),
+        area(),
+        outview(),
+        opacity(0.8),
+        scale(),
+        z(100)
+    ])
+    const speed = 800
+    let scalex = 1
+    let scaley = 1
+    let dir = player.flip ? -1 : 1
+    wave.onUpdate(() => {
+        wave.moveBy(dir*speed*dt(), -wave.height/2*1.5*dt())
+        wave.scaleTo(scalex += dt()/2, scaley += 3*dt())
+    })
+    wave.onExitView(() => {
+        wave.destroy()
+    })
+}
+
+function multiWave(player, m = 3)
+{
+    for (let i = 0; i < m; i++) {
+        wait(0.05 * i, () => wave(player))
+    }
 }
 

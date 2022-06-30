@@ -33,28 +33,64 @@ export default ({final, hasBlueKey}) => {
 
                     liftTilePos = tile.pos
 
-                    // door to lift with lock
+                    // ceil
                     add([
-                        pos(tile.pos.add(0, H-8)),
-                        origin('botleft'),
+                        pos(x, y),
                         area({
-                            width: 8,
-                            height: H-8
+                            width: W,
+                            height: 8
                         }),
                         solid()
                     ])
+
+                    // cabinet
+                    add([
+                        pos(x + 400, y + 160-8),
+                        sprite('cabinet-bottles'),
+                        area({
+                            height: 60
+                        }),
+                        solid()
+                    ])
+
+                    // supepper
+                    const supepper = add([
+                        pos(x + 200, y + 40),
+                        sprite('supepper'),
+                        origin('center'),
+                        area(),
+                        swing()
+                    ])
+                    supepper.onCollide('player', () => {
+                        play('score')
+                        supepper.destroy()
+                        player.canSuperWoof = true
+                    })
+
+                    // door to lift with lock
                     add([
                         pos(x + 24, y + 275),
                         sprite('bluelock')
                     ])
-                    add([
-                        pos(x, y),
-                        origin("topright"),
-                        rect(W, H),
-                        color(BLACK),
-                        opacity(0.7),
-                        z(1000)
-                    ])
+                    if (!hasBlueKey) {
+                        add([
+                            pos(tile.pos.add(0, H-8)),
+                            origin('botleft'),
+                            area({
+                                width: 8,
+                                height: H-8
+                            }),
+                            solid()
+                        ])
+                        add([
+                            pos(x, y),
+                            origin("topright"),
+                            rect(W, H),
+                            color(BLACK),
+                            opacity(0.7),
+                            z(1000)
+                        ])
+                    }
                 }
             },
             {
@@ -72,6 +108,11 @@ export default ({final, hasBlueKey}) => {
                     ])
                     add([
                         pos(x, y),
+                        sprite('xray'),
+                        z(1)
+                    ])
+                    add([
+                        pos(x, y),
                         sprite('lamp')
                     ])
                     // bed collision box
@@ -79,33 +120,27 @@ export default ({final, hasBlueKey}) => {
                         pos(x + 345, y + 291),
                         area({
                             width: 88,
-                            height: 30
+                            height: 50
                         }),
                         solid()
                     ])
-                    // left wall
-                    // add([
-                    //     pos(x, y + H),
-                    //     origin('botleft'),
-                    //     area({
-                    //         width: 120,
-                    //         height: 90
-                    //     }),
-                    //     solid()
-                    // ])
-
-                    // boost
+                    // xray collision box
                     add([
-                        pos(x + 40, y + 225),
-                        sprite('supepper'),
-                        origin('center'),
-                        swing()
+                        pos(x + 15, y + H),
+                        origin('botleft'),
+                        area({
+                            width: 120,
+                            height: 75
+                        }),
+                        solid()
                     ])
 
                     // gas
                     let gx = x+170
                     addGrille(gx, y+310)
                     addGasArea(gx, y+310, 50)
+                    addGrille(gx, y+260)
+                    addGasArea(gx, y+260, 50)
                 }
             },
             {
@@ -401,7 +436,8 @@ export default ({final, hasBlueKey}) => {
                     myLifespan(1, {fade: 0.5, opacity: 0.4}),
                     move(rand(0, 360), rand(20, 60)),
                     rotate(rand(0, 360)),
-                    opacity(0.4)
+                    opacity(0.4),
+                    z(2)
                 ])
             }
             if (player.isColliding(gasCircle)) {
