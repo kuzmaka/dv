@@ -70,7 +70,7 @@ export default () => {
     loadSprite('office3-1', 'office3-1.png')
     loadSprite('office3-2', 'office3-2.png')
     loadSprite('office3-3', 'office2-3.png')
-    loadSprite('office4-1', 'office2-1.png')
+    loadSprite('office4-1', 'office4-1.png')
     loadSprite('office4-2', 'office4-2.png')
     loadSprite('office4-3', 'office4-3.png')
     loadSprite('teleport', 'teleport2.png')
@@ -97,7 +97,7 @@ export default () => {
             idle: {
                 from: 0,
                 to: 7,
-                speed: 7,
+                speed: 8,
                 loop: true
             }
         }
@@ -109,7 +109,7 @@ export default () => {
             idle: {
                 from: 0,
                 to: 7,
-                speed: 7,
+                speed: 8,
                 loop: true
             }
         }
@@ -121,7 +121,31 @@ export default () => {
             idle: {
                 from: 0,
                 to: 7,
-                speed: 7,
+                speed: 8,
+                loop: true
+            }
+        }
+    })
+    loadSprite('arrow-4', 'arrow-4.png', {
+        sliceX: 8,
+        sliceY: 1,
+        anims: {
+            idle: {
+                from: 0,
+                to: 7,
+                speed: 8,
+                loop: true
+            }
+        }
+    })
+    loadSprite('arrow-5', 'arrow-5.png', {
+        sliceX: 8,
+        sliceY: 1,
+        anims: {
+            idle: {
+                from: 0,
+                to: 7,
+                speed: 8,
                 loop: true
             }
         }

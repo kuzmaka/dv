@@ -1,18 +1,29 @@
 import {W, H} from './init'
 import {addObjects, addPlayer, addTiles, setupCamera} from "./createLevel";
+import {swing} from "./components";
 
 export default () => {
     const tiles = [
         [
             {
-                name: "office4-1"
+                name: "office4-1",
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    table(vec2(x + 40, y + 291))
+                    add([
+                        pos(x + 65, y + 270),
+                        sprite('supepper'),
+                        origin('center'),
+                        swing()
+                    ])
+                }
             },
             {
                 name: "office4-2",
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     gasSystem([
-                        [vec2(x - 2, y + 350), {scd: 0, cd: 6.5, atkTime: 3}],
+                        [vec2(x - 2, y + 350), {scd: 0, cd: 6, atkTime: 3}],
                         [vec2(x + 29, y + 350), {scd: 0, cd: 6.2}],
                         [vec2(x + 60, y + 350), {scd: 0, cd: 5.9}],
                         [vec2(x + 91, y + 350), {scd: 0, cd: 5.5}],
@@ -32,8 +43,13 @@ export default () => {
             },
             {
                 name: "office4-3",
+                checkpoint: vec2(100, 250),
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+                    add([
+                        sprite('arrow-5', {anim: 'idle'}),
+                        pos(x, y)
+                    ])
                     //floor
                     add([
                         pos(x, y + 350),
@@ -80,6 +96,7 @@ export default () => {
             },
             {
                 name: "office3-2",
+                checkpoint: vec2(0, 200),
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     add([
@@ -97,6 +114,10 @@ export default () => {
                 name: "office3-3",
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+                    add([
+                        pos(x, y),
+                        sprite('arrow-4', {anim: 'idle'})
+                    ])
                     addGasLattice(vec2(x + 250, y + 350))
                     addGasLattice(vec2(x + 636, y + 150), {
                         rotate: true,
@@ -145,6 +166,7 @@ export default () => {
             },
             {
                 name: 'office2-3',
+                checkpoint: vec2(400, 250),
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     addTeleport(vec2(x + 576, y + 349), vec2(x + 470, y + H + 250))
@@ -160,7 +182,7 @@ export default () => {
         [
             {
                 name: 'office1-1',
-                checkpoint: vec2(100, 200),
+                checkpoint: vec2(50, 250),
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                 }
@@ -172,7 +194,7 @@ export default () => {
                 name: 'office2-3',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    addTeleport(vec2(x + 579, y + 349), vec2(x + 470, y - H + 250))
+                    addTeleport(vec2(x + 579, y + 349), vec2(x + 460, y - H + 250))
                     add([
                         sprite('arrow-2', { anim: 'idle' }),
                         pos(x + 450, y + 120)
@@ -198,6 +220,18 @@ export default () => {
         ceil: true
     })
 
+    //black bg
+    add([
+        pos(-1000, 0),
+        rect(1000, H * tiles.length),
+        color('black')
+    ])
+    add([
+        pos(W * tiles[0].length, 0),
+        rect(1000, H * tiles.length),
+        color('black')
+    ])
+
     const player = addPlayer({
         x: 1300,
         y: 180
@@ -206,6 +240,7 @@ export default () => {
     setupCamera(player)
     camPos(vec2(camPos().x, H * 1.5))
 
+    //background
     add([
         pos(0),
         sprite('sky-night', {anim: 'blink'}),
@@ -362,16 +397,16 @@ const parkour = [
     ],
     //4-3   [4]
     [
-        "              ==   ",
         "                   ",
-        "  r                ",
-        "!===!    !=b==!    ",
+        "              !===!",
         "                   ",
-        "                   ",
-        "!===bb!====!=======",
+        "  !======!         ",
         "                   ",
         "                   ",
-        "              ==   ",
+        "           !=====b!",
+        "       !==!        ",
+        "                   ",
+        "                   ",
     ],
 ]
 
