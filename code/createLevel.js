@@ -120,6 +120,7 @@ export function addPlayer(opt) {
             flip: false,
             dead: false,
             sleeping: opt.sleeping ? opt.sleeping : false,
+            lays: false,
             firstMoved: false,
             isDown: opt.sleeping ? opt.sleeping : false,
             lastCheckpoint: null,
@@ -179,6 +180,7 @@ export function addPlayer(opt) {
             handleFirstMoved() {
                 if (!player.firstMoved) {
                     player.firstMoved = true;
+                    player.lays = false
                     this.trigger('firstMoved')
                 }
             }
@@ -254,9 +256,16 @@ export function addPlayer(opt) {
         }
     })
     onKeyPress(['w', 'up', 'space'], () => {
-        if (player.dead || player.isDown && !canStand(player)) return;
+        if (player.dead || player.isDown && !canStand(player) && !player.lays) return;
         if (player.curPlatform()) {
-            player.sleeping = false
+            if (player.sleeping) {
+                player.sleeping = false
+
+                player.lays = true
+                player.play('lay')
+                player.layArea()
+                return
+            }
             player.handleFirstMoved()
             player.jump()
             player.play('jump')
@@ -266,7 +275,7 @@ export function addPlayer(opt) {
     })
     onKeyPress(['s', 'down'], () => {
         player.isDown = true
-        if (player.dead || player.sleeping) return;
+        if (player.dead || player.sleeping || player.lays) return;
         if (player.curPlatform()) {
             if (player.speed) {
                 player.speed = player.flip ? -CRAWL_SPEED : CRAWL_SPEED
@@ -317,6 +326,8 @@ export function addPlayer(opt) {
 }
 
 function canStand(player) {
+    if (player.lays) return false;
+
     const standArea = player.flip ? {
         offset: vec2(40, 40),
         width: 47,
