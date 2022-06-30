@@ -1,78 +1,20 @@
 import {W, H} from './init'
 import {addPlayer, addTiles, setupCamera} from "./createLevel";
-import {goto} from "./functions";
+import {addLift, goto} from "./functions";
 
 export default () => {
 
+    let liftTilePos;
+
     const tiles = [
         [
-            {
-                name: 'empty',
-                onAdded: (tile, i, j) => {
-                    const [x, y] = [tile.pos.x, tile.pos.y];
-
-                    const lift = add([
-                        pos(x+W, y+H),
-                        origin('botright'),
-                        sprite('lift'),
-                        area({
-                            offset: vec2(-50, 0),
-                            width: 150
-                        }),
-                    ])
-                    const wall = add([
-                        pos(lift.pos.x-lift.width, lift.pos.y-8),
-                        origin('botleft'),
-                        area({
-                            width: 8,
-                            height: lift.height-8
-                        }),
-                        solid()
-                    ])
-                    const floor = add([
-                        pos(x+W, y + H),
-                        origin('botright'),
-                        area({
-                            width: 199,
-                            height: 8
-                        }),
-                        solid()
-                    ])
-                    wall.pos = vec2(lift.pos.x-lift.width, lift.pos.y-8)
-                    floor.pos = lift.pos.clone()
-                    let state = 'top';
-                    let fromY;
-                    const cnc = lift.onCollide('player', () => {
-                        if (state === 'top') {
-                            state = 'down';
-                            fromY = lift.pos.y;
-                        }
-                        if (state === 'bottom') {
-                            state = 'up'
-                            fromY = lift.pos.y;
-                        }
-                    })
-                    lift.onUpdate(() => {
-                        if (state === 'down' || state === 'up') {
-                            const inLift = player.curPlatform() === floor;
-                            lift.moveTo(x+W, y+H + (state === 'down' ? H : 0), 100)
-                            floor.pos = lift.pos.clone()
-                            wall.pos = vec2(lift.pos.x-lift.width, lift.pos.y-8)
-                            if (lift.pos.y === y + H + (state === 'down' ? H : 0)) {
-                                state = state === 'down' ? 'bottom' : 'top';
-                            }
-                            if (inLift) {
-                                player.moveTo(player.pos.x, lift.pos.y - 8 - player.area.offset.y - player.area.height)
-                            }
-                        }
-                    })
-                }
-            },
             {
                 name: 'lab1',
                 floor: 8,
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    liftTilePos = tile.pos
 
                     // floor
                     add([
@@ -143,21 +85,19 @@ export default () => {
             // }
         ],
         [
-            'empty',
-            {
-                name:'lab1',
-                floor: 8
-            }
+            'lab1'
         ]
     ];
     addTiles(tiles, {
-        // floor: 8,
+        floor: 8,
     })
 
     const player = addPlayer({
-        x: W + 10,
-        y: H - 94,
+        x: 10,
+        y: 94,
     })
+
+    addLift(liftTilePos, player)
 
     setupCamera(player)
 }

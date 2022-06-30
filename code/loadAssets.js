@@ -17,7 +17,28 @@ export default () => {
     loadSprite('gas', 'gas.png')
     loadSprite('grille', 'grille.png')
     loadSprite('container', 'container.png')
-    loadSprite('lift', 'lift.png')
+    loadSprite('lift', 'lift.png', {
+        sliceX: 1,
+        sliceY: 3,
+        anims: {
+            top: {
+                from: 0,
+                to: 0,
+            },
+            bottom: {
+                from: 0,
+                to: 0,
+            },
+            down: {
+                from: 1,
+                to: 1
+            },
+            up: {
+                from: 2,
+                to: 2
+            }
+        }
+    })
     loadSprite('empty', 'empty.png')
 
     loadRoot('sprites/lab/')
