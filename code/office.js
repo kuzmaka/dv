@@ -20,6 +20,7 @@ export default () => {
             },
             {
                 name: "office5-3",
+                checkpoint: vec2(500, 200),
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     tile.play('light')
@@ -265,7 +266,7 @@ export default () => {
 
     const player = addPlayer({
         x: 1300,
-        y: 180
+        y: 1540
     })
 
     setupCamera(player)

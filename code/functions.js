@@ -1,4 +1,5 @@
 import {H, W} from "./init";
+import {ratBehaviour} from "./components";
 
 export function goto(scene, args) {
     const darkScreen = add([
@@ -186,7 +187,8 @@ export function addObjects(map, opt) {
                 offset: vec2(0, 28),
                 height: 4
             }),
-            solid()
+            solid(),
+            'edge'
         ],
         "=": () => [
             sprite('shelf-middle'),
@@ -211,10 +213,10 @@ export function addObjects(map, opt) {
                 height: 54,
                 offset: vec2(0, 20)
             }),
-            body(),
-            solid(),
-            move(0, 150),
+            ratBehaviour(),
             origin('center'),
+            state('idle', ['idle', 'run', 'attack']),
+            z(15),
             'enemy'
         ],
         "t": () => [

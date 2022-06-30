@@ -219,7 +219,7 @@ export default () => {
     loadSprite('shelf-books', 'shelf-books.png')
     loadSprite('shelf-middle', 'shelf-middle.png')
     loadSprite('office-rat', 'office-rat.png', {
-        sliceX: 5,
+        sliceX: 7,
         sliceY: 1,
         anims: {
             idle: {
@@ -231,6 +231,14 @@ export default () => {
                 to: 4,
                 speed: 10,
                 loop: true
+            },
+            atkprep: {
+                from: 5,
+                to: 5
+            },
+            attack: {
+                from: 6,
+                to: 6
             }
         }
     })
