@@ -312,6 +312,8 @@ export default ({final, hasBlueKey}) => {
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
 
+                    playerStartPos = vec2(x + 10, y + 10)
+
                     // right wall
                     add([
                         pos(x + W - 8, y),
@@ -320,6 +322,17 @@ export default ({final, hasBlueKey}) => {
                             height: H - 8
                         }),
                         solid()
+                    ])
+
+                    // boss
+                    add([
+                        pos(x + W/2, y + H/2),
+                        origin('center'),
+                        sprite('lab-boss', {anim: 'move'}),
+                        area({
+                            height: 172
+                        }),
+                        body()
                     ])
                 }
             }

@@ -51,6 +51,18 @@ export default () => {
     loadSprite('cabinet-bottles', 'cabinet-bottles.png')
     loadSprite('lab2-exit', 'lab2-exit.png')
     loadSprite('lab-final', 'lab-final.png')
+    loadSprite('lab-boss', 'boss.png', {
+        sliceX: 1,
+        sliceY: 4,
+        anims: {
+            move: {
+                from: 0,
+                to: 3,
+                loop: true,
+                speed: 1
+            },
+        }
+    })
     loadSprite('lab-dock', 'lab-dock.png', {
         sliceX: 1,
         sliceY: 2,
