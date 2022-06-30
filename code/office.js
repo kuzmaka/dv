@@ -1,6 +1,7 @@
 import {W, H} from './init'
-import {addObjects, addPlayer, addTiles, setupCamera} from "./createLevel";
+import {addPlayer, addTiles, setupCamera} from "./createLevel";
 import {swing} from "./components";
+import {addGasLattice, gasSystem, addObjects} from "./functions";
 
 export default () => {
     const tiles = [
@@ -299,64 +300,6 @@ function addTeleport(pos1, pos2) {
                 this.onCollide('player', (p) => {
                     p.pos = pos2
                 })
-            }
-        }
-    ])
-}
-
-function gasSystem(gases = [], cd) {
-    add([
-        {
-            cooldown: 0,
-            gases: [],
-            update() {
-                if(this.cooldown > 0) this.cooldown -= dt()
-                if(this.cooldown <= 0) {
-                    this.gases.forEach((gas) => {destroy(gas)})
-                    gases.forEach((gas) => {
-                        this.gases.push(addGasLattice(gas[0], gas[1]))
-                    })
-                    this.cooldown = cd
-                }
-            }
-        }
-    ])
-}
-
-function addGasLattice(p, opt = {}) {
-    return add([
-        sprite(opt.rotate ? 'lattice-y' : 'lattice-x', {flipY: !opt.flip, flipX: opt.flip}),
-        pos(p),
-        {
-            cooldown: opt.scd !== undefined ? opt.scd : opt.cd !== undefined ? opt.cd : 3,
-            attack: 0,
-            microcd: 3,
-            gasSpeed: 150,
-            update() {
-                if(this.attack > 0) this.attack -= dt()
-                if(this.microcd > 0) this.microcd -= 1
-                if(this.attack <= 0 && this.cooldown > 0) this.cooldown -= dt()
-                else if(this.cooldown <= 0) {
-                    this.cooldown = opt.cd !== undefined ? opt.cd : 1.5
-                    this.attack = opt.atkTime !== undefined ? opt.atkTime : 1.5
-                }
-                if(this.attack > 0 && this.microcd <= 0) {
-                    add([
-                        sprite('gas'),
-                        pos(this.pos.sub(opt.rotate ? (opt.flip ? 32 : -4) : 0, opt.rotate ? 0 : opt.flip ? -4 : 32)),
-                        area(),
-                        move(-90 * (opt.flip ? -1 : 1) + 90 * (opt.rotate ? 1 : 0) + rand(-10, 10), this.gasSpeed),
-                        lifespan(1, {fade: 0.5}),
-                        {
-                            load() {
-                                this.onCollide('player', (p) => {
-                                    p.die()
-                                })
-                            }
-                        }
-                    ])
-                    this.microcd = 3
-                }
             }
         }
     ])
