@@ -4,6 +4,37 @@ import {shakeObj} from "./functions";
 
 const PLAYER_SPEED = 400;
 
+export function addUI() {
+    layers([
+        'game',
+        'ui',
+    ], 'game')
+    const hintQ = add([
+        layer('ui'),
+        pos(camPos().sub(width()/2-21, height()/2-15)),
+        origin('center'),
+        sprite('hint-q'),
+        fixed(),
+        opacity(DEBUG_SUPER_WOOF ? 1 : 0.3),
+        scale()
+    ])
+    let timer = 0;
+    const cnc = hintQ.onUpdate(() => {
+        if (hintQ.opacity === 1) {
+            timer += dt()
+            if (timer < 1) {
+                hintQ.scaleTo(1.3)
+                hintQ.angle = 10*Math.sin(time()*40)
+            } else {
+                hintQ.scaleTo(1)
+                hintQ.angle = 0;
+                cnc()
+            }
+        }
+    })
+    return hintQ
+}
+
 export function addTiles(tiles, opt = {}) {
 
     tiles.forEach((Tiles, i) => {
@@ -343,7 +374,7 @@ export function addPlayer(opt) {
     onKeyPress(['q'], () => {
         if (player.dead || player.sleeping || !player.canSuperWoof) return;
         play('woof')
-        shakeObj(player, 0.5)
+        shake(2)
         multiWave(player)
     })
 

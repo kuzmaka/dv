@@ -16,6 +16,7 @@ export default () => {
     loadSprite('supepper', 'supepper.png')
     loadSprite('gas', 'gas.png')
     loadSprite('grille', 'grille.png')
+    loadSprite('hint-q', 'hint-q.png')
     loadSprite('container', 'container.png')
     loadSprite('liftwall', 'liftwall.png')
     loadSprite('lift', 'lift.png', {

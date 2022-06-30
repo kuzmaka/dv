@@ -1,7 +1,7 @@
 import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP} from './init'
-import {addPlayer, addTiles, setupCamera} from "./createLevel";
+import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {fade, jitter, myLifespan, swing} from "./components";
-import {addLift, goto} from "./functions";
+import {addLift} from "./functions";
 
 export default ({final, hasBlueKey}) => {
 
@@ -23,6 +23,8 @@ export default ({final, hasBlueKey}) => {
     function inDarkArea(x) {
         return !!darkAreas.find(area => area[0] <= x && x <= area[1])
     }
+
+    const hintQ = addUI()
 
     const tiles = [
         [
@@ -65,6 +67,7 @@ export default ({final, hasBlueKey}) => {
                         play('score')
                         supepper.destroy()
                         player.canSuperWoof = true
+                        hintQ.opacity = 1
                     })
 
                     // door to lift with lock
