@@ -175,6 +175,8 @@ export function addGasLattice(p, opt = {}) {
     return add([
         sprite(opt.rotate ? 'lattice-y' : 'lattice-x', {flipY: !opt.flip, flipX: opt.flip}),
         pos(p),
+        area(),
+        outview(),
         {
             cooldown: opt.scd !== undefined ? opt.scd : opt.cd !== undefined ? opt.cd : 3,
             attack: 0,
@@ -188,23 +190,24 @@ export function addGasLattice(p, opt = {}) {
                     this.cooldown = opt.cd !== undefined ? opt.cd : 1.5
                     this.attack = opt.atkTime !== undefined ? opt.atkTime : 1.5
                 }
-                if(this.attack > 0 && this.microcd <= 0) {
-                    add([
-                        sprite('gas'),
-                        pos(this.pos.sub(opt.rotate ? (opt.flip ? 32 : -4) : 0, opt.rotate ? 0 : opt.flip ? -4 : 32)),
-                        area(),
-                        move(-90 * (opt.flip ? -1 : 1) + 90 * (opt.rotate ? 1 : 0) + rand(-10, 10), this.gasSpeed),
-                        lifespan(1, {fade: 0.5}),
-                        {
-                            load() {
-                                this.onCollide('player', (p) => {
-                                    p.die()
-                                })
+                if(!this.isOutOfView())
+                    if(this.attack > 0 && this.microcd <= 0) {
+                        add([
+                            sprite('gas'),
+                            pos(this.pos.sub(opt.rotate ? (opt.flip ? 32 : -4) : 0, opt.rotate ? 0 : opt.flip ? -4 : 32)),
+                            area(),
+                            move(-90 * (opt.flip ? -1 : 1) + 90 * (opt.rotate ? 1 : 0) + rand(-10, 10), this.gasSpeed),
+                            lifespan(1, {fade: 0.5}),
+                            {
+                                load() {
+                                    this.onCollide('player', (p) => {
+                                        p.die()
+                                    })
+                                }
                             }
-                        }
-                    ])
-                    this.microcd = 3
-                }
+                        ])
+                        this.microcd = 3
+                    }
             }
         }
     ])
