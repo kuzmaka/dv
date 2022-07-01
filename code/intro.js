@@ -492,7 +492,7 @@ export default ({final, hasBlueKey}) => {
     // sky
     add([
         pos(0),
-        sprite('sky-night', {anim: 'blink'}),
+        sprite('sky-violet'),
         z(-100),
         fixed()
     ])

@@ -58,6 +58,7 @@ export default () => {
     })
 
     loadRoot('sprites/lab/')
+    loadSprite('sky-violet', 'sky-violet.png')
     loadSprite('lab0', 'lab0.png')
     loadSprite('lamp', 'lamp.png')
     loadSprite('xray', 'xray.png')
