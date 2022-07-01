@@ -114,7 +114,6 @@ export function ratBehaviour() {
                 this.edges = get('edge')
             })
             this.moveBy(0, 13)
-            this.enterState('idle')
             this.onStateEnter('attack', () => {
                 this.play('atkprep')
                 wait(0.5, () => {
@@ -208,6 +207,30 @@ export function ratBehaviour() {
                 }
                 if(Math.abs(t) > 5) this.enterState('run')
             })
+            this.enterState('idle')
+        }
+    }
+}
+
+export function officeBossBehaviour() {
+    return {
+        load() {
+            this.onStateEnter('attack', () => {
+                this.play('atkprep')
+                wait(0.7, () => {
+                    this.play('attack')
+                    wait(0.3, () => {
+                        this.enterState('idle')
+                    })
+                })
+            })
+            this.onStateEnter('idle', () => {
+                this.play('idle')
+                wait(1, () => {
+                    this.enterState('attack')
+                })
+            })
+            this.enterState('attack')
         }
     }
 }

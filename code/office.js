@@ -1,6 +1,6 @@
 import {W, H} from './init'
 import {addPlayer, addTiles, setupCamera} from "./createLevel";
-import {swing} from "./components";
+import {officeBossBehaviour, swing} from "./components";
 import {addGasLattice, gasSystem, addObjects} from "./functions";
 
 export default () => {
@@ -11,10 +11,13 @@ export default () => {
                 onAdded: (tile) => {
                     tile.play('light')
                     const [x, y] = [tile.pos.x, tile.pos.y];
+                    //boss
                     add([
-                        pos(x + 100, y + H - 266),
+                        pos(x + 100, y + H - 262),
                         sprite('office-boss', {flipX: true}),
-
+                        area(),
+                        state('idle', ['idle', 'attack']),
+                        officeBossBehaviour()
                     ])
                 }
             },

@@ -304,7 +304,25 @@ export default () => {
             }
         }
     })
-    loadSprite('office-boss', 'office-boss.png')
+    loadSprite('office-boss', 'office-boss.png', {
+        sliceX: 5,
+        sliceY: 1,
+        anims: {
+            idle: {
+                from: 0,
+                to: 0
+            },
+            atkprep: {
+                from: 1,
+                to: 1
+            },
+            attack: {
+                from: 2,
+                to: 4,
+                speed: 20
+            }
+        }
+    })
 
     loadRoot('../../')
     loadSprite('doggy', 'sprites/doggy.png', {
