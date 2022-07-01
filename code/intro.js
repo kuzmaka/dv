@@ -48,28 +48,12 @@ export default ({final, hasBlueKey}) => {
 
                     // cabinet
                     add([
-                        pos(x + 400, y + 160-8),
-                        sprite('cabinet-bottles'),
+                        pos(x + 400, y + 159-8),
+                        sprite('cabinet'),
                         area({
-                            height: 60
+                            height: 10
                         }),
-                        solid()
                     ])
-
-                    // supepper
-                    const supepper = add([
-                        pos(x + 200, y + 40),
-                        sprite('supepper'),
-                        origin('center'),
-                        area(),
-                        swing()
-                    ])
-                    supepper.onCollide('player', () => {
-                        play('score')
-                        supepper.destroy()
-                        player.canSuperWoof = true
-                        hintQ.opacity = 1
-                    })
 
                     // door to lift with lock
                     add([
@@ -171,12 +155,9 @@ export default ({final, hasBlueKey}) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     // cabinet
                     add([
-                        pos(x + 300, y + 160-8),
+                        pos(x + 300, y + H-8),
                         sprite('cabinet'),
-                        area({
-                            height: 60
-                        }),
-                        solid()
+                        origin('botleft')
                     ])
                 }
             },
@@ -218,6 +199,21 @@ export default ({final, hasBlueKey}) => {
                     addBox(x+270, y+200)
                     addBox(x+316, y+200)
                     addBox(x+355, y+200)
+
+                    // supepper
+                    const supepper = add([
+                        pos(x + 316, y + 250),
+                        sprite('supepper'),
+                        origin('center'),
+                        area(),
+                        swing()
+                    ])
+                    supepper.onCollide('player', () => {
+                        play('score')
+                        supepper.destroy()
+                        player.canSuperWoof = true
+                        hintQ.opacity = 1
+                    })
                 }
             },
             {
