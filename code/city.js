@@ -1,4 +1,4 @@
-import {W, H, DEBUG_NO_SLEEP} from './init'
+import {W, H} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {addContainer, goto} from "./functions";
 import {fade} from "./components";
@@ -73,7 +73,7 @@ export default () => {
                         pos(x+W, y+H-140+40),
                         origin('botright'),
                         area({
-                            width: 10,
+                            width: 20,
                             height: 40
                         }),
                         solid()
@@ -92,7 +92,7 @@ export default () => {
                 onAdded(tile, i, j) {
                     const [x, y] = [tile.pos.x, tile.pos.y];
 
-                    playerStartPos = vec2(x + 10, y + 10)
+                    // playerStartPos = vec2(x + 10, y + 10)
 
                     // floor
                     add([

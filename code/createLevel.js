@@ -1,4 +1,4 @@
-import {H, DEBUG_SHOW_TILE_INDEX, W, DEBUG_SUPER_WOOF} from "./init";
+import {H, DEBUG_SHOW_TILE_INDEX, W, DEBUG_SUPER_WOOF, DEBUG_CAN_FIRE} from "./init";
 import {checkpoint, fade} from "./components";
 import {shakeObj} from "./functions";
 
@@ -173,6 +173,7 @@ export function addPlayer(opt) {
             isDown: opt.sleeping ? opt.sleeping : false,
             lastCheckpoint: null,
             canSuperWoof: DEBUG_SUPER_WOOF,
+            canFire: DEBUG_CAN_FIRE,
             camSetup: () => {},
             resetArea() {
                 if (player.flip) {
@@ -232,6 +233,28 @@ export function addPlayer(opt) {
                     player.lays = false
                     this.trigger('firstMoved')
                 }
+            },
+            fire() {
+                if (!this.canFire) return;
+                debug.log(player.pos.x + ' ' + player.pos.y + ' ' + player.flip + ' ' + player.width)
+                const fire = add([
+                    sprite('fire', {
+                        flipX: player.flip,
+                        anim: 'fire'
+                    }),
+                    pos(player.pos.add(player.flip?0:player.width, (player.isDown ? 80 : 36))),
+                    origin(player.flip ? 'right' : 'left'),
+                    area(),
+                    // scale(),
+                    lifespan(0.25, { fade: 0.2 }),
+                    z(100),
+                    'fire'
+                ])
+                fire.onUpdate(() => {
+                    fire.pos = player.pos.add(player.flip?0:player.width, (player.isDown ? 80 : 36))
+                    fire.flipX(player.flip)
+                    fire.origin = player.flip ? 'right' : 'left'
+                })
             }
         },
         z(50),
@@ -376,6 +399,12 @@ export function addPlayer(opt) {
         play('woof')
         shake(2)
         multiWave(player)
+    })
+
+    onKeyPress(['e'], () => {
+        if (player.dead || player.sleeping || !player.canFire) return;
+        // play('fire')
+        player.fire()
     })
 
     return player

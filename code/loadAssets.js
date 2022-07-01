@@ -42,6 +42,17 @@ export default () => {
     })
     loadSprite('empty', 'empty.png')
     loadSprite('wave', 'wave.png')
+    loadSprite('fire', 'fire.png', {
+        sliceX: 1,
+        sliceY: 4,
+        anims: {
+            fire: {
+                from: 0,
+                to: 3,
+                speed: 16,
+            },
+        }
+    })
     loadSprite('box', 'box.png')
     loadSprite('container', 'container.png')
     loadSprite('snow', 'snow.png', {
