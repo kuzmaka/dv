@@ -73,7 +73,13 @@ export default ({final, hasBlueKey}) => {
 
                     // door to lift with lock
                     add([
-                        pos(x + 24, y + 275),
+                        pos(x + 75, y + 100),
+                        origin('top'),
+                        sprite('lift-sign')
+                    ])
+                    add([
+                        pos(x + 75, y + 255),
+                        origin('top'),
                         sprite('bluelock')
                     ])
                     if (!hasBlueKey) {

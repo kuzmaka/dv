@@ -114,6 +114,7 @@ export default () => {
     loadSprite('ship0', 'ship0.png')
     loadSprite('seagull', 'seagull.png')
     loadSprite('cage', 'cage2.png')
+    loadSprite('lift-sign', 'lift-sign.png')
     loadSprite('blueprint', 'blueprint.png')
     loadSprite('doorwall', 'doorwall.png')
     loadSprite('door', 'door.png', {
