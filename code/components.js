@@ -224,13 +224,29 @@ export function officeBossBehaviour() {
                     })
                 })
             })
+            this.onStateEnter('throw', () => {
+                this.play('throw')
+                wait(1.3, () => {
+                    add([
+                        sprite('throwed-pepper', {anim: 'rotating'}),
+                        pos(this.pos.add(85, 55)),
+                        area(),
+                        body(),
+                        move(-15, 400),
+                        rotate(10)
+                    ])
+                    wait(0.1, () => {
+                        this.enterState('idle')
+                    })
+                })
+            })
             this.onStateEnter('idle', () => {
                 this.play('idle')
                 wait(1, () => {
-                    this.enterState('attack')
+                    this.enterState('throw')
                 })
             })
-            this.enterState('attack')
+            this.enterState('idle')
         }
     }
 }

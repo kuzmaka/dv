@@ -305,8 +305,8 @@ export default () => {
         }
     })
     loadSprite('office-boss', 'office-boss.png', {
-        sliceX: 5,
-        sliceY: 1,
+        sliceX: 6,
+        sliceY: 3,
         anims: {
             idle: {
                 from: 0,
@@ -320,6 +320,23 @@ export default () => {
                 from: 2,
                 to: 4,
                 speed: 20
+            },
+            throw: {
+                from: 5,
+                to: 17,
+                speed: 10
+            }
+        }
+    })
+    loadSprite('throwed-pepper', 'throwed-pepper.png', {
+        sliceX: 4,
+        sliceY: 1,
+        anims: {
+            rotating: {
+                from: 0,
+                to: 3,
+                speed: 4,
+                loop: true
             }
         }
     })

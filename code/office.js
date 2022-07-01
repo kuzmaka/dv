@@ -16,7 +16,7 @@ export default () => {
                         pos(x + 100, y + H - 262),
                         sprite('office-boss', {flipX: true}),
                         area(),
-                        state('idle', ['idle', 'attack']),
+                        state('idle', ['idle', 'attack', 'throw']),
                         officeBossBehaviour()
                     ])
                 }
