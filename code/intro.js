@@ -334,6 +334,13 @@ export default ({final, hasBlueKey}) => {
                     ])
                     addShip(x, y)
                 }
+            },
+            {
+                name: 'empty',
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    darkAreas.push([x, x + W])
+                }
             }
         ],
         [
@@ -605,6 +612,17 @@ export default ({final, hasBlueKey}) => {
             sprite('ship0'),
             z(100)
         ])
+
+        const seagull = add([
+            pos(x+318, y+94),
+            origin('bot'),
+            sprite('seagull'),
+            z(101)
+        ])
+        seagull.onUpdate(() => {
+            seagull.flipX(player.pos.x + player.width/2 < seagull.pos.x)
+        })
+
         // floor
         const f1 = add([
             pos(x+300, y + H-130),
@@ -622,6 +640,7 @@ export default ({final, hasBlueKey}) => {
                 ship.move(100, 0)
                 f1.moveTo(ship.pos.add(300, 230))
                 f2.moveTo(ship.pos.add(520, 260))
+                seagull.moveTo(ship.pos.add(318, 94))
             }
             // stop after one tile
             if (ship.pos.x > x + W) {
