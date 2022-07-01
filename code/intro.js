@@ -147,7 +147,7 @@ export default ({final, hasBlueKey}) => {
                 }
             },
             {
-                name: 'lab1',
+                name: 'lab1-window',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     let gx = x+100
@@ -159,7 +159,7 @@ export default ({final, hasBlueKey}) => {
                 }
             },
             {
-                name: 'lab1',
+                name: 'lab1-window',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     // cabinet
@@ -174,7 +174,7 @@ export default ({final, hasBlueKey}) => {
                 }
             },
             {
-                name: 'lab1',
+                name: 'lab1-window',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     let gx = x + 100
@@ -189,7 +189,7 @@ export default ({final, hasBlueKey}) => {
                 }
             },
             {
-                name: 'lab1',
+                name: 'lab1-window',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     addDoggyInCage(x+120, y, sprite('doggy', {anim: 'sit'}))
@@ -199,7 +199,7 @@ export default ({final, hasBlueKey}) => {
                 }
             },
             {
-                name: 'lab1',
+                name: 'lab1-window',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     // playerStartPos = vec2(x + 10, y + 10)
@@ -214,7 +214,7 @@ export default ({final, hasBlueKey}) => {
                 }
             },
             {
-                name: 'lab1',
+                name: 'lab1-window',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     let gx = x + 100

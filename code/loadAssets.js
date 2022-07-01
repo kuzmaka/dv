@@ -50,6 +50,7 @@ export default () => {
     loadSprite('lamp', 'lamp.png')
     loadSprite('xray', 'xray.png')
     loadSprite('lab1', 'lab1.png')
+    loadSprite('lab1-window', 'lab1-window.png')
     loadSprite('cabinet-bottles', 'cabinet-bottles.png')
     loadSprite('cabinet', 'cabinet.png')
     loadSprite('lab2-exit', 'lab2-exit.png')
