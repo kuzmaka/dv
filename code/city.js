@@ -68,6 +68,17 @@ export default () => {
                         z(100)
                     ])
 
+                    // right wall
+                    add([
+                        pos(x+W, y+H-140+40),
+                        origin('botright'),
+                        area({
+                            width: 10,
+                            height: 40
+                        }),
+                        solid()
+                    ])
+
                     // floor
                     add([
                         pos(x, y+H-140+40),
@@ -75,12 +86,30 @@ export default () => {
                         solid()
                     ])
                 }
+            },
+            {
+                name: 'street0',
+                onAdded(tile, i, j) {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                }
+            },
+            {
+                name: 'street-office',
+                onAdded(tile, i, j) {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                }
+            },
+            {
+                name: 'office1-1',
+                onAdded(tile, i, j) {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                }
             }
         ]
     ]
 
     addTiles(tiles, {
-        floor: 8,
+        floor: 10,
     })
 
     const player = addPlayer({

@@ -148,6 +148,8 @@ export default () => {
     loadSprite('ship-mid-end-front', 'ship-mid-end-front.png')
     loadSprite('ship-end-back', 'ship-end-back.png')
     loadSprite('ship-end-front', 'ship-end-front.png')
+    loadSprite('street0', 'street0.png')
+    loadSprite('street-office', 'street-office.png')
 
     loadRoot('sprites/office/')
     loadSprite('office1-1', 'office1-1.png')
