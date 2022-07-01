@@ -160,7 +160,6 @@ export default () => {
     const player = addPlayer({
         x: playerStartPos.x,
         y: playerStartPos.y,
-        sleeping: !DEBUG_NO_SLEEP
     })
     // fade in
     add([
