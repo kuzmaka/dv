@@ -30,10 +30,10 @@ export default () => {
                         solid()
                     ])
 
-                    // containter
-                    addContainer(x - 10, y+140)
-                    addContainer(x - 10, y)
-                    addContainer(x - 10, y-140)
+                    // container
+                    addContainer(x - 10, y+133)
+                    addContainer(x - 10, y+6)
+                    addContainer(x - 10, y-121)
                 }
             },
             {

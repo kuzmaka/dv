@@ -43,6 +43,7 @@ export default () => {
     loadSprite('empty', 'empty.png')
     loadSprite('wave', 'wave.png')
     loadSprite('box', 'box.png')
+    loadSprite('container', 'container.png')
     loadSprite('snow', 'snow.png', {
         sliceX: 1,
         sliceY: 5,
@@ -147,7 +148,6 @@ export default () => {
     loadSprite('ship-mid-end-front', 'ship-mid-end-front.png')
     loadSprite('ship-end-back', 'ship-end-back.png')
     loadSprite('ship-end-front', 'ship-end-front.png')
-    loadSprite('container', 'container.png')
 
     loadRoot('sprites/office/')
     loadSprite('office1-1', 'office1-1.png')

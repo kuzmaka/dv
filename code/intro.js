@@ -1,7 +1,7 @@
 import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP, DEBUG_RED_KEY} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {fade, jitter, myLifespan, swing} from "./components";
-import {addLift} from "./functions";
+import {addContainer, addLift} from "./functions";
 
 export default ({final, hasBlueKey}) => {
 
@@ -341,6 +341,20 @@ export default ({final, hasBlueKey}) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     darkAreas.push([x, x + W])
                 }
+            },
+            {
+                name: 'empty',
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    darkAreas.push([x, x + W])
+                }
+            },
+            {
+                name: 'empty',
+                onAdded: (tile) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    darkAreas.push([x, x + W])
+                }
             }
         ],
         [
@@ -631,19 +645,33 @@ export default ({final, hasBlueKey}) => {
         ])
         const f2 = add([
             pos(x+300+220, y+H-140+40),
-            area({width: 120, height: 50}),
+            area({width: 120+W, height: 50}),
             solid()
         ])
+        // container
+        const c1 = addContainer(x +2*W-400, y+133)
+        const c2 = addContainer(x +2*W-400, y+6)
+        const c3 = addContainer(x +2*W-400, y-121)
+        const c4 = addContainer(x +2*W-400+288, y+133)
+        const c5 = addContainer(x +2*W-400+288, y+6)
+        const c6 = addContainer(x +2*W-400+288, y-121)
         const cnc = ship.onUpdate(() => {
             // departure after player jumps to ship
             if (player.pos.x + player.width > x+300) {
                 ship.move(100, 0)
+                seagull.moveTo(ship.pos.add(318, 94))
                 f1.moveTo(ship.pos.add(300, 230))
                 f2.moveTo(ship.pos.add(520, 260))
-                seagull.moveTo(ship.pos.add(318, 94))
+                c1.moveTo(ship.pos.add(2*W-400, c1.pos.y))
+                c2.moveTo(ship.pos.add(2*W-400, c2.pos.y))
+                c3.moveTo(ship.pos.add(2*W-400, c3.pos.y))
+                c4.moveTo(ship.pos.add(2*W-400+288, c4.pos.y))
+                c5.moveTo(ship.pos.add(2*W-400+288, c5.pos.y))
+                c6.moveTo(ship.pos.add(2*W-400+288, c6.pos.y))
             }
             // stop after one tile
             if (ship.pos.x > x + W) {
+                camScale(0.5)
                 cnc()
             }
         })
