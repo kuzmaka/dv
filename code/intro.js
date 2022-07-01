@@ -274,9 +274,10 @@ export default ({final, hasBlueKey}) => {
 
                     // door
                     const door = add([
-                        pos(x + 298, y),
+                        pos(x + 306, y),
+                        origin('top'),
                         area({
-                            width: 16,
+                            width: 70,
                             height: H,
                         }),
                         solid()
@@ -381,7 +382,8 @@ export default ({final, hasBlueKey}) => {
                         origin('bot'),
                         sprite('door', {anim: 'close'}),
                         area({
-                            width: 16,
+                            width: 70,
+                            height: H-50,
                         }),
                         solid()
                     ])
