@@ -336,7 +336,8 @@ export default ({final, hasBlueKey}) => {
                 }
             },
             {
-                name: 'lab-final',
+                // name: 'lab-final',
+                name: 'lab1',
                 // checkpoint: vec2(20, H-110),
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
@@ -355,11 +356,10 @@ export default ({final, hasBlueKey}) => {
 
                     // boss
                     add([
-                        pos(x + W/2, y + H/2),
-                        origin('center'),
+                        pos(x + W-8-320, y + H-8-194),
                         sprite('lab-boss', {anim: 'move'}),
                         area({
-                            height: 172
+                            height: 182
                         }),
                         body()
                     ])
