@@ -162,6 +162,21 @@ export default ({final, hasBlueKey}) => {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+                    // cabinet
+                    add([
+                        pos(x + 300, y + 160-8),
+                        sprite('cabinet'),
+                        area({
+                            height: 60
+                        }),
+                        solid()
+                    ])
+                }
+            },
+            {
+                name: 'lab1',
+                onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
                     let gx = x + 100
                     addGrille(gx, y+310)
                     addGasArea(gx, y+310, 50)
@@ -173,18 +188,31 @@ export default ({final, hasBlueKey}) => {
                     addGasArea(gx, y+260, 50)
                 }
             },
-            'lab1',
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    addDoggyInCage(x, y, sprite('doggy', {anim: 'sit'}))
-                    addDoggyInCage(x + 160, y, sprite('doggy', {anim: 'stay'}))
-                    addDoggyInCage(x + 320, y, sprite('dog2', {anim: 'tongue'}))
-                    addDoggyInCage(x + 480, y, sprite('dog3', {quad: quad(0, 0, 1, 0.87)}))
+                    addDoggyInCage(x+120, y, sprite('doggy', {anim: 'sit'}))
+                    addDoggyInCage(x + 280, y, sprite('doggy', {anim: 'stay'}))
+                    addDoggyInCage(x + 440, y, sprite('dog2', {anim: 'tongue'}))
+                    addDoggyInCage(x + 600, y, sprite('dog3', {quad: quad(0, 0, 1, 0.87)}))
                 }
             },
-            'lab1',
+            {
+                name: 'lab1',
+                onAdded: (tile, i, j) => {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    // playerStartPos = vec2(x + 10, y + 10)
+                    addBox(x+225, y+300)
+                    addBox(x+260, y+300)
+                    addBox(x+300, y+300)
+                    addBox(x+335, y+300)
+                    addBox(x+380, y+300)
+                    addBox(x+270, y+200)
+                    addBox(x+316, y+200)
+                    addBox(x+355, y+200)
+                }
+            },
             {
                 name: 'lab1',
                 onAdded: (tile, i, j) => {
@@ -429,6 +457,16 @@ export default ({final, hasBlueKey}) => {
         z(-100),
         fixed()
     ])
+
+    function addBox(x, y) {
+        add([
+            pos(x, y),
+            sprite('box'),
+            origin('center'),
+            area(),
+            body()
+        ])
+    }
 
     function addGrille(x, y) {
         add([
