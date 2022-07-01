@@ -1,21 +1,20 @@
 import {H, W} from "./init";
 import {ratBehaviour} from "./components";
 
-export function goto(scene, args) {
+export function goto(scene, duration, args) {
     const darkScreen = add([
         pos(camPos()),
         origin('center'),
-        rect(3*W, 3*H),
+        rect(duration*3*W, duration*3*H),
         opacity(0),
         color(BLACK),
         z(1000)
     ])
     let timer = 0;
-    let dur = 1;
     darkScreen.onUpdate(() => {
-        if (timer < dur) {
+        if (timer < duration) {
             timer += dt();
-            darkScreen.opacity = map(timer, 0, dur, 0, 1);
+            darkScreen.opacity = map(timer, 0, duration, 0, 1);
         } else {
             go(scene, args)
         }

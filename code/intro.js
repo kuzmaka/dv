@@ -484,7 +484,7 @@ export default ({final, hasBlueKey}) => {
     })
 
     player.onCollide('container', () => {
-        goto('city')
+        goto('city', 1)
     })
 
     setupCamera(player)

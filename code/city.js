@@ -1,6 +1,6 @@
 import {W, H, DEBUG_NO_SLEEP} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
-import {addContainer} from "./functions";
+import {addContainer, goto} from "./functions";
 import {fade} from "./components";
 
 export default () => {
@@ -127,6 +127,25 @@ export default () => {
             },
             {
                 name: 'office1-1',
+                onAdded(tile, i, j) {
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    // collision box
+                    const coll = add([
+                        pos(x, y),
+                        area({
+                            width: W,
+                            height: H
+                        })
+                    ])
+
+                    coll.onCollide('player', () => {
+                        goto('office', 1)
+                    })
+                }
+            },
+            {
+                name: 'office1-2',
                 onAdded(tile, i, j) {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                 }
