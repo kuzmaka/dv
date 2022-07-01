@@ -11,6 +11,7 @@ export default ({final, hasBlueKey}) => {
     let hasRedKey = DEBUG_RED_KEY;
     let playerStartPos;
     let liftTilePos;
+    let switchSnowAtX;
 
     const light = add([
         pos(0),
@@ -288,6 +289,14 @@ export default ({final, hasBlueKey}) => {
                         tile.play(player.pos.x + player.width/2 < 306 ? 'left' : 'right')
                         door.destroy()
                     })
+
+                    // boxes
+                    addBox(x + 500, y + 200)
+                    addBox(x + 500 + 32, y + 200)
+                    addBox(x + 500 + 32 + 32, y + 200)
+                    addBox(x + 500, y + 100)
+                    addBox(x + 500 + 32, y + 100)
+                    addBox(x + 500 + 32 + 32, y + 100)
                 }
             },
             {
@@ -295,6 +304,7 @@ export default ({final, hasBlueKey}) => {
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     darkAreas.push([x, x+W])
+                    switchSnowAtX = x
                     // floor
                     add([
                         pos(x+451, y+296),
@@ -307,6 +317,9 @@ export default ({final, hasBlueKey}) => {
                 name: 'dock2',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    // playerStartPos = vec2(x + 10, y + 10)
+
                     darkAreas.push([x, x+W])
                     // floor
                     add([
@@ -451,12 +464,23 @@ export default ({final, hasBlueKey}) => {
 
     setupCamera(player)
 
+    // sky
     add([
         pos(0),
         sprite('sky-night', {anim: 'blink'}),
         z(-100),
         fixed()
     ])
+    // snow
+    const snow = add([
+        pos(0),
+        sprite('snow', {anim: 'letitsnow'}),
+        z(-99),
+        fixed()
+    ])
+    snow.onUpdate(() => {
+        snow.z = player.pos.x > switchSnowAtX ? 100 : -99;
+    })
 
     function addBox(x, y) {
         add([

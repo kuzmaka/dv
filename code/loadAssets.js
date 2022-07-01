@@ -17,7 +17,6 @@ export default () => {
     loadSprite('gas', 'gas.png')
     loadSprite('grille', 'grille.png')
     loadSprite('hint-q', 'hint-q.png')
-    loadSprite('container', 'container.png')
     loadSprite('liftwall', 'liftwall.png')
     loadSprite('lift', 'lift.png', {
         sliceX: 1,
@@ -44,6 +43,18 @@ export default () => {
     loadSprite('empty', 'empty.png')
     loadSprite('wave', 'wave.png')
     loadSprite('box', 'box.png')
+    loadSprite('snow', 'snow.png', {
+        sliceX: 1,
+        sliceY: 5,
+        anims: {
+            letitsnow: {
+                from: 0,
+                to: 4,
+                loop: true,
+                speed: 12
+            },
+        }
+    })
 
     loadRoot('sprites/lab/')
     loadSprite('lab0', 'lab0.png')
@@ -128,6 +139,14 @@ export default () => {
             }
         }
     })
+
+    loadRoot('sprites/city/')
+    loadSprite('ship-mid', 'ship-mid.png')
+    loadSprite('ship-mid-end-back', 'ship-mid-end-back.png')
+    loadSprite('ship-mid-end-front', 'ship-mid-end-front.png')
+    loadSprite('ship-end-back', 'ship-end-back.png')
+    loadSprite('ship-end-front', 'ship-end-front.png')
+    loadSprite('container', 'container.png')
 
     loadRoot('sprites/office/')
     loadSprite('office1-1', 'office1-1.png')

@@ -143,6 +143,16 @@ export function addLift(tilePos, player, liftwall = null) {
 
 }
 
+export function addContainer(x, y) {
+    add([
+        pos(x, y),
+        sprite('container'),
+        area(),
+        solid(),
+        body()
+    ])
+}
+
 export function gasSystem(gases = [], cd) {
     add([
         {
