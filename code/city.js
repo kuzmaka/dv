@@ -91,12 +91,38 @@ export default () => {
                 name: 'street0',
                 onAdded(tile, i, j) {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    playerStartPos = vec2(x + 10, y + 10)
+
+                    // floor
+                    add([
+                        pos(x, y+H-63),
+                        area({width: W - 100, height: 50}), // leaned floor in next tile requires some space
+                        solid()
+                    ])
                 }
             },
             {
                 name: 'street-office',
                 onAdded(tile, i, j) {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    // leaned floor
+                    const floor = add([
+                        pos(x, y+H-63),
+                        area({width: 110, height: 10}),
+                        solid()
+                    ])
+                    tile.onUpdate(() => {
+                        if (player.pos.x >= x - 200 && player.pos.x <= x+300) {
+                            const fromX = floor.pos.x;
+                            floor.moveTo(Math.min(Math.max(player.pos.x, x-100), x+200), mapc(player.pos.x, x-100, x+200,y+H-63, y+H-9))
+                            if (player.curPlatform() === floor) {
+                                // compensate floor movement and put player on ground
+                                player.moveTo(player.pos.x - (floor.pos.x - fromX), floor.pos.y - player.area.offset.y - player.area.height)
+                            }
+                        }
+                    })
                 }
             },
             {
