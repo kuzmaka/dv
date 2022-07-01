@@ -104,7 +104,8 @@ export function addTiles(tiles, opt = {}) {
                 width: opt.lwall,
                 height: tiles.length * H
             }),
-            solid()
+            solid(),
+            'wall'
         ])
     }
     if(opt.rwall !== undefined) {
@@ -114,7 +115,8 @@ export function addTiles(tiles, opt = {}) {
                 width: opt.rwall,
                 height: tiles.length * H
             }),
-            solid()
+            solid(),
+            'wall'
         ])
     }
     if(opt.ceil === true) {
@@ -124,7 +126,8 @@ export function addTiles(tiles, opt = {}) {
                 width: tiles[0].length * W,
                 height: 5
             }),
-            solid()
+            solid(),
+            'wall'
         ])
     }
 }
@@ -452,6 +455,7 @@ function wave(player)
         opacity(0.8),
         scale(),
         z(100),
+        lifespan(0.3, {fade: 1}),
         'woof'
     ])
     const speed = 800
@@ -465,6 +469,9 @@ function wave(player)
     wave.onExitView(() => {
         wave.destroy()
     })
+    // wave.onCollide('deflatable', (d) => {
+    //     d.move(dir*200*this.opacity**2, 0)
+    // })
 }
 
 function multiWave(player, m = 3)

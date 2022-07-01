@@ -1,5 +1,5 @@
 import {H, W} from "./init";
-import {ratBehaviour} from "./components";
+import {myLifespan, ratBehaviour} from "./components";
 
 export function goto(scene, duration, args) {
     const darkScreen = add([
@@ -255,7 +255,8 @@ export function addObjects(map, opt) {
             origin('center'),
             state('idle', ['idle', 'run', 'attack']),
             z(15),
-            'enemy'
+            'enemy',
+            'deflatable'
         ],
         "t": () => [
             sprite('table', {frame: randi(2)}),
@@ -265,5 +266,64 @@ export function addObjects(map, opt) {
             }),
             solid()
         ]
+    })
+}
+
+//dont want refactor addGasArea()
+export function timedGas(x, y, r, time = 9999) {
+    const gasArea = add([
+        pos(x, y),
+        origin('center'),
+        area({width: 2*r, height: 2*r}),
+        outview(),
+        {
+            time: time,
+            target: get('player')[0],
+            update() {
+                this.time -= dt()
+                if(this.time <= 0) destroy(this)
+            },
+        }
+    ])
+
+    // hack to check collision with circle
+    const gasCircle = {
+        exists() {return true},
+        area: true,
+        worldArea() {
+            return {
+                shape: 'circle',
+                center: gasArea.pos,
+                radius: r
+            }
+        }
+    }
+
+    let t = 0;
+    gasArea.onUpdate(() => {
+        if (gasArea.isOutOfView()) {
+            return
+        }
+        t += dt()
+        if (t > 0.02) {
+            t = 0;
+            const _r = rand(0, r);
+            const _a = rand(0, 2*Math.PI);
+            add([
+                // pos(x + rand(0, w), y + rand(0, w)),
+                pos(x + _r * Math.cos(_a), y + _r * Math.sin(_a)),
+                sprite('gas'),
+                origin('center'),
+                scale(rand(0.5, 2)),
+                myLifespan(1, {fade: 0.5, opacity: 0.4}),
+                move(rand(0, 360), rand(20, 60)),
+                rotate(rand(0, 360)),
+                opacity(0.4),
+                z(2)
+            ])
+        }
+        if (gasArea.target.isColliding(gasCircle)) {
+            gasArea.target.die()
+        }
     })
 }

@@ -11,6 +11,16 @@ export default () => {
                 onAdded: (tile) => {
                     tile.play('light')
                     const [x, y] = [tile.pos.x, tile.pos.y];
+                    //floor
+                    add([
+                        pos(x, y + 350),
+                        area({
+                            width: 1855,
+                            height: 10
+                        }),
+                        solid(),
+                        'wall'
+                    ])
                     //boss
                     add([
                         pos(x + 100, y + H - 262),
@@ -33,14 +43,6 @@ export default () => {
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     tile.play('light')
-                    add([
-                        pos(x, y + 350),
-                        area({
-                            width: 575,
-                            height: 10
-                        }),
-                        solid()
-                    ])
                 }
             }
         ],
@@ -246,7 +248,7 @@ export default () => {
     ]
 
     const fm = [
-        "__ ",
+        "   ",
         "__ ",
         " __",
         "___",

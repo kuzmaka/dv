@@ -1,3 +1,5 @@
+import {timedGas} from "./functions";
+
 export function jitter() {
     let p;
     let moveOut = true;
@@ -214,7 +216,13 @@ export function ratBehaviour() {
 
 export function officeBossBehaviour() {
     return {
+        target: get('player')[0],
+        throwAngle: deg2rad(30),
+        flip: true,
         load() {
+            wait(1, () => {
+                this.target = get('player')[0]
+            })
             this.onStateEnter('attack', () => {
                 this.play('atkprep')
                 wait(0.7, () => {
@@ -227,13 +235,25 @@ export function officeBossBehaviour() {
             this.onStateEnter('throw', () => {
                 this.play('throw')
                 wait(1.3, () => {
+                    let x = this.target.pos.x - this.pos.x - 85 + this.target.width/2
+                    let y = this.target.pos.y - this.pos.y + 55
+                    let v = Math.sqrt(gravity() / (2*(Math.tan(this.throwAngle)*x + y))) * x / Math.cos(this.throwAngle)
                     add([
                         sprite('throwed-pepper', {anim: 'rotating'}),
                         pos(this.pos.add(85, 55)),
+                        origin('center'),
                         area(),
-                        body(),
-                        move(-15, 400),
-                        rotate(10)
+                        body({solid: false}),
+                        move(-rad2deg(this.throwAngle), v),
+                        rotate(10),
+                        {
+                            load() {
+                                this.onCollide('wall', () => {
+                                    timedGas(this.pos.x, this.pos.y, 30, 5)
+                                    destroy(this)
+                                })
+                            }
+                        }
                     ])
                     wait(0.1, () => {
                         this.enterState('idle')
