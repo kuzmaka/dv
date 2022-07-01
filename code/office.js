@@ -10,6 +10,12 @@ export default () => {
                 name: "office5-1",
                 onAdded: (tile) => {
                     tile.play('light')
+                    const [x, y] = [tile.pos.x, tile.pos.y];
+                    add([
+                        pos(x + 100, y + H - 266),
+                        sprite('office-boss', {flipX: true}),
+
+                    ])
                 }
             },
             {
@@ -266,7 +272,7 @@ export default () => {
 
     const player = addPlayer({
         x: 1300,
-        y: 1540
+        y: 180
     })
 
     setupCamera(player)
@@ -294,12 +300,12 @@ export default () => {
 function addTeleport(pos1, pos2) {
     add([
         sprite('teleport'),
-        pos(pos1),
+        pos(pos1.clone()),
         area(),
         {
             load() {
                 this.onCollide('player', (p) => {
-                    p.pos = pos2
+                    p.pos = pos2.clone()
                 })
             }
         }
@@ -341,7 +347,7 @@ const parkour = [
         "!===!      !==b!b===!  ",
         "                       ",
         "    !bb=!              ",
-        "                       ",
+        "     r                 ",
         " !=====!=====!         ",
     ],
     //2-1   [2]
@@ -373,7 +379,7 @@ const parkour = [
     [
         "                   ",
         "              !===!",
-        "                   ",
+        "     r             ",
         "  !======!         ",
         "                   ",
         "                   ",

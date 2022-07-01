@@ -302,6 +302,7 @@ export default () => {
             }
         }
     })
+    loadSprite('office-boss', 'office-boss.png')
 
     loadRoot('../../')
     loadSprite('doggy', 'sprites/doggy.png', {

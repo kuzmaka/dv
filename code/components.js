@@ -101,9 +101,11 @@ export function ratBehaviour() {
         edges: [],
         update() {
             this.target = get('player')[0]
+            if(this.cooldown > 0) this.cooldown -= dt()
             if(this.state === 'attack') return
-            if (this.pos.dist(this.target.pos.add(48, 48)) <= 80 && Math.abs(this.pos.y - this.target.pos.y) <= 60) {
+            if(this.pos.dist(this.target.pos.add(48, 48)) <= 80 && Math.abs(this.pos.y - this.target.pos.y) <= 60 && this.cooldown <= 0) {
                 this.enterState('attack')
+                this.cooldown = 3
             }
         },
         load() {
@@ -137,12 +139,12 @@ export function ratBehaviour() {
                 this.play('run')
             })
             this.onStateUpdate('run', () => {
-                if(Math.abs(this.pos.x - this.target.pos.x) <= 5) {
+                let t = this.target.pos.x - this.pos.x + 20
+                if(Math.abs(t) <= 5) {
                     this.enterState('idle')
                     return
                 }
-                let t = this.pos.x - this.target.pos.x
-                this.flipX(this.flip = t > 0)
+                this.flipX(this.flip = t < 0)
                 let o = false
                 let e
                 this.edges.forEach((edge) => {
@@ -154,7 +156,7 @@ export function ratBehaviour() {
                 })
                 if(o) {
                     let check = add([
-                        pos(this.pos.x + 30 * (this.flip ? -0.5 : 1), this.pos.y + 40),
+                        pos(this.pos.x + 30 * (this.flip ? -0.6 : 1), this.pos.y + 40),
                         area({
                             width: 20,
                             height: 30
@@ -170,14 +172,14 @@ export function ratBehaviour() {
                         return
                     }
                 }
-                this.move(this.speed * (t > 0 ? -1 : 1), 0)
+                this.move(this.speed * (t > 0 ? 1 : -1), 0)
             })
             this.onStateEnter('idle', () => {
                 this.play('idle')
             })
             this.onStateUpdate('idle', () => {
-                let t = this.pos.x - this.target.pos.x
-                this.flipX(this.flip = t > 0)
+                let t = this.target.pos.x - this.pos.x + 20
+                this.flipX(this.flip = t < 0)
                 let o = false
                 let e
                 this.edges.forEach((edge) => {
@@ -189,7 +191,7 @@ export function ratBehaviour() {
                 })
                 if(o) {
                     let check = add([
-                        pos(this.pos.x + 30 * (this.flip ? -0.5 : 1), this.pos.y + 40),
+                        pos(this.pos.x + 30 * (this.flip ? -0.6 : 1), this.pos.y + 40),
                         area({
                             width: 20,
                             height: 30
@@ -204,7 +206,7 @@ export function ratBehaviour() {
                         return
                     }
                 }
-                if(Math.abs(this.pos.x - this.target.pos.x) > 5) this.enterState('run')
+                if(Math.abs(t) > 5) this.enterState('run')
             })
         }
     }

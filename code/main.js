@@ -19,7 +19,7 @@ scene('office', office)
 debug.inspect = false
 
 // go('intro', {})
-go('intro', {hasBlueKey: true})
+// go('intro', {hasBlueKey: true})
 // go('city')
-// go('office')
+go('office')
 // go('lab-final')
