@@ -245,7 +245,6 @@ export function addPlayer(opt) {
                     pos(player.pos.add(player.flip?0:player.width, (player.isDown ? 80 : 36))),
                     origin(player.flip ? 'right' : 'left'),
                     area(),
-                    // scale(),
                     lifespan(0.25, { fade: 0.2 }),
                     z(100),
                     'fire'

@@ -54,7 +54,7 @@ export default () => {
         }
     })
     loadSprite('box', 'box.png')
-    loadSprite('container', 'container.png')
+    loadSprite('container', 'container-logo-night.png')
     loadSprite('snow', 'snow.png', {
         sliceX: 1,
         sliceY: 5,

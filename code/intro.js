@@ -312,6 +312,15 @@ export default ({final, hasBlueKey}) => {
                         area({width: W-451, height: 100}),
                         solid()
                     ])
+                    // boxes
+                    add([
+                        pos(x+375, y+320),
+                        area({
+                            width: 68,
+                            height: 32
+                        }),
+                        solid()
+                    ])
                 }
             },
             {
@@ -322,6 +331,25 @@ export default ({final, hasBlueKey}) => {
                     // playerStartPos = vec2(x + 10, y + 10)
 
                     darkAreas.push([x, x+W])
+
+                    // boxes
+                    add([
+                        pos(x+119, y+232),
+                        area({
+                            width: 78,
+                            height: 32
+                        }),
+                        solid()
+                    ])
+                    add([
+                        pos(x+111, y+264),
+                        area({
+                            width: 104,
+                            height: 32
+                        }),
+                        solid()
+                    ])
+
                     // floor
                     add([
                         pos(x, y),
