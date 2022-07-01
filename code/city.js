@@ -31,9 +31,9 @@ export default () => {
                     ])
 
                     // container
-                    addContainer(x - 10, y+133)
-                    addContainer(x - 10, y+6)
-                    addContainer(x - 10, y-121)
+                    addContainer(x - 10, y+133, true)
+                    addContainer(x - 10, y+6, true)
+                    addContainer(x - 10, y-121, true)
                 }
             },
             {

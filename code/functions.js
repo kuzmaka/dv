@@ -11,7 +11,7 @@ export function goto(scene, args) {
         z(1000)
     ])
     let timer = 0;
-    let dur = 0.5;
+    let dur = 1;
     darkScreen.onUpdate(() => {
         if (timer < dur) {
             timer += dt();
@@ -143,13 +143,15 @@ export function addLift(tilePos, player, liftwall = null) {
 
 }
 
-export function addContainer(x, y) {
-    return add([
+export function addContainer(x, y, _solid = false) {
+    const t = add([
         pos(x, y),
         sprite('container'),
         area(),
-        solid(),
+        'container'
     ])
+    t.solid = _solid
+    return t
 }
 
 export function gasSystem(gases = [], cd) {
