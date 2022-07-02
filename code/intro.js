@@ -199,16 +199,16 @@ export default ({final}) => {
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     addDoggyInCage(x+120, y, sprite('doggy', {anim: 'sit'}))
+                    addDoggyInCage(x + 280, y, sprite('doggy', {anim: 'stay'}))
                     if (final) {
                         add([
-                            pos(x + 280, y + H-8),
+                            pos(x + 440, y + H-8),
                             sprite('cage-open'),
                             origin('bot')
                         ])
                     } else {
-                        addDoggyInCage(x + 280, y, sprite('doggy', {anim: 'stay'}))
+                        addDoggyInCage(x + 440, y, sprite('dog2', {anim: 'tongue'}))
                     }
-                    addDoggyInCage(x + 440, y, sprite('dog2', {anim: 'tongue'}))
                     addDoggyInCage(x + 600, y, sprite('dog3', {quad: quad(0, 0, 1, 0.87)}))
                 }
             },
@@ -466,9 +466,9 @@ export default ({final}) => {
                     ])
                 }
             },
+            'lab-final1',
             {
-                // name: 'lab-final',
-                name: 'lab1',
+                name: 'lab-final2',
                 // checkpoint: vec2(20, H-110),
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
@@ -486,14 +486,30 @@ export default ({final}) => {
                     ])
 
                     // boss
-                    add([
+                    const boss = add([
                         pos(x + W-8-320, y + H-8-194),
                         sprite('lab-boss', {anim: 'move'}),
                         area({
                             height: 182
                         }),
-                        body()
                     ])
+                    let bossKilled = false;
+                    boss.onCollide('player', () => {
+                        bossKilled = true
+                    })
+
+                    boss.onUpdate(() => {
+                        if (bossKilled) {
+                            addKey('red', boss.pos.x+boss.width/2, y+H-40)
+                            // add([
+                            //     pos(boss.pos),
+                            //     sprite('puppy', {anim: 'move'}),
+                            // ])
+                            destroy(boss);
+                            return;
+                        }
+                    })
+
                 }
             }
         ]
@@ -512,6 +528,11 @@ export default ({final}) => {
             y: H - 94,
             flip: true
         })
+        // player = addPlayer({
+        //     x: playerStartPos.x,
+        //     y: playerStartPos.y,
+        //     flip: true
+        // })
     } else {
         player = addPlayer({
             x: playerStartPos.x,
@@ -681,7 +702,7 @@ export default ({final}) => {
                     doggy.stopJitter()
                     isFree = true;
                     gameState.freeDoggiesCount++;
-                    if (gameState.freeDoggiesCount === 4) {
+                    if (gameState.freeDoggiesCount === 3) {
                         goto('win', 5)
                     }
                     cnc()

@@ -86,7 +86,8 @@ export default () => {
     loadSprite('cabinet', 'cabinet.png')
     loadSprite('cabinet-final', 'cabinet-final.png')
     loadSprite('lab2-exit', 'lab2-exit.png')
-    loadSprite('lab-final', 'lab-final.png')
+    loadSprite('lab-final1', 'lab-final1.png')
+    loadSprite('lab-final2', 'lab-final2.png')
     loadSprite('lab-boss', 'boss2.png', {
         sliceX: 1,
         sliceY: 4,
@@ -96,6 +97,30 @@ export default () => {
                 to: 3,
                 loop: true,
                 speed: 1
+            },
+        }
+    })
+    loadSprite('puppy', 'puppy.png', {
+        sliceX: 1,
+        sliceY: 2,
+        anims: {
+            move: {
+                from: 0,
+                to: 1,
+                loop: true,
+                speed: 2
+            },
+        }
+    })
+    loadSprite('kitten', 'kitten.png', {
+        sliceX: 1,
+        sliceY: 2,
+        anims: {
+            move: {
+                from: 0,
+                to: 1,
+                loop: true,
+                speed: 2
             },
         }
     })
