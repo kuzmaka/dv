@@ -264,7 +264,7 @@ export default ({final}) => {
                     //     tile.play( x + 250 < player.pos.x + player.width && player.pos.x < x + 430 ? 'left' : 'close')
                     // })
                     door.onCollide('woof', () => {
-                        tile.play(player.pos.x + player.width/2 < 306 ? 'left' : 'right')
+                        tile.play(player.pos.x + player.width/2 < x+306 ? 'right' : 'left')
                         door.destroy()
                     })
 
@@ -339,6 +339,12 @@ export default ({final}) => {
                     //     area(),
                     // ])
 
+                    tile.onUpdate(() => {
+                        if (player.pos.x > x+338 && y+H-8 - (player.pos.y+player.area.offset.y+player.area.height) < 2) {
+                            player.die()
+                        }
+                    })
+
                     if (!final) {
                         addShip(x, y)
                     }
@@ -349,12 +355,6 @@ export default ({final}) => {
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     darkAreas.push([x, x + W])
-
-                    tile.onUpdate(() => {
-                        if (player.pos.x > x) {
-                            player.die()
-                        }
-                    })
                 }
             },
             {
