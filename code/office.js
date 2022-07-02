@@ -6,6 +6,7 @@ import {addGasLattice, gasSystem, addObjects, addSuperFirePepper, addLift, addHe
 export default () => {
 
     let liftTilePos;
+    let lift;
 
     addUI()
 
@@ -42,13 +43,19 @@ export default () => {
                         opacity(0.7),
                         z(1000)
                     ])
-                    tile.onUpdate(() => {
+                    const cnc = tile.onUpdate(() => {
                         if (gameState.hasBlueKey && player.pos.x < 100) {
                             door.solid = false
                             fading.opacity = 0
                         } else {
                             door.solid = true
                             fading.opacity = 0.7
+                        }
+                        if (player.pos.y < tile.pos.y && player.pos.x > 100) {
+                            // upperDoor.solid = true
+                            fading.opacity = 0.7
+                            lift.trigger('lift-go')
+                            cnc()
                         }
                     })
 
@@ -328,7 +335,7 @@ export default () => {
         y: 540
     })
 
-    addLift(liftTilePos, player, true, {})
+    lift = addLift(liftTilePos, player, true, {})
     addHeli(liftTilePos.add(W, 0))
 
     setupCamera(player)
