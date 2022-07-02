@@ -52,7 +52,16 @@ export default () => {
                             fading.opacity = 0.7
                         }
                         if (player.pos.y < tile.pos.y && player.pos.x > 100) {
-                            // upperDoor.solid = true
+                            // roof - left wall
+                            add([
+                                pos(0, 0),
+                                origin("botright"),
+                                area({
+                                    width: 10,
+                                    height: H
+                                }),
+                                solid()
+                            ])
                             fading.opacity = 0.7
                             lift.trigger('lift-go')
                             cnc()
@@ -302,6 +311,26 @@ export default () => {
         ]
     ]
 
+    // roof - floor
+    const tilesCount = tiles[0].length;
+    add([
+        pos(0, 0),
+        origin('botleft'),
+        rect(W * tilesCount, 10),
+        outline(),
+        color(rgb(0x35, 0x2d, 0x48))
+    ])
+    // roof - right wall
+    add([
+        pos(W * tilesCount, 0),
+        origin("botleft"),
+        area({
+            width: 10,
+            height: H
+        }),
+        solid()
+    ])
+
     const fm = [
         "   ",
         "__ ",
@@ -336,7 +365,7 @@ export default () => {
     })
 
     lift = addLift(liftTilePos, player, true, {})
-    addHeli(liftTilePos.add(W, 0))
+    addHeli(liftTilePos.add(W, -3))
 
     setupCamera(player)
     camPos(vec2(camPos().x, H * 1.5))
