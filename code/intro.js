@@ -223,40 +223,6 @@ export default ({final}) => {
                     addGasArea(gx, y+310, 50)
                 }
             },
-            /*{
-                name: 'lab2-exit',
-                onAdded: (tile) => {
-                    const [x, y] = [tile.pos.x, tile.pos.y];
-                    lab2ExitTile = tile
-
-                    // door
-                    const door = add([
-                        pos(x + 82 + 30, y + 188),
-                        area({
-                            width: 87 - 30,
-                            height: 165
-                        })
-                    ])
-                    let justArrived = true;
-                    const cancel1 = door.onUpdate(() => {
-                        if (justArrived) {
-                            if (!door.isColliding(player)) {
-                                justArrived = false;
-                                cancel1()
-                            }
-                        }
-                    })
-                    const cancel2 = door.onCollide('player', (p) => {
-                        if (justArrived) return;
-
-                        if (hasBlueKey) {
-                            player.hidden = true
-                            goto('lab-final')
-                            cancel2()
-                        }
-                    })
-                }
-            },*/
             {
                 name: 'lab-dock',
                 onAdded: (tile) => {
