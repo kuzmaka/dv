@@ -35,22 +35,19 @@ export default ({final}) => {
                     liftTilePos = tile.pos
 
                     // ceil
-                    add([
-                        pos(x, y),
-                        area({
-                            width: W,
-                            height: 8
-                        }),
-                        solid()
-                    ])
+                    // add([
+                    //     pos(x, y),
+                    //     area({
+                    //         width: W,
+                    //         height: 8
+                    //     }),
+                    //     solid()
+                    // ])
 
                     // cabinet
                     add([
                         pos(x + 400, y + 159-8),
                         sprite('cabinet'),
-                        area({
-                            height: 10
-                        }),
                     ])
 
                     // door to lift with lock
@@ -62,27 +59,34 @@ export default ({final}) => {
                     add([
                         pos(x + 75, y + 255),
                         origin('top'),
-                        sprite('bluelock')
+                        sprite('bluelock'),
                     ])
-                    if (!gameState.hasBlueKey) {
-                        add([
-                            pos(tile.pos.add(0, H-8)),
-                            origin('botleft'),
-                            area({
-                                width: 8,
-                                height: H-8
-                            }),
-                            solid()
-                        ])
-                        add([
-                            pos(x, y),
-                            origin("topright"),
-                            rect(W, H),
-                            color(BLACK),
-                            opacity(0.7),
-                            z(1000)
-                        ])
-                    }
+                    const door = add([
+                        pos(tile.pos.add(0, H-8)),
+                        origin('botleft'),
+                        area({
+                            width: 8,
+                            height: H-16
+                        }),
+                        solid()
+                    ])
+                    const fading = add([
+                        pos(x, y),
+                        origin("topright"),
+                        rect(W, H),
+                        color(BLACK),
+                        opacity(0.7),
+                        z(1000)
+                    ])
+                    tile.onUpdate(() => {
+                        if (gameState.hasBlueKey && player.pos.x < 100) {
+                            door.solid = false
+                            fading.opacity = 0
+                        } else {
+                            door.solid = true
+                            fading.opacity = 0.7
+                        }
+                    })
                 }
             },
             {

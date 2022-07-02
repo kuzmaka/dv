@@ -85,7 +85,7 @@ export function addLift(tilePos, player, liftwall = null) {
         pos(p.x, p.y - 8),
         origin('botright'),
         area({
-            width: 8,
+            width: 30,
             height: lift.height - 16
         }),
     ])
