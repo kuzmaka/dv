@@ -324,7 +324,7 @@ export default () => {
     })
     loadSprite('office-boss', 'office-boss.png', {
         sliceX: 6,
-        sliceY: 3,
+        sliceY: 4,
         anims: {
             idle: {
                 from: 0,
@@ -343,6 +343,12 @@ export default () => {
                 from: 5,
                 to: 17,
                 speed: 10
+            },
+            run: {
+                from: 18,
+                to: 21,
+                speed: 4,
+                loop: true
             }
         }
     })

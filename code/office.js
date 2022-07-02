@@ -1,7 +1,7 @@
 import {W, H} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {officeBossBehaviour, swing} from "./components";
-import {addGasLattice, gasSystem, addObjects, addLift} from "./functions";
+import {addGasLattice, gasSystem, addObjects, addSuperFirePepper, addLift} from "./functions";
 
 export default () => {
 
@@ -29,19 +29,19 @@ export default () => {
                         solid(),
                         'wall'
                     ])
-                    // //boss
-                    // let b = add([
-                    //     pos(x + 200, y + H - 132),
-                    //     origin('center'),
-                    //     sprite('office-boss', {flipX: true}),
-                    //     area({
-                    //         offset: vec2(-30, 67),
-                    //         width: 167,
-                    //         height: 113
-                    //     }),
-                    //     state('idle', ['idle', 'attack', 'throw']),
-                    //     officeBossBehaviour()
-                    // ])
+                    //boss
+                    let b = add([
+                        pos(x + 200, y + H - 132),
+                        origin('center'),
+                        sprite('office-boss', {flipX: true}),
+                        area({
+                            offset: vec2(-30, 67),
+                            width: 167,
+                            height: 113
+                        }),
+                        state('idle', ['idle', 'attack', 'throw', 'run']),
+                        officeBossBehaviour()
+                    ])
                     //camerascale
                     add([
                         pos(x, y),
@@ -74,12 +74,7 @@ export default () => {
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     table(vec2(x + 40, y + 291))
-                    add([
-                        pos(x + 65, y + 270),
-                        sprite('supepper'),
-                        origin('center'),
-                        swing()
-                    ])
+                    addSuperFirePepper(x + 65, y + 270)
                 }
             },
             {

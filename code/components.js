@@ -249,11 +249,11 @@ export function officeBossBehaviour() {
 
             if(this.cdThrow > 0) this.cdThrow -= dt()
             if(this.cdAtk > 0) this.cdAtk -= dt()
-            if(this.cdThrow <= 0) {
+            if(this.cdThrow <= 0 && this.state === 'run') {
                 this.enterState('throw')
                 this.cdThrow = 3
             }
-            else if(this.cdAtk <= 0 && d <= 250) {
+            else if(this.cdAtk <= 0 && d <= 150 && this.state === 'run') {
                 this.enterState('attack')
                 this.cdAtk = 3
             }
@@ -279,7 +279,7 @@ export function officeBossBehaviour() {
                     }
                     destroy(check)
                     wait(0.3, () => {
-                        this.enterState('idle')
+                        this.enterState('run')
                     })
                 })
             })
@@ -312,17 +312,24 @@ export function officeBossBehaviour() {
                         }
                     ])
                     wait(0.1, () => {
-                        this.enterState('idle')
+                        this.enterState('run')
                     })
                 })
             })
             this.onStateEnter('idle', () => {
                 this.play('idle')
                 wait(1, () => {
-                    this.enterState('throw')
+                    this.enterState('run')
                 })
             })
-            this.enterState('idle')
+            this.onStateEnter('run', () => {
+                this.play('run')
+            })
+            this.onStateUpdate('run', () => {
+                this.target = get('player')[0]
+                this.moveTo(vec2(this.target.pos.x + this.target.width/2, this.pos.y), 100)
+            })
+            this.enterState('run')
         }
     }
 }
