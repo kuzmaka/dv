@@ -367,6 +367,7 @@ export default () => {
     })
     loadSprite('liftup', 'liftup.png')
     loadSprite('heli', 'heli.png')
+    loadSprite('rooflight', 'rooflight.png')
 
 
     loadRoot('../../')

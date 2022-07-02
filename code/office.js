@@ -313,22 +313,33 @@ export default () => {
 
     // roof - floor
     const tilesCount = tiles[0].length;
+    const tilesW = W * tilesCount
     add([
         pos(0, 0),
         origin('botleft'),
-        rect(W * tilesCount, 10),
+        rect(tilesW, 10),
         outline(),
         color(rgb(0x35, 0x2d, 0x48))
     ])
     // roof - right wall
     add([
-        pos(W * tilesCount, 0),
+        pos(tilesW, 0),
         origin("botleft"),
         area({
             width: 10,
             height: H
         }),
         solid()
+    ])
+    add([
+        pos(0,0),
+        origin('botleft'),
+        sprite('rooflight')
+    ])
+    add([
+        pos(tilesW,0),
+        origin('botright'),
+        sprite('rooflight')
     ])
 
     const fm = [
