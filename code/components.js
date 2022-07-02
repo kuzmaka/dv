@@ -107,11 +107,12 @@ export function fade(time, opt = {}) {
     };
 }
 
-export function checkpoint(playerPos) {
+export function checkpoint(playerPos, playerFlip = false) {
     return {
         id: 'checkpoint',
         require: ['area'],
-        playerPos: playerPos.clone()
+        playerPos: playerPos.clone(),
+        flip: playerFlip
     }
 }
 

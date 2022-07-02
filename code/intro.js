@@ -267,31 +267,25 @@ export default ({final}) => {
                 }
             },
             {
-                name: 'dock1',
+                name: 'dock',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     darkAreas.push([x, x+W])
                     switchSnowAtX = x
                     dockTilePos = tile.pos
-                    // floor
-                    add([
-                        pos(x+451, y+296),
-                        area({width: W-451, height: 100}),
-                        solid()
-                    ])
                     // boxes
-                    add([
-                        pos(x+375, y+320),
-                        area({
-                            width: 68,
-                            height: 32
-                        }),
-                        solid()
-                    ])
+                    // add([
+                    //     pos(x+375, y+320),
+                    //     area({
+                    //         width: 68,
+                    //         height: 32
+                    //     }),
+                    //     solid()
+                    // ])
                 }
             },
             {
-                name: 'dock2',
+                name: 'dock-end',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
 
@@ -300,35 +294,33 @@ export default ({final}) => {
                     darkAreas.push([x, x+W])
 
                     // boxes
-                    add([
-                        pos(x+119, y+232),
-                        area({
-                            width: 78,
-                            height: 32
-                        }),
-                        solid()
-                    ])
-                    add([
-                        pos(x+111, y+264),
-                        area({
-                            width: 104,
-                            height: 32
-                        }),
-                        solid()
-                    ])
+                    // add([
+                    //     pos(x+119, y+232),
+                    //     area({
+                    //         width: 78,
+                    //         height: 32
+                    //     }),
+                    //     solid()
+                    // ])
+                    // add([
+                    //     pos(x+111, y+264),
+                    //     area({
+                    //         width: 104,
+                    //         height: 32
+                    //     }),
+                    //     solid()
+                    // ])
 
                     // floor
-                    add([
-                        pos(x, y),
-                        sprite('dock2'),
-                        area(),
-                    ])
-                    add([
-                        pos(x, y+H-64),
-                        area({width: 339, height: 100}),
-                        solid()
-                    ])
-                    addShip(x, y)
+                    // add([
+                    //     pos(x, y),
+                    //     sprite('dock2'),
+                    //     area(),
+                    // ])
+
+                    if (!final) {
+                        addShip(x, y)
+                    }
                 }
             },
             {
@@ -336,6 +328,12 @@ export default ({final}) => {
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     darkAreas.push([x, x + W])
+
+                    tile.onUpdate(() => {
+                        if (player.pos.x > x) {
+                            player.die()
+                        }
+                    })
                 }
             },
             {
@@ -433,21 +431,13 @@ export default ({final}) => {
 
     let player;
     if (final) {
-        addHeli(dockTilePos.add(0, H-1))
+        const heli = addHeli(dockTilePos.add(200, H-1))
 
         player = addPlayer({
-            x: dockTilePos.x + 100,
+            x: heli.pos.x + 60,
             y: H - 94,
+            flip: true
         })
-        //
-        // // fade in
-        // add([
-        //     pos(lab2ExitTile.pos.x - W, lab2ExitTile.pos.y - H),
-        //     rect(3*W, 3*H),
-        //     fade(0.5, {from: 1, to: 0}),
-        //     color(BLACK),
-        //     z(1000)
-        // ])
     } else {
         player = addPlayer({
             x: playerStartPos.x,

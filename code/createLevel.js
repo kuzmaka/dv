@@ -178,7 +178,7 @@ export function addPlayer(opt) {
         pos(opt.x, opt.y),
         sprite("dog", {
             anim: 'dead',
-            flipX: false
+            flipX: !!opt.flip
         }),
         area({
             offset: vec2(22, 40),
@@ -188,13 +188,13 @@ export function addPlayer(opt) {
         body(),
         {
             speed: 0,
-            flip: false,
+            flip: !!opt.flip,
             dead: false,
             sleeping: opt.sleeping ? opt.sleeping : false,
             lays: false,
             firstMoved: false,
             isDown: opt.sleeping ? opt.sleeping : false,
-            lastCheckpoint: null,
+            lastCheckpoint: {playerPos: vec2(opt.x, opt.y), flip: !!opt.flip},
             onRespawn: [],
             camSetup: () => {},
             resetArea() {
@@ -245,6 +245,8 @@ export function addPlayer(opt) {
                     shade.destroy()
                     hint.destroy()
                     player.moveTo(player.lastCheckpoint.playerPos)
+                    player.flipX(player.flip = player.lastCheckpoint.flip)
+                    player.resetArea()
                     this.camSetup()
                     setupCamera(player)
                     cnc()
