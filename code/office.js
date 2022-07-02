@@ -1,7 +1,7 @@
 import {W, H, gameState} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {officeBossBehaviour, swing} from "./components";
-import {addGasLattice, gasSystem, addObjects, addSuperFirePepper, addLift, addHeli} from "./functions";
+import {addGasLattice, gasSystem, addObjects, addSuperFirePepper, addLift, addHeli, goto} from "./functions";
 
 export default () => {
 
@@ -376,7 +376,10 @@ export default () => {
     })
 
     lift = addLift(liftTilePos, player, true, {})
-    addHeli(liftTilePos.add(W, -3))
+    const heli = addHeli(liftTilePos.add(W, -3))
+    heli.onCollide('player', () => {
+        goto('intro', 1, {final: true})
+    })
 
     setupCamera(player)
     camPos(vec2(camPos().x, H * 1.5))

@@ -1,7 +1,7 @@
 import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP, DEBUG_HAS_RED_KEY, gameState} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {fade, jitter, myLifespan, swing} from "./components";
-import {addContainer, addKey, addLift, addSuperFirePepper, addSuperWoofPepper, goto} from "./functions";
+import {addContainer, addHeli, addKey, addLift, addSuperFirePepper, addSuperWoofPepper, goto} from "./functions";
 
 export default ({final}) => {
 
@@ -10,6 +10,7 @@ export default ({final}) => {
     let playerStartPos;
     let liftTilePos;
     let switchSnowAtX;
+    let dockTilePos;
 
     const light = add([
         pos(0),
@@ -271,6 +272,7 @@ export default ({final}) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     darkAreas.push([x, x+W])
                     switchSnowAtX = x
+                    dockTilePos = tile.pos
                     // floor
                     add([
                         pos(x+451, y+296),
@@ -431,11 +433,12 @@ export default ({final}) => {
 
     let player;
     if (final) {
-        // TODO: player spawns in dock location
-        // player = addPlayer({
-        //     x: lab2ExitTile.pos.x + 100,
-        //     y: H - 94,
-        // })
+        addHeli(dockTilePos.add(0, H-1))
+
+        player = addPlayer({
+            x: dockTilePos.x + 100,
+            y: H - 94,
+        })
         //
         // // fade in
         // add([
@@ -452,31 +455,31 @@ export default ({final}) => {
             sleeping: !DEBUG_NO_SLEEP
         })
 
-        // fade in
-        add([
-            pos(player.pos.x-W, player.pos.y-H),
-            rect(3*W, 3*H),
-            fade(2, {from: 1, to: 0}),
-            color(BLACK),
-            z(1000)
-        ])
-
         player.on('firstMoved', () => {
             heart.play('off')
             isAlarm = !DEBUG_NO_ALARM
         })
+
+        player.onUpdate(() => {
+            light.hidden = !inDarkArea(player.pos.x)
+            light.moveTo(player.pos)
+        })
+
+        player.onCollide('container', () => {
+            goto('city', 1)
+        })
     }
 
+    // fade in
+    add([
+        pos(player.pos.x-W, player.pos.y-H),
+        rect(3*W, 3*H),
+        fade(2, {from: 1, to: 0}),
+        color(BLACK),
+        z(1000)
+    ])
+
     addLift(liftTilePos, player, false, {liftwall: 'liftwall'})
-
-    player.onUpdate(() => {
-        light.hidden = !inDarkArea(player.pos.x)
-        light.moveTo(player.pos)
-    })
-
-    player.onCollide('container', () => {
-        goto('city', 1)
-    })
 
     setupCamera(player)
 
@@ -487,16 +490,18 @@ export default ({final}) => {
         z(-100),
         fixed()
     ])
-    // snow
-    const snow = add([
-        pos(0),
-        sprite('snow', {anim: 'letitsnow'}),
-        z(-99),
-        fixed()
-    ])
-    snow.onUpdate(() => {
-        snow.z = player.pos.x > switchSnowAtX ? 100 : -99;
-    })
+    if (!final) {
+        // snow
+        const snow = add([
+            pos(0),
+            sprite('snow', {anim: 'letitsnow'}),
+            z(-99),
+            fixed()
+        ])
+        snow.onUpdate(() => {
+            snow.z = player.pos.x > switchSnowAtX ? 100 : -99;
+        })
+    }
 
     function addBox(x, y) {
         add([

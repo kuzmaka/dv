@@ -146,10 +146,11 @@ export function addLift(tilePos, player, goesUp, opts = {}) {
 }
 
 export function addHeli(p) {
-    add([
+    return add([
         pos(p),
         origin("botleft"),
-        sprite('heli')
+        sprite('heli'),
+        area(),
     ])
 }
 
