@@ -1,6 +1,6 @@
 import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP, DEBUG_HAS_RED_KEY, gameState} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
-import {fade, jitter, myLifespan, swing} from "./components";
+import {checkpoint, fade, jitter, myLifespan, swing} from "./components";
 import {addContainer, addHeli, addKey, addLift, addSuperFirePepper, addSuperWoofPepper, goto} from "./functions";
 
 export default ({final}) => {
@@ -273,6 +273,16 @@ export default ({final}) => {
                     darkAreas.push([x, x+W])
                     switchSnowAtX = x
                     dockTilePos = tile.pos
+
+                    // pos near heli
+                    add([
+                        pos(tile.pos.x + 260, 0),
+                        area({
+                            width: 10,
+                            height: H
+                        }),
+                        checkpoint(vec2(tile.pos.x + 260, H-94), final)
+                    ])
                     // boxes
                     // add([
                     //     pos(x+375, y+320),
@@ -657,6 +667,10 @@ export default ({final}) => {
             }
         }
         const cnc = ship.onUpdate(() => {
+            // stop after one tile
+            if (ship.pos.x > x + W) {
+                return
+            }
             // departure after player jumps to ship
             if (player.pos.x > x+300) {
                 ship.move(100, 0)
@@ -667,10 +681,15 @@ export default ({final}) => {
                     container.obj.moveTo(ship.pos.add(container.dp))
                 })
             }
-            // stop after one tile
-            if (ship.pos.x > x + W) {
-                cnc()
-            }
+        })
+        on('respawned', 'player', () => {
+            ship.moveTo(x, y)
+            seagull.moveTo(ship.pos.add(318, 94))
+            f1.moveTo(ship.pos.add(300, 230))
+            f2.moveTo(ship.pos.add(520, 260))
+            containers.forEach((container) => {
+                container.obj.moveTo(ship.pos.add(container.dp))
+            })
         })
     }
 }
