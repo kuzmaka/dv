@@ -122,7 +122,7 @@ export default ({final}) => {
                         pos(x + 345, y + 291),
                         area({
                             width: 88,
-                            height: 50
+                            height: 69
                         }),
                         solid()
                     ])

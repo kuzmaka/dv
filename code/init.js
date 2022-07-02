@@ -1,18 +1,18 @@
 import kaboom from "kaboom"
 
 export const DEBUG_SHOW_TILE_INDEX = 0
-export const DEBUG_NO_ALARM = 1
-export const DEBUG_NO_SLEEP = 1
+export const DEBUG_NO_ALARM = 0
+export const DEBUG_NO_SLEEP = 0
 export const DEBUG_CAN_SUPER_WOOF = 0
 export const DEBUG_CAN_FIRE = 0
-export const DEBUG_HAS_RED_KEY = 0
 export const DEBUG_HAS_BLUE_KEY = 0
+export const DEBUG_HAS_RED_KEY = 0
 
 export let gameState = {
     canSuperWoof: !!DEBUG_CAN_SUPER_WOOF,
     canFire: !!DEBUG_CAN_FIRE,
-    hasBlueKey: !!DEBUG_HAS_RED_KEY,
-    hasRedKey: !!DEBUG_HAS_BLUE_KEY,
+    hasBlueKey: !!DEBUG_HAS_BLUE_KEY,
+    hasRedKey: !!DEBUG_HAS_RED_KEY,
     freeDoggiesCount: 0
 }
 

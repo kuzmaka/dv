@@ -142,6 +142,14 @@ export function addLift(tilePos, player, goesUp, opts = {}) {
 
 }
 
+export function addHeli(p) {
+    add([
+        pos(p),
+        origin("botleft"),
+        sprite('heli')
+    ])
+}
+
 export function addContainer(x, y, _solid = false) {
     const t = add([
         pos(x, y),

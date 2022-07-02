@@ -1,7 +1,7 @@
-import {W, H} from './init'
+import {W, H, gameState} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {officeBossBehaviour, swing} from "./components";
-import {addGasLattice, gasSystem, addObjects, addSuperFirePepper, addLift} from "./functions";
+import {addGasLattice, gasSystem, addObjects, addSuperFirePepper, addLift, addHeli} from "./functions";
 
 export default () => {
 
@@ -17,7 +17,42 @@ export default () => {
                     tile.play('light')
                     const [x, y] = [tile.pos.x, tile.pos.y];
 
+                    // lift stuff
                     liftTilePos = tile.pos
+                    // button
+                    add([
+                        pos(x + 75, y + 255),
+                        origin('top'),
+                        sprite('liftup'),
+                    ])
+                    const door = add([
+                        pos(tile.pos.add(0, H-8)),
+                        origin('botleft'),
+                        area({
+                            width: 8,
+                            height: H-16
+                        }),
+                        solid()
+                    ])
+                    const fading = add([
+                        pos(x, y),
+                        origin("topright"),
+                        rect(W, H),
+                        color(BLACK),
+                        opacity(0.7),
+                        z(1000)
+                    ])
+                    tile.onUpdate(() => {
+                        if (gameState.hasBlueKey && player.pos.x < 100) {
+                            door.solid = false
+                            fading.opacity = 0
+                        } else {
+                            door.solid = true
+                            fading.opacity = 0.7
+                        }
+                    })
+
+
 
                     //floor
                     add([
@@ -298,9 +333,8 @@ export default () => {
         y: 180
     })
 
-    addLift(liftTilePos, player, true, {
-
-    })
+    addLift(liftTilePos, player, true, {})
+    addHeli(liftTilePos.add(W, 0))
 
     setupCamera(player)
     camPos(vec2(camPos().x, H * 1.5))

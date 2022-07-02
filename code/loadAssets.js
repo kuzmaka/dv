@@ -364,6 +364,9 @@ export default () => {
             }
         }
     })
+    loadSprite('liftup', 'liftup.png')
+    loadSprite('heli', 'heli.png')
+
 
     loadRoot('../../')
     loadSprite('doggy', 'sprites/doggy.png', {
