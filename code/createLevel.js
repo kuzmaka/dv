@@ -305,6 +305,7 @@ export function addPlayer(opt) {
             },
             update() {
                 if(this.cdFire > 0) this.cdFire -= dt()
+                if(this.cdWoof > 0) this.cdWoof -= dt()
             }
         },
         z(50),
