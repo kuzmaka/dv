@@ -6,7 +6,7 @@ import {fade} from "./components";
 export default () => {
     let playerStartPos;
 
-    const hintQ = addUI()
+    addUI()
 
     const tiles = [
         [

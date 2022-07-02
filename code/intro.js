@@ -1,14 +1,12 @@
-import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP, DEBUG_RED_KEY} from './init'
+import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP, DEBUG_HAS_RED_KEY, gameState} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {fade, jitter, myLifespan, swing} from "./components";
-import {addContainer, addLift, goto} from "./functions";
+import {addContainer, addKey, addLift, addSuperFirePepper, addSuperWoofPepper, goto} from "./functions";
 
-export default ({final, hasBlueKey}) => {
+export default ({final}) => {
 
     let heart;
     let isAlarm = false;
-    let lab2ExitTile;
-    let hasRedKey = DEBUG_RED_KEY;
     let playerStartPos;
     let liftTilePos;
     let switchSnowAtX;
@@ -25,7 +23,7 @@ export default ({final, hasBlueKey}) => {
         return !!darkAreas.find(area => area[0] <= x && x <= area[1])
     }
 
-    const hintQ = addUI()
+    addUI()
 
     const tiles = [
         [
@@ -66,7 +64,7 @@ export default ({final, hasBlueKey}) => {
                         origin('top'),
                         sprite('bluelock')
                     ])
-                    if (!hasBlueKey) {
+                    if (!gameState.hasBlueKey) {
                         add([
                             pos(tile.pos.add(0, H-8)),
                             origin('botleft'),
@@ -92,6 +90,12 @@ export default ({final, hasBlueKey}) => {
                 checkpoint: vec2(330, 180),
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    // blue key
+                    // addKey('blue', x+500, y+H-40)
+                    // red key
+                    // addKey('red', x+600, y+H-40)
+                    // addSuperWoofPepper(x+600, y+H-40)
 
                     playerStartPos = vec2(x + 330, y + 180)
 
@@ -200,20 +204,8 @@ export default ({final, hasBlueKey}) => {
                     addBox(x+316, y+200)
                     addBox(x+355, y+200)
 
-                    // supepper
-                    const supepper = add([
-                        pos(x + 316, y + 250),
-                        sprite('supepper'),
-                        origin('center'),
-                        area(),
-                        swing()
-                    ])
-                    supepper.onCollide('player', () => {
-                        play('score')
-                        supepper.destroy()
-                        player.canSuperWoof = true
-                        hintQ.opacity = 1
-                    })
+                    // super woof pepper
+                    addSuperWoofPepper(x + 316, y + 250)
                 }
             },
             {
@@ -646,7 +638,7 @@ export default ({final, hasBlueKey}) => {
             'cage'
         ])
         cage.onUpdate(() => {
-            if (hasRedKey && cage.collision) {
+            if (gameState.hasRedKey && cage.collision) {
                 cage.moveTo(cage.pos.x, y + H + cage.height, 50)
                 if (cage.pos.y > y + H + cage.height - 10) {
                     doggy.stopJitter()

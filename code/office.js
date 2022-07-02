@@ -1,9 +1,12 @@
 import {W, H} from './init'
-import {addPlayer, addTiles, setupCamera} from "./createLevel";
+import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {officeBossBehaviour, swing} from "./components";
 import {addGasLattice, gasSystem, addObjects} from "./functions";
 
 export default () => {
+
+    addUI()
+
     const tiles = [
         [
             {

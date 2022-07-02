@@ -47,6 +47,27 @@ export function swing() {
     }
 }
 
+export function wiggle(dur = 1) {
+    let timer = 0;
+    let done = false;
+    return {
+        id: 'swing',
+        require: ['scale'],
+        update() {
+            if (done) return;
+            if (timer < dur) {
+                timer += dt()
+                this.scaleTo(1.5)
+                this.angle = 10*Math.sin(time()*40)
+            } else {
+                this.scaleTo(1)
+                this.angle = 0;
+                done = true;
+            }
+        }
+    }
+}
+
 // added startOpacity
 export function myLifespan(time, opt = {}) {
     if (time == null) {

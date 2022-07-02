@@ -1,5 +1,5 @@
-import {H, W} from "./init";
-import {myLifespan, ratBehaviour} from "./components";
+import {gameState, H, W} from "./init";
+import {myLifespan, ratBehaviour, swing} from "./components";
 
 export function goto(scene, duration, args) {
     const darkScreen = add([
@@ -325,5 +325,59 @@ export function timedGas(x, y, r, time = 9999) {
         if (gasArea.target.isColliding(gasCircle)) {
             gasArea.target.die()
         }
+    })
+}
+
+export function addKey(color, x, y) {
+    const key = add([
+        pos(x, y),
+        sprite(color + '-key'),
+        origin('center'),
+        area(),
+        swing(),
+    ])
+    key.onCollide('player', () => {
+        play('score')
+        key.destroy()
+        if (color === 'blue') {
+            gameState.hasBlueKey = true
+        }
+        if (color === 'red') {
+            gameState.hasRedKey = true
+        }
+    })
+}
+
+export function addSuperWoofPepper(x, y) {
+
+    const supepper = add([
+        pos(x, y),
+        sprite('supepper'),
+        origin('center'),
+        area(),
+        swing()
+    ])
+    supepper.onCollide('player', (player) => {
+        play('score')
+        supepper.destroy()
+        gameState.canSuperWoof = true
+        player.woof()
+    })
+}
+
+export function addSuperFirePepper(x, y) {
+
+    const supepper = add([
+        pos(x, y),
+        sprite('supepper'),
+        origin('center'),
+        area(),
+        swing()
+    ])
+    supepper.onCollide('player', (player) => {
+        play('score')
+        supepper.destroy()
+        gameState.canFire = true
+        player.fire()
     })
 }

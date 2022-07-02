@@ -1,38 +1,58 @@
-import {H, DEBUG_SHOW_TILE_INDEX, W, DEBUG_SUPER_WOOF, DEBUG_CAN_FIRE} from "./init";
-import {checkpoint, fade} from "./components";
-import {shakeObj} from "./functions";
+import {
+    H,
+    DEBUG_SHOW_TILE_INDEX,
+    W,
+    gameState
+} from "./init";
+import {checkpoint, fade, wiggle} from "./components";
 
 const PLAYER_SPEED = 400;
+
+function addUIElement(name, x, y) {
+    add([
+        layer('ui'),
+        pos(x, y),
+        origin('center'),
+        sprite(name),
+        fixed(),
+        scale(),
+        wiggle(3),
+    ])
+}
 
 export function addUI() {
     layers([
         'game',
         'ui',
     ], 'game')
-    const hintQ = add([
-        layer('ui'),
-        pos(camPos().sub(width()/2-21, height()/2-15)),
-        origin('center'),
-        sprite('hint-q'),
-        fixed(),
-        opacity(DEBUG_SUPER_WOOF ? 1 : 0.3),
-        scale()
-    ])
-    let timer = 0;
-    const cnc = hintQ.onUpdate(() => {
-        if (hintQ.opacity === 1) {
-            timer += dt()
-            if (timer < 1) {
-                hintQ.scaleTo(1.3)
-                hintQ.angle = 10*Math.sin(time()*40)
-            } else {
-                hintQ.scaleTo(1)
-                hintQ.angle = 0;
-                cnc()
-            }
+
+    const cnc1 = onUpdate(() => {
+        if (gameState.canSuperWoof) {
+            addUIElement('hint-q', 20, 15)
+            cnc1()
         }
     })
-    return hintQ
+
+    const cnc2 = onUpdate(() => {
+        if (gameState.canFire) {
+            addUIElement('hint-e', 20, 41)
+            cnc2()
+        }
+    })
+
+    const cnc3 = onUpdate(() => {
+        if (gameState.hasBlueKey) {
+            addUIElement('blue-key', width() - 15, 15)
+            cnc3()
+        }
+    })
+
+    const cnc4 = onUpdate(() => {
+        if (gameState.hasRedKey) {
+            addUIElement('red-key', width() - 41, 15)
+            cnc4()
+        }
+    })
 }
 
 export function addTiles(tiles, opt = {}) {
@@ -175,8 +195,6 @@ export function addPlayer(opt) {
             firstMoved: false,
             isDown: opt.sleeping ? opt.sleeping : false,
             lastCheckpoint: null,
-            canSuperWoof: DEBUG_SUPER_WOOF,
-            canFire: DEBUG_CAN_FIRE,
             camSetup: () => {},
             resetArea() {
                 if (player.flip) {
@@ -237,9 +255,13 @@ export function addPlayer(opt) {
                     this.trigger('firstMoved')
                 }
             },
+            woof() {
+                play('woof')
+                shake(2)
+                multiWave(player)
+            },
             fire() {
-                if (!this.canFire) return;
-                debug.log(player.pos.x + ' ' + player.pos.y + ' ' + player.flip + ' ' + player.width)
+                if (!gameState.canFire) return;
                 const fire = add([
                     sprite('fire', {
                         flipX: player.flip,
@@ -397,15 +419,12 @@ export function addPlayer(opt) {
     })
 
     onKeyPress(['q'], () => {
-        if (player.dead || player.sleeping || !player.canSuperWoof) return;
-        play('woof')
-        shake(2)
-        multiWave(player)
+        if (player.dead || player.sleeping || !gameState.canSuperWoof) return;
+        player.woof()
     })
 
     onKeyPress(['e'], () => {
-        if (player.dead || player.sleeping || !player.canFire) return;
-        // play('fire')
+        if (player.dead || player.sleeping || !gameState.canFire) return;
         player.fire()
     })
 
