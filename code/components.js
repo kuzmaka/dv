@@ -369,7 +369,7 @@ export function officeBossBehaviour() {
                 this.toDestroy.forEach((d) => {
                     destroy(d)
                 })
-                addKey('blue', this.pos.clone())
+                addKey('blue', this.pos.x, this.pos.y)
             })
             this.enterState('run')
         }
