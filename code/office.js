@@ -25,12 +25,26 @@ export default () => {
                         'wall'
                     ])
                     //boss
-                    add([
-                        pos(x + 100, y + H - 262),
+                    let b = add([
+                        pos(x + 200, y + H - 132),
+                        origin('center'),
                         sprite('office-boss', {flipX: true}),
-                        area(),
+                        area({
+                            offset: vec2(-30, 67),
+                            width: 167,
+                            height: 113
+                        }),
                         state('idle', ['idle', 'attack', 'throw']),
                         officeBossBehaviour()
+                    ])
+                    //camerascale
+                    add([
+                        pos(x, y),
+                        area({
+                            width: 3 * W,
+                            height: H
+                        }),
+                        'camTrigger2'
                     ])
                 }
             },
@@ -279,7 +293,7 @@ export default () => {
     ])
 
     const player = addPlayer({
-        x: 1300,
+        x: 300,
         y: 180
     })
 
@@ -295,13 +309,47 @@ export default () => {
     ])
 
     const scaleTriggers = get('camTrigger')
+    const scaleTriggers2 = get('camTrigger2')[0]
+    var black1
+    var black2
     player.onUpdate(() => {
         let triggered = false
+        let triggered2 = false
         scaleTriggers.forEach((trigger) => {
             if(player.isColliding(trigger)) triggered = true
         })
         if(triggered) camScale(camScale().lerp(vec2(0.5), dt()*3))
         else camScale(camScale().lerp(vec2(1), dt()*3))
+        if(player.isColliding(scaleTriggers2)) triggered2 = true
+        if(triggered2) {
+            camScale(camScale().lerp(vec2(0.5), dt()*3))
+            if(black1 === undefined) {
+                black1 = add([
+                    pos(0, H),
+                    rect(3*W, H),
+                    color('black'),
+                    z(200)
+                ])
+            }
+            if(black2 === undefined) {
+                black2 = add([
+                    pos(-W, -H),
+                    rect(5*W, H),
+                    color('black'),
+                    z(200)
+                ])
+            }
+        } else {
+            camScale(camScale().lerp(vec2(1), dt()*3))
+            if(black1 !== undefined) {
+                destroy(black1)
+                black1 = undefined
+            }
+            if(black2 !== undefined) {
+                destroy(black2)
+                black2 = undefined
+            }
+        }
     })
 }
 

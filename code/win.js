@@ -20,7 +20,7 @@ export default () => {
     add([
         pos(W/2, 60),
         origin('topright'),
-        text('Eugeniy', {size: 16})
+        text('Eugene', {size: 16})
     ])
     add([
         pos(W/2, 60),

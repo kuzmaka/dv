@@ -162,7 +162,7 @@ export function ratBehaviour() {
             })
             this.onStateUpdate('run', () => {
                 let t = this.target.pos.x - this.pos.x + 20
-                if(Math.abs(t) <= 5) {
+                if(Math.abs(t) <= 5 || this.pos.dist(this.target.pos) > 500) {
                     this.enterState('idle')
                     return
                 }
@@ -200,6 +200,7 @@ export function ratBehaviour() {
                 this.play('idle')
             })
             this.onStateUpdate('idle', () => {
+                if(this.pos.dist(this.target.pos) > 500) return
                 let t = this.target.pos.x - this.pos.x + 20
                 this.flipX(this.flip = t < 0)
                 let o = false
@@ -237,17 +238,31 @@ export function ratBehaviour() {
 
 export function officeBossBehaviour() {
     return {
-        target: get('player')[0],
+        target: undefined,
         throwAngle: deg2rad(30),
         flip: true,
+        update() {
+            this.target = get('player')[0]
+            this.moveTo(this.pos.lerp(vec2(this.target.pos.x + this.target.width/2, this.pos.y), 0.01))
+            if(this.pos.x < this.target.pos.x + this.target.width) this.flipX(this.flip = true)
+            else this.flipX(this.flip = false)
+        },
         load() {
-            wait(1, () => {
-                this.target = get('player')[0]
-            })
             this.onStateEnter('attack', () => {
                 this.play('atkprep')
                 wait(0.7, () => {
                     this.play('attack')
+                    let check = add([
+                        pos(this.pos.sub(75*this.flip, 0)),
+                        area({
+                            width: 75,
+                            height: 20
+                        })
+                    ])
+                    if (check.isColliding(this.target)) {
+                        this.target.die()
+                    }
+                    destroy(check)
                     wait(0.3, () => {
                         this.enterState('idle')
                     })
@@ -256,12 +271,12 @@ export function officeBossBehaviour() {
             this.onStateEnter('throw', () => {
                 this.play('throw')
                 wait(1.3, () => {
-                    let x = this.target.pos.x - this.pos.x - 85 + this.target.width/2
-                    let y = this.target.pos.y - this.pos.y + 55
+                    let x = this.target.pos.x - this.pos.x + 65 + this.target.width/2
+                    let y = this.target.pos.y - this.pos.y + 70 + this.target.height/2
                     let v = Math.sqrt(gravity() / (2*(Math.tan(this.throwAngle)*x + y))) * x / Math.cos(this.throwAngle)
                     add([
                         sprite('throwed-pepper', {anim: 'rotating'}),
-                        pos(this.pos.add(85, 55)),
+                        pos(this.pos.sub(65, 70)),
                         origin('center'),
                         area(),
                         body({solid: false}),
@@ -270,6 +285,11 @@ export function officeBossBehaviour() {
                         {
                             load() {
                                 this.onCollide('wall', () => {
+                                    timedGas(this.pos.x, this.pos.y, 30, 5)
+                                    destroy(this)
+                                })
+                                this.onCollide('player', (p) => {
+                                    p.die()
                                     timedGas(this.pos.x, this.pos.y, 30, 5)
                                     destroy(this)
                                 })
