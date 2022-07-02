@@ -46,16 +46,16 @@ export function shakeObj(obj, time, strength = 4) {
     })
 }
 
-export function addLift(tilePos, player, liftwall = null) {
+export function addLift(tilePos, player, goesUp, opts = {}) {
 
-    if (liftwall) {
+    if (opts.liftwall) {
         add([
             pos(tilePos),
-            sprite(liftwall)
+            sprite(opts.liftwall)
         ])
         add([
             pos(tilePos.add(0, H)),
-            sprite(liftwall)
+            sprite(opts.liftwall)
         ])
     }
 
@@ -75,7 +75,7 @@ export function addLift(tilePos, player, liftwall = null) {
         pos(p.x - lift.width, p.y - 8),
         origin('botleft'),
         area({
-            width: 8,
+            width: 36,
             height: lift.height - 8
         }),
         solid()
@@ -101,7 +101,7 @@ export function addLift(tilePos, player, liftwall = null) {
         solid()
     ])
 
-    let state = 'top';
+    let state = goesUp ? 'bottom' : 'top';
     let fromY;
 
     lift.onCollide('player', () => {
@@ -123,12 +123,12 @@ export function addLift(tilePos, player, liftwall = null) {
         lift.play(state)
         if (state === 'down' || state === 'up') {
             const inLift = player.curPlatform() === floor;
-
-            lift.moveTo(p.add(0, (state === 'down' ? H : 0)), 100)
+            const toY = p.y + goesUp ? (state === 'down' ? 0 : -H) : (state === 'down' ? H : 0);
+            lift.moveTo(p.add(0, toY), 100)
             wall.pos = vec2(lift.pos.x - lift.width, lift.pos.y - 8)
             door.pos = vec2(lift.pos.x, lift.pos.y - 8)
             floor.pos = vec2(lift.pos)
-            if (lift.pos.y === p.y + (state === 'down' ? H : 0)) {
+            if (lift.pos.y === p.y + toY) {
                 state = state === 'down' ? 'bottom' : 'top';
                 door.solid = false
                 door.hidden = true

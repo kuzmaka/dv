@@ -119,10 +119,10 @@ export function addTiles(tiles, opt = {}) {
 
     if(opt.lwall !== undefined) {
         add([
-            pos(0, 0),
+            pos(0, H),  // no wall for lift
             area({
                 width: opt.lwall,
-                height: tiles.length * H
+                height: tiles.length * (H-1)
             }),
             solid(),
             'wall'

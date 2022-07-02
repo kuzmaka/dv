@@ -467,7 +467,7 @@ export default ({final}) => {
         })
     }
 
-    addLift(liftTilePos, player, 'liftwall')
+    addLift(liftTilePos, player, false, {liftwall: 'liftwall'})
 
     player.onUpdate(() => {
         light.hidden = !inDarkArea(player.pos.x)

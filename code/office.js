@@ -1,9 +1,11 @@
 import {W, H} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {officeBossBehaviour, swing} from "./components";
-import {addGasLattice, gasSystem, addObjects} from "./functions";
+import {addGasLattice, gasSystem, addObjects, addLift} from "./functions";
 
 export default () => {
+
+    let liftTilePos;
 
     addUI()
 
@@ -14,6 +16,9 @@ export default () => {
                 onAdded: (tile) => {
                     tile.play('light')
                     const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    liftTilePos = tile.pos
+
                     //floor
                     add([
                         pos(x, y + 350),
@@ -295,6 +300,10 @@ export default () => {
     const player = addPlayer({
         x: 300,
         y: 180
+    })
+
+    addLift(liftTilePos, player, true, {
+
     })
 
     setupCamera(player)
