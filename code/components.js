@@ -277,6 +277,7 @@ export function officeBossBehaviour() {
             }
         },
         load() {
+            wait(2, () => {this.die()})
             this.onStateEnter('attack', () => {
                 this.play('atkprep')
                 wait(0.7, () => {

@@ -371,8 +371,8 @@ export default () => {
     ])
 
     const player = addPlayer({
-        x: 1300,
-        y: 540
+        x: 300,
+        y: 180
     })
 
     lift = addLift(liftTilePos, player, true, {})
@@ -389,6 +389,7 @@ export default () => {
         fixed()
     ])
 
+    //boss
     player.onCollide('bossTrigger', (tr) => {
         let b = add([
             pos(200, H - 132),
@@ -419,7 +420,6 @@ export default () => {
             area(),
             solid()
         ]))
-        //boss trigger
         player.onRespawn.push(() => {
             b.destroy()
             b = add([
