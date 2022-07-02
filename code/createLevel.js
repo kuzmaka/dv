@@ -196,7 +196,7 @@ export function addPlayer(opt) {
             isDown: opt.sleeping ? opt.sleeping : false,
             lastCheckpoint: {playerPos: vec2(opt.x, opt.y), flip: !!opt.flip},
             onRespawn: [],
-            fireCD: 0,
+            cdFire: 0,
             woofCD: 0,
             camSetup: () => {},
             resetArea() {
@@ -270,7 +270,7 @@ export function addPlayer(opt) {
             fire() {
                 if (!gameState.canFire) return;
                 if(this.cdFire > 0) {
-                    //there must be sound of cooldown
+                    play('onCooldown')
                     return
                 }
                 const fire = add([
@@ -293,10 +293,10 @@ export function addPlayer(opt) {
                 fire.onCollide('enemy', (e) => {
                     e.hurt(2)
                 })
-                this.fireCD = 3
+                this.cdFire = 3
             },
             update() {
-                if(this.firecd > 0) this.fireCD -= dt()
+                if(this.cdFire > 0) this.cdFire -= dt()
             }
         },
         z(50),
