@@ -77,11 +77,14 @@ export default () => {
     loadSprite('sunrise', 'sunrise.png')
     loadSprite('lab0', 'lab0.png')
     loadSprite('lamp', 'lamp.png')
+    loadSprite('lamp-off', 'lamp-off.png')
+    loadSprite('ketchup', 'ketchup.png')
     loadSprite('xray', 'xray.png')
     loadSprite('lab1', 'lab1.png')
     loadSprite('lab1-window', 'lab1-window.png')
     loadSprite('cabinet-bottles', 'cabinet-bottles.png')
     loadSprite('cabinet', 'cabinet.png')
+    loadSprite('cabinet-final', 'cabinet-final.png')
     loadSprite('lab2-exit', 'lab2-exit.png')
     loadSprite('lab-final', 'lab-final.png')
     loadSprite('lab-boss', 'boss2.png', {
@@ -116,6 +119,7 @@ export default () => {
     })
     loadSprite('dock', 'dock.png')
     loadSprite('dock-end', 'dock-end.png')
+    loadSprite('photo', 'photo.png')
     loadSprite('ship0', 'ship0.png')
     loadSprite('seagull', 'seagull.png')
     loadSprite('cage', 'cage2.png')
@@ -143,7 +147,7 @@ export default () => {
     })
     loadSprite('bluelock', 'bluelock.png')
     loadSprite('heart', 'heart.png', {
-        sliceX: 6,
+        sliceX: 7,
         sliceY: 2,
         anims: {
             on: {
@@ -157,6 +161,10 @@ export default () => {
                 to: 5,
                 loop: true,
                 speed: 3
+            },
+            poweroff: {
+                from: 12,
+                to: 12,
             }
         }
     })

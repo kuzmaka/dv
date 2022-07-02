@@ -48,7 +48,7 @@ export default ({final}) => {
                     // cabinet
                     add([
                         pos(x + 400, y + 159-8),
-                        sprite('cabinet'),
+                        sprite(final? 'cabinet-final' : 'cabinet'),
                     ])
 
                     // door to lift with lock
@@ -104,10 +104,18 @@ export default ({final}) => {
 
                     playerStartPos = vec2(x + 330, y + 180)
 
+                    if (!final) {
+                        // ketchup
+                        add([
+                            pos(x, y),
+                            sprite('ketchup')
+                        ])
+                    }
+
                     // heart monitor
                     heart = add([
                         pos(x + 360, y + 160),
-                        sprite('heart', {anim: 'on'})
+                        sprite('heart', {anim: final ? 'poweroff' : 'on'})
                     ])
                     add([
                         pos(x, y),
@@ -116,7 +124,7 @@ export default ({final}) => {
                     ])
                     add([
                         pos(x, y),
-                        sprite('lamp')
+                        sprite(final ? 'lamp-off' : 'lamp')
                     ])
                     // bed collision box
                     add([
@@ -191,7 +199,15 @@ export default ({final}) => {
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     addDoggyInCage(x+120, y, sprite('doggy', {anim: 'sit'}))
-                    addDoggyInCage(x + 280, y, sprite('doggy', {anim: 'stay'}))
+                    if (final) {
+                        add([
+                            pos(x + 280, y + H-8),
+                            sprite('cage-open'),
+                            origin('bot')
+                        ])
+                    } else {
+                        addDoggyInCage(x + 280, y, sprite('doggy', {anim: 'stay'}))
+                    }
                     addDoggyInCage(x + 440, y, sprite('dog2', {anim: 'tongue'}))
                     addDoggyInCage(x + 600, y, sprite('dog3', {quad: quad(0, 0, 1, 0.87)}))
                 }
@@ -247,7 +263,12 @@ export default ({final}) => {
                     tile.play('close')
                     darkAreas.push([x + 300, x + W])
 
-                    // playerStartPos = vec2(x + 10, y + 10)
+                    if (final) {
+                        add([
+                            pos(x + 122, y + 208),
+                            sprite('photo')
+                        ])
+                    }
 
                     // door
                     const door = add([
