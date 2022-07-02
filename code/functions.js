@@ -203,8 +203,8 @@ export function addGasLattice(p, opt = {}) {
                     this.cooldown = opt.cd !== undefined ? opt.cd : 1.5
                     this.attack = opt.atkTime !== undefined ? opt.atkTime : 1.5
                 }
-                if(this.cooldown <= 0.6) this.color = rgb(map(this.cooldown, 0, 0.6, 255, 0))
-                else this.color = undefined
+                if(this.attack <= 0 && this.cooldown <= 0.6) this.color = rgb(map(this.cooldown, 0, 0.6, 255, 142), map(this.cooldown, 0, 0.6, 0, 142), map(this.cooldown, 0, 0.6, 0, 147))
+                else if(this.attack <= 0) this.color = undefined
                 if(!this.isOutOfView())
                     if(this.attack > 0 && this.microcd <= 0) {
                         add([
@@ -221,6 +221,7 @@ export function addGasLattice(p, opt = {}) {
                                 }
                             }
                         ])
+                        this.color = rgb(255, 0, 0)
                         this.microcd = 3
                     }
             }

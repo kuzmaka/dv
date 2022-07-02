@@ -122,6 +122,7 @@ export default () => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
                     table(vec2(x + 40, y + 291))
                     addSuperFirePepper(x + 65, y + 270)
+                    addObjects(parkour[5], {pos: vec2(x - 7, y)})
                 }
             },
             {
@@ -403,9 +404,10 @@ export default () => {
                 width: 167,
                 height: 113
             }),
-            health(100),
+            health(10),
             state('idle', ['idle', 'attack', 'throw', 'run', 'death']),
-            officeBossBehaviour()
+            officeBossBehaviour(),
+            'enemy'
         ])
         //camerascale
         let c = add([
@@ -416,13 +418,14 @@ export default () => {
             }),
             'camTrigger2'
         ])
-        b.toDestroy.push(c)
-        b.toDestroy.push(add([
+        let f = add([
             sprite('office-floor'),
             pos(3*W - 64, H - 10),
             area(),
             solid()
-        ]))
+        ])
+        b.toDestroy.push(c)
+        b.toDestroy.push(f)
         player.onRespawn.push(() => {
             b.destroy()
             b = add([
@@ -439,10 +442,14 @@ export default () => {
                 officeBossBehaviour(),
                 'enemy'
             ])
+            b.toDestroy.push(c)
+            b.toDestroy.push(f)
         })
         destroy(tr)
     })
 
+
+    // camScale(0.5)
 
     const scaleTriggers = get('camTrigger')
     var black1
@@ -580,5 +587,17 @@ const parkour = [
         "                   ",
         "                   ",
     ],
+    //4-1   [5]
+    [
+        "                                      ",
+        "                                      ",
+        "                !===============!     ",
+        "                                      ",
+        "                                      ",
+        "                                      ",
+        "     !bb======!                       ",
+        "                                      ",
+        "                                      ",
+    ]
 ]
 

@@ -196,6 +196,8 @@ export function addPlayer(opt) {
             isDown: opt.sleeping ? opt.sleeping : false,
             lastCheckpoint: {playerPos: vec2(opt.x, opt.y), flip: !!opt.flip},
             onRespawn: [],
+            fireCD: 0,
+            woofCD: 0,
             camSetup: () => {},
             resetArea() {
                 if (player.flip) {
@@ -266,6 +268,10 @@ export function addPlayer(opt) {
             },
             fire() {
                 if (!gameState.canFire) return;
+                if(this.cdFire > 0) {
+                    //there must be sound of cooldown
+                    return
+                }
                 const fire = add([
                     sprite('fire', {
                         flipX: player.flip,
@@ -283,6 +289,13 @@ export function addPlayer(opt) {
                     fire.flipX(player.flip)
                     fire.origin = player.flip ? 'right' : 'left'
                 })
+                fire.onCollide('enemy', (e) => {
+                    e.hurt(2)
+                })
+                this.fireCD = 3
+            },
+            update() {
+                if(this.firecd > 0) this.fireCD -= dt()
             }
         },
         z(50),

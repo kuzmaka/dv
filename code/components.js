@@ -233,6 +233,7 @@ export function ratBehaviour() {
                 if(Math.abs(t) > 5) this.enterState('run')
             })
             this.onDeath(() => {
+                if(this.state === 'death') return
                 this.enterState('death')
                 this.play('death')
             })
@@ -354,6 +355,7 @@ export function officeBossBehaviour() {
                 this.moveTo(vec2(this.target.pos.x + this.target.width/2, this.pos.y), 100)
             })
             this.onDeath(() => {
+                if(this.state === 'death') return
                 this.enterState('death')
                 this.play('death')
                 this.toDestroy.forEach((d) => {
