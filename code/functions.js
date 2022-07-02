@@ -155,14 +155,21 @@ export function addHeli(p) {
 }
 
 export function addContainer(x, y, _solid = false) {
-    const t = add([
-        pos(x, y),
-        sprite('container'),
-        area(),
-        'container'
-    ])
-    t.solid = _solid
-    return t
+    if (_solid) {
+        return add([
+            pos(x, y),
+            sprite('container'),
+            area(),
+            solid()
+        ])
+    } else {
+        return add([
+            pos(x, y),
+            sprite('container'),
+            area(),
+            'container'
+        ])
+    }
 }
 
 export function gasSystem(gases = [], cd) {

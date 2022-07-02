@@ -225,10 +225,13 @@ export default ({final}) => {
                     addBox(x+270, y+200)
                     addBox(x+316, y+200)
                     addBox(x+355, y+200)
+                    if (final) {
+                        addBox(x + 286, y + 100)
+                        addBox(x + 332, y + 100)
+                        addBox(x + 308, y + 0)
+                    }
 
-                    // super woof pepper
                     if (!final) {
-                        addSuperWoofPepper(x + 316, y + 250)
                         // checkpoint
                         add([
                             pos(x+316, y),
@@ -236,7 +239,7 @@ export default ({final}) => {
                                 width: 10,
                                 height: H
                             }),
-                            checkpoint(vec2(x+316-30, y+H-94-64))
+                            checkpoint(vec2(x+200, y+H-94-64))
                         ])
                     }
                 }
@@ -260,6 +263,9 @@ export default ({final}) => {
                 name: 'lab-dock',
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
+
+                    // playerStartPos = vec2(x + 10, y + 10)
+
                     tile.play('close')
                     darkAreas.push([x + 300, x + W])
 
@@ -268,6 +274,11 @@ export default ({final}) => {
                             pos(x + 122, y + 208),
                             sprite('photo')
                         ])
+                    }
+
+                    // super woof pepper
+                    if (!final) {
+                        addSuperWoofPepper(x + 122, y + H - 40)
                     }
 
                     // door
@@ -285,7 +296,7 @@ export default ({final}) => {
                     //     tile.play( x + 250 < player.pos.x + player.width && player.pos.x < x + 430 ? 'left' : 'close')
                     // })
                     door.onCollide('woof', () => {
-                        tile.play(player.pos.x + player.width/2 < x+306 ? 'right' : 'left')
+                        tile.play(player.pos.x + player.width / 2 < x + 306 ? 'right' : 'left')
                         door.destroy()
                     })
 
@@ -293,9 +304,11 @@ export default ({final}) => {
                     addBox(x + 500, y + 200)
                     addBox(x + 500 + 32, y + 200)
                     addBox(x + 500 + 32 + 32, y + 200)
-                    addBox(x + 500, y + 100)
-                    addBox(x + 500 + 32, y + 100)
-                    addBox(x + 500 + 32 + 32, y + 100)
+                    if (!final) {
+                        addBox(x + 500, y + 100)
+                        addBox(x + 500 + 32, y + 100)
+                        addBox(x + 500 + 32 + 32, y + 100)
+                    }
                 }
             },
             {
@@ -315,6 +328,14 @@ export default ({final}) => {
                         }),
                         checkpoint(vec2(tile.pos.x + 260, y+H-94), final)
                     ])
+
+                    if (!final) {
+                        addBox(x+270+200, y+200)
+                        addBox(x+316+200, y+200)
+                        addBox(x+355+200, y+200)
+
+                        addContainer(x+400+200, y+H-127-8, true)
+                    }
                     // boxes
                     // add([
                     //     pos(x+375, y+320),
@@ -359,6 +380,17 @@ export default ({final}) => {
                     //     sprite('dock2'),
                     //     area(),
                     // ])
+
+                    // fence
+                    add([
+                        pos(x+320, y+H-8),
+                        origin('botleft'),
+                        area({
+                            width: 12,
+                            height: 45
+                        }),
+                        solid()
+                    ])
 
                     tile.onUpdate(() => {
                         if (player.pos.x > x+338 && y+H-8 - (player.pos.y+player.area.offset.y+player.area.height) < 2) {
