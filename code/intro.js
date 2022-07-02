@@ -486,7 +486,7 @@ export default ({final}) => {
     // sky
     add([
         pos(0),
-        sprite('sky-violet'),
+        sprite(final ? 'sunrise' : 'sky-violet'),
         z(-100),
         fixed()
     ])
