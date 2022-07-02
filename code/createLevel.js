@@ -197,7 +197,7 @@ export function addPlayer(opt) {
             lastCheckpoint: {playerPos: vec2(opt.x, opt.y), flip: !!opt.flip},
             onRespawn: [],
             cdFire: 0,
-            woofCD: 0,
+            cdWoof: 0,
             camSetup: () => {},
             resetArea() {
                 if (player.flip) {
@@ -263,9 +263,14 @@ export function addPlayer(opt) {
                 }
             },
             woof() {
+                if(this.cdWoof > 0) {
+                    play('onCooldown')
+                    return
+                }
                 play('woof')
                 shake(2)
                 multiWave(player)
+                this.cdWoof = 3
             },
             fire() {
                 if (!gameState.canFire) return;

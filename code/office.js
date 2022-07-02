@@ -350,7 +350,10 @@ export default () => {
         "___",
         "___"
     ]
-
+    play('office', {
+        loop: true,
+        volume: 0.7
+    })
     addTiles(tiles, {
         floor: 10,
         floorMap: fm,
