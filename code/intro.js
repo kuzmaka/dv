@@ -211,7 +211,18 @@ export default ({final}) => {
                     addBox(x+355, y+200)
 
                     // super woof pepper
-                    addSuperWoofPepper(x + 316, y + 250)
+                    if (!final) {
+                        addSuperWoofPepper(x + 316, y + 250)
+                        // checkpoint
+                        add([
+                            pos(x+316, y),
+                            area({
+                                width: 10,
+                                height: H
+                            }),
+                            checkpoint(vec2(x+316-30, y+H-94-64))
+                        ])
+                    }
                 }
             },
             {
@@ -274,14 +285,14 @@ export default ({final}) => {
                     switchSnowAtX = x
                     dockTilePos = tile.pos
 
-                    // pos near heli
+                    // checkpoint near heli
                     add([
-                        pos(tile.pos.x + 260, 0),
+                        pos(tile.pos.x + 260, y),
                         area({
                             width: 10,
                             height: H
                         }),
-                        checkpoint(vec2(tile.pos.x + 260, H-94), final)
+                        checkpoint(vec2(tile.pos.x + 260, y+H-94), final)
                     ])
                     // boxes
                     // add([
