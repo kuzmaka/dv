@@ -123,9 +123,9 @@ export function ratBehaviour() {
         flip: false,
         edges: [],
         update() {
+            if(this.state === 'attack' || this.state === 'death') return
             this.target = get('player')[0]
             if(this.cooldown > 0) this.cooldown -= dt()
-            if(this.state === 'attack') return
             if(this.pos.dist(this.target.pos.add(48, 48)) <= 80 && Math.abs(this.pos.y - this.target.pos.y) <= 60 && this.cooldown <= 0) {
                 this.enterState('attack')
                 this.cooldown = 3
@@ -231,6 +231,10 @@ export function ratBehaviour() {
                 }
                 if(Math.abs(t) > 5) this.enterState('run')
             })
+            this.onDeath(() => {
+                this.enterState('death')
+                this.play('death')
+            })
             this.enterState('idle')
         }
     }
@@ -244,14 +248,8 @@ export function officeBossBehaviour() {
         flip: true,
         cdThrow: 5,
         cdAtk: 3,
-        die() {
-            this.enterState('death')
-            this.play('death')
-            this.toDestroy.forEach((d) => {
-                destroy(d)
-            })
-        },
         update() {
+            if(this.state === 'death') return
             this.target = get('player')[0]
             let d = this.target.pos.x + this.target.width/2 - this.pos.x
 
@@ -277,7 +275,6 @@ export function officeBossBehaviour() {
             }
         },
         load() {
-            wait(2, () => {this.die()})
             this.onStateEnter('attack', () => {
                 this.play('atkprep')
                 wait(0.7, () => {
@@ -354,6 +351,13 @@ export function officeBossBehaviour() {
             this.onStateUpdate('run', () => {
                 this.target = get('player')[0]
                 this.moveTo(vec2(this.target.pos.x + this.target.width/2, this.pos.y), 100)
+            })
+            this.onDeath(() => {
+                this.enterState('death')
+                this.play('death')
+                this.toDestroy.forEach((d) => {
+                    destroy(d)
+                })
             })
             this.enterState('run')
         }

@@ -267,7 +267,8 @@ export function addObjects(map, opt) {
             }),
             ratBehaviour(),
             origin('center'),
-            state('idle', ['idle', 'run', 'attack']),
+            state('idle', ['idle', 'run', 'attack', 'death']),
+            health(3),
             z(15),
             'enemy',
             'deflatable'

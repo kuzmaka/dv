@@ -371,8 +371,8 @@ export default () => {
     ])
 
     const player = addPlayer({
-        x: 300,
-        y: 180
+        x: 1300,
+        y: 540
     })
 
     lift = addLift(liftTilePos, player, true, {})
@@ -436,7 +436,8 @@ export default () => {
                 }),
                 health(10),
                 state('idle', ['idle', 'attack', 'throw', 'run', 'death']),
-                officeBossBehaviour()
+                officeBossBehaviour(),
+                'enemy'
             ])
         })
         destroy(tr)
