@@ -379,8 +379,26 @@ export default () => {
             area(),
             solid()
         ]))
+        //boss trigger
+        player.onRespawn.push(() => {
+            b.destroy()
+            b = add([
+                pos(200, H - 132),
+                origin('center'),
+                sprite('office-boss', {flipX: true}),
+                area({
+                    offset: vec2(-30, 67),
+                    width: 167,
+                    height: 113
+                }),
+                health(10),
+                state('idle', ['idle', 'attack', 'throw', 'run', 'death']),
+                officeBossBehaviour()
+            ])
+        })
         destroy(tr)
     })
+
 
     const scaleTriggers = get('camTrigger')
     var black1

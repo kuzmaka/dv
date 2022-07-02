@@ -301,9 +301,9 @@ export function officeBossBehaviour() {
                     if (check2.isColliding(this.target)) {
                         this.target.die()
                     }
+                    destroy(check1)
+                    destroy(check2)
                     wait(0.3, () => {
-                        destroy(check1)
-                        destroy(check2)
                         this.enterState('run')
                     })
                 })
@@ -312,7 +312,7 @@ export function officeBossBehaviour() {
                 this.play('throw')
                 wait(1.3, () => {
                     let x = Math.abs(this.target.pos.x - this.pos.x + 65 + this.target.width/2 * (this.flip ? 1 : -1))
-                    let y = Math.abs(this.target.pos.y - this.pos.y + 70 + this.target.height/2 * (this.flip ? 1 : -1))
+                    let y = Math.abs(this.target.pos.y - this.pos.y + 70 + this.target.height/2)
                     let v = Math.sqrt(gravity() / (2*(Math.tan(this.throwAngle)*x + y))) * x / Math.cos(this.throwAngle)
                     add([
                         sprite('throwed-pepper', {anim: 'rotating'}),

@@ -195,6 +195,7 @@ export function addPlayer(opt) {
             firstMoved: false,
             isDown: opt.sleeping ? opt.sleeping : false,
             lastCheckpoint: null,
+            onRespawn: [],
             camSetup: () => {},
             resetArea() {
                 if (player.flip) {
@@ -223,7 +224,7 @@ export function addPlayer(opt) {
                 shake()
                 const shade = add([
                     pos(toWorld(vec2(0, 0).sub(100, 100))),
-                    rect(W + 200, H + 200),
+                    rect(3*W + 200, 3*H + 200),
                     fade(1, {from: 0, to: 0.5}),
                     color(BLACK),
                     z(1000)
@@ -236,6 +237,7 @@ export function addPlayer(opt) {
                 ])
                 const cnc = onKeyPress('r', () => {
                     // respawn
+                    player.onRespawn.forEach((f) => {f()})
                     player.dead = false
                     player.firstMoved = false
                     player.speed = 0
