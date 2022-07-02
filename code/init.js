@@ -12,7 +12,8 @@ export let gameState = {
     canSuperWoof: !!DEBUG_CAN_SUPER_WOOF,
     canFire: !!DEBUG_CAN_FIRE,
     hasBlueKey: !!DEBUG_HAS_RED_KEY,
-    hasRedKey: !!DEBUG_HAS_BLUE_KEY
+    hasRedKey: !!DEBUG_HAS_BLUE_KEY,
+    freeDoggiesCount: 0
 }
 
 export const W = 640

@@ -13,6 +13,7 @@ export default () => {
         }
     })
     loadSprite('light', 'light.png')
+    loadSprite('light-white', 'light-white.png')
     loadSprite('supepper', 'supepper.png')
     loadSprite('gas', 'gas.png')
     loadSprite('grille', 'grille.png')

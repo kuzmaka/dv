@@ -473,10 +473,6 @@ export default ({final}) => {
         light.moveTo(player.pos)
     })
 
-    player.onCollide('cage', (cage) => {
-        cage.collision = true
-    })
-
     player.onCollide('container', () => {
         goto('city', 1)
     })
@@ -602,17 +598,23 @@ export default ({final}) => {
             origin('bot'),
             sprite('cage'),
             area(),
-            {
-                collision: false,
-            },
             'cage'
         ])
-        cage.onUpdate(() => {
-            if (gameState.hasRedKey && cage.collision) {
+        let cageOpen = false;
+        cage.onCollide('player', () => {
+            cageOpen = gameState.hasRedKey;
+        })
+        const cnc = cage.onUpdate(() => {
+            if (cageOpen) {
                 cage.moveTo(cage.pos.x, y + H + cage.height, 50)
                 if (cage.pos.y > y + H + cage.height - 10) {
                     doggy.stopJitter()
-                    isFree = true
+                    isFree = true;
+                    gameState.freeDoggiesCount++;
+                    if (gameState.freeDoggiesCount === 4) {
+                        goto('win', 5)
+                    }
+                    cnc()
                 }
             }
         })
