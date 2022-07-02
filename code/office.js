@@ -386,8 +386,8 @@ export default () => {
         })
         const scaleTriggers2 = get('camTrigger2')[0]
         if(scaleTriggers2 !== undefined && player.isColliding(scaleTriggers2)) triggered2 = true
-        if(triggered && !triggered2) camScale(camScale().lerp(vec2(0.5), dt()*3))
-        else camScale(camScale().lerp(vec2(1), dt()*3))
+        if(triggered) camScale(camScale().lerp(vec2(0.5), dt()*3))
+        else if(!triggered2) camScale(camScale().lerp(vec2(1), dt()*3))
         if(triggered2) {
             camScale(camScale().lerp(vec2(0.5), dt()*3))
             if(black1 === undefined) {

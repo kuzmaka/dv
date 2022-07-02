@@ -289,10 +289,10 @@ export function officeBossBehaviour() {
                         })
                     ])
                     let check2 = add([
-                        pos(this.pos.add(this.flip ? 100 : -140, 20)),
+                        pos(this.pos.add(this.flip ? 100 : -140, -20)),
                         area({
                             width: 50,
-                            height: 80
+                            height: 120
                         })
                     ])
                     if (check1.isColliding(this.target)) {

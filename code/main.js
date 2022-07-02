@@ -16,7 +16,7 @@ scene('city', city)
 scene('office', office)
 scene('win', win)
 
-debug.inspect = false
+debug.inspect = true
 
 // go('win')
 // go('intro', {final: false})
