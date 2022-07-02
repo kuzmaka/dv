@@ -170,6 +170,7 @@ export default () => {
     loadSprite('street-office', 'street-office.png')
 
     loadRoot('sprites/office/')
+    loadSprite('office-floor', 'office-floor.png')
     loadSprite('office1-1', 'office1-1.png')
     loadSprite('office1-2', 'office1-2.png')
     loadSprite('office1-3', 'office1-3.png')

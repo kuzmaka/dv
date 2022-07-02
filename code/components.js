@@ -238,14 +238,22 @@ export function ratBehaviour() {
 
 export function officeBossBehaviour() {
     return {
+        toDestroy: [],
         target: undefined,
         throwAngle: deg2rad(30),
         flip: true,
         cdThrow: 5,
         cdAtk: 3,
+        die() {
+            this.enterState('death')
+            this.play('death')
+            this.toDestroy.forEach((d) => {
+                destroy(d)
+            })
+        },
         update() {
             this.target = get('player')[0]
-            let d = this.target.pos.x + this.target.width/2 * (this.flip ? 1 : -1) - this.pos.x
+            let d = this.target.pos.x + this.target.width/2 - this.pos.x
 
             if(this.cdThrow > 0) this.cdThrow -= dt()
             if(this.cdAtk > 0) this.cdAtk -= dt()
@@ -253,7 +261,7 @@ export function officeBossBehaviour() {
                 this.enterState('throw')
                 this.cdThrow = 5
             }
-            else if(this.cdAtk <= 0 && d <= 150 && this.state === 'run') {
+            else if(this.cdAtk <= 0 && Math.abs(d) <= 150 && this.state === 'run') {
                 this.enterState('attack')
                 this.cdAtk = 3
             }

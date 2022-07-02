@@ -53,7 +53,15 @@ export default () => {
                     })
 
 
-
+                    //wall substitude
+                    add([
+                        pos(x - 5, 0),
+                        area({
+                            width: 5,
+                            height: H
+                        }),
+                        'wall'
+                    ])
                     //floor
                     add([
                         pos(x, y + 350),
@@ -64,29 +72,16 @@ export default () => {
                         solid(),
                         'wall'
                     ])
-                    //boss
-                    let b = add([
-                        pos(x + 200, y + H - 132),
-                        origin('center'),
-                        sprite('office-boss', {flipX: true}),
-                        area({
-                            offset: vec2(-30, 67),
-                            width: 167,
-                            height: 113
-                        }),
-                        health(100),
-                        state('idle', ['idle', 'attack', 'throw', 'run']),
-                        officeBossBehaviour()
-                    ])
-                    //camerascale
+                    //boss trigger
                     add([
                         pos(x, y),
                         area({
-                            width: 3 * W,
+                            width: 2*W,
                             height: H
                         }),
-                        'camTrigger2'
+                        'bossTrigger'
                     ])
+
                 }
             },
             {
@@ -329,8 +324,8 @@ export default () => {
     ])
 
     const player = addPlayer({
-        x: 300,
-        y: 180
+        x: 1300,
+        y: 540
     })
 
     addLift(liftTilePos, player, true, {})
@@ -347,8 +342,40 @@ export default () => {
         fixed()
     ])
 
+    player.onCollide('bossTrigger', (tr) => {
+        let b = add([
+            pos(200, H - 132),
+            origin('center'),
+            sprite('office-boss', {flipX: true}),
+            area({
+                offset: vec2(-30, 67),
+                width: 167,
+                height: 113
+            }),
+            health(100),
+            state('idle', ['idle', 'attack', 'throw', 'run', 'death']),
+            officeBossBehaviour()
+        ])
+        //camerascale
+        let c = add([
+            pos(0, 0),
+            area({
+                width: 3 * W,
+                height: H
+            }),
+            'camTrigger2'
+        ])
+        b.toDestroy.push(c)
+        b.toDestroy.push(add([
+            sprite('office-floor'),
+            pos(3*W - 64, H - 10),
+            area(),
+            solid()
+        ]))
+        destroy(tr)
+    })
+
     const scaleTriggers = get('camTrigger')
-    const scaleTriggers2 = get('camTrigger2')[0]
     var black1
     var black2
     player.onUpdate(() => {
@@ -357,9 +384,10 @@ export default () => {
         scaleTriggers.forEach((trigger) => {
             if(player.isColliding(trigger)) triggered = true
         })
-        if(triggered) camScale(camScale().lerp(vec2(0.5), dt()*3))
+        const scaleTriggers2 = get('camTrigger2')[0]
+        if(scaleTriggers2 !== undefined && player.isColliding(scaleTriggers2)) triggered2 = true
+        if(triggered && !triggered2) camScale(camScale().lerp(vec2(0.5), dt()*3))
         else camScale(camScale().lerp(vec2(1), dt()*3))
-        if(player.isColliding(scaleTriggers2)) triggered2 = true
         if(triggered2) {
             camScale(camScale().lerp(vec2(0.5), dt()*3))
             if(black1 === undefined) {
@@ -378,7 +406,7 @@ export default () => {
                     z(200)
                 ])
             }
-        } else {
+        } else if(!triggered) {
             camScale(camScale().lerp(vec2(1), dt()*3))
             if(black1 !== undefined) {
                 destroy(black1)

@@ -68,10 +68,10 @@ export function addTiles(tiles, opt = {}) {
 
             if (typeof tile.checkpoint !== 'undefined') {
                 add([
-                    pos(j * W, i * H),
+                    pos(j * W, i * H + 10),
                     area({
                         width: W,
-                        height: H
+                        height: H - 20
                     }),
                     checkpoint(tile.checkpoint.add(j * W, i * H))
                 ])
