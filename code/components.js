@@ -241,44 +241,61 @@ export function officeBossBehaviour() {
         target: undefined,
         throwAngle: deg2rad(30),
         flip: true,
-        cdThrow: 3,
+        cdThrow: 5,
         cdAtk: 3,
         update() {
             this.target = get('player')[0]
-            let d = this.target.pos.x + this.target.width/2 - this.pos.x
+            let d = this.target.pos.x + this.target.width/2 * (this.flip ? 1 : -1) - this.pos.x
 
             if(this.cdThrow > 0) this.cdThrow -= dt()
             if(this.cdAtk > 0) this.cdAtk -= dt()
             if(this.cdThrow <= 0 && this.state === 'run') {
                 this.enterState('throw')
-                this.cdThrow = 3
+                this.cdThrow = 5
             }
             else if(this.cdAtk <= 0 && d <= 150 && this.state === 'run') {
                 this.enterState('attack')
                 this.cdAtk = 3
             }
 
-            this.moveTo(this.pos.lerp(vec2(this.target.pos.x + this.target.width/2, this.pos.y), 0.01))
-            if(d > 0) this.flipX(this.flip = true)
-            else this.flipX(this.flip = false)
+            if(this.state === 'run') {
+                if (d > 0) this.flipX(this.flip = true)
+                else this.flipX(this.flip = false)
+            }
+            if(this.flip) {
+                this.area.offset = vec2(-30, 67)
+            } else {
+                this.area.offset = vec2(30, 67)
+            }
         },
         load() {
             this.onStateEnter('attack', () => {
                 this.play('atkprep')
                 wait(0.7, () => {
                     this.play('attack')
-                    let check = add([
-                        pos(this.pos.sub(75*this.flip, 0)),
+                    let check1 = add([
+                        pos(this.pos.add(this.flip ? 0 : -130, 60)),
                         area({
-                            width: 75,
-                            height: 20
+                            width: 150,
+                            height: 50
                         })
                     ])
-                    if (check.isColliding(this.target)) {
+                    let check2 = add([
+                        pos(this.pos.add(this.flip ? 100 : -140, 20)),
+                        area({
+                            width: 50,
+                            height: 80
+                        })
+                    ])
+                    if (check1.isColliding(this.target)) {
                         this.target.die()
                     }
-                    destroy(check)
+                    if (check2.isColliding(this.target)) {
+                        this.target.die()
+                    }
                     wait(0.3, () => {
+                        destroy(check1)
+                        destroy(check2)
                         this.enterState('run')
                     })
                 })
@@ -286,16 +303,16 @@ export function officeBossBehaviour() {
             this.onStateEnter('throw', () => {
                 this.play('throw')
                 wait(1.3, () => {
-                    let x = this.target.pos.x - this.pos.x + 65 + this.target.width/2
-                    let y = this.target.pos.y - this.pos.y + 70 + this.target.height/2
+                    let x = Math.abs(this.target.pos.x - this.pos.x + 65 + this.target.width/2 * (this.flip ? 1 : -1))
+                    let y = Math.abs(this.target.pos.y - this.pos.y + 70 + this.target.height/2 * (this.flip ? 1 : -1))
                     let v = Math.sqrt(gravity() / (2*(Math.tan(this.throwAngle)*x + y))) * x / Math.cos(this.throwAngle)
                     add([
                         sprite('throwed-pepper', {anim: 'rotating'}),
-                        pos(this.pos.sub(65, 70)),
+                        pos(this.pos.sub(65 * (this.flip ? 1 : -1), 70)),
                         origin('center'),
                         area(),
                         body({solid: false}),
-                        move(-rad2deg(this.throwAngle), v),
+                        move(this.flip ? -rad2deg(this.throwAngle) : -180 + rad2deg(this.throwAngle), v),
                         rotate(10),
                         {
                             load() {

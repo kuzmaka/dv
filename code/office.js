@@ -39,6 +39,7 @@ export default () => {
                             width: 167,
                             height: 113
                         }),
+                        health(100),
                         state('idle', ['idle', 'attack', 'throw', 'run']),
                         officeBossBehaviour()
                     ])
