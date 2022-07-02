@@ -129,23 +129,22 @@ export default () => {
                 name: "office4-2",
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    gasSystem([
-                        [vec2(x - 2, y + 350), {scd: 0, cd: 6, atkTime: 3}],
-                        [vec2(x + 29, y + 350), {scd: 0, cd: 6.2}],
-                        [vec2(x + 60, y + 350), {scd: 0, cd: 5.9}],
-                        [vec2(x + 91, y + 350), {scd: 0, cd: 5.5}],
-                        [vec2(x + 122, y + 350), {scd: 0, cd: 5}],
-                        [vec2(x + 153, y + 350), {scd: 2.7, cd: 5, atkTime: 5}],
-                        [vec2(x + 184, y + 350), {scd: 2.4, cd: 2}],
-                        [vec2(x + 215, y + 350), {scd: 2.1, cd: 2.3}],
-                        [vec2(x + 246, y + 350), {scd: 1.8, cd: 2.6}],
-                        [vec2(x + 277, y + 350), {scd: 1.5, cd: 5.8}],
-                        [vec2(x + 308, y + 350), {scd: 1.2, cd: 5.6}],
-                        [vec2(x + 339, y + 350), {scd: 0.9, cd: 5.4}],
-                        [vec2(x + 370, y + 350), {scd: 0.6, cd: 5.2}],
-                        [vec2(x + 401, y + 350), {scd: 0.3, cd: 5}],
-                        [vec2(x + 432, y + 350), {scd: 5, atkTime: 10}]
-                    ], 18)
+
+                    addGasLattice(vec2(x - 2, y + 350), {scd: 3})
+                    addGasLattice(vec2(x + 29, y + 350), {scd: 2.8})
+                    addGasLattice(vec2(x + 60, y + 350), {scd: 2.6})
+                    addGasLattice(vec2(x + 91, y + 350), {scd: 2.4})
+                    addGasLattice(vec2(x + 122, y + 350), {scd: 2.2})
+                    addGasLattice(vec2(x + 153, y + 350), {scd: 2})
+                    addGasLattice(vec2(x + 184, y + 350), {scd: 1.8})
+                    addGasLattice(vec2(x + 215, y + 350), {scd: 1.6})
+                    addGasLattice(vec2(x + 246, y + 350), {scd: 1.4})
+                    addGasLattice(vec2(x + 277, y + 350), {scd: 1.2})
+                    addGasLattice(vec2(x + 308, y + 350), {scd: 1})
+                    addGasLattice(vec2(x + 339, y + 350), {scd: 0.8})
+                    addGasLattice(vec2(x + 370, y + 350), {scd: 0.4})
+                    addGasLattice(vec2(x + 401, y + 350), {scd: 0.2})
+                    addGasLattice(vec2(x + 432, y + 350), {scd: 0})
                 }
             },
             {
@@ -193,11 +192,17 @@ export default () => {
                         solid()
                     ])
                     table(vec2(x + 200, y + 291))
-                    addGasLattice(vec2(x + 265, y + 350))
+                    addGasLattice(vec2(x + 265, y + 350), {
+                        cd: 2
+                    })
                     table(vec2(x + 300, y + 291))
-                    addGasLattice(vec2(x + 365, y + 350))
+                    addGasLattice(vec2(x + 365, y + 350), {
+                        cd: 2
+                    })
                     table(vec2(x + 400, y + 291))
-                    addGasLattice(vec2(x + 465, y + 350))
+                    addGasLattice(vec2(x + 465, y + 350), {
+                        cd: 2
+                    })
                     table(vec2(x + 500, y + 291))
                 }
             },
@@ -229,12 +234,13 @@ export default () => {
                     addGasLattice(vec2(x + 636, y + 150), {
                         rotate: true,
                         flip: true,
-                        scd: 4
+                        scd: 2,
+                        cd: 2.5
                     })
                     addGasLattice(vec2(x + 636, y + 20), {
                         rotate: true,
                         flip: true,
-                        scd: 4.5
+                        cd: 2.5
                     })
                 }
             }
@@ -352,7 +358,7 @@ export default () => {
     ]
     play('office', {
         loop: true,
-        volume: 0.7
+        volume: 0.4
     })
     addTiles(tiles, {
         floor: 10,
@@ -560,7 +566,7 @@ const parkour = [
         "                       ",
         "           !==b!b==!   ",
         "                       ",
-        "!===!                  ",
+        "!====!                 ",
         "                       ",
         "                       ",
     ],
@@ -580,7 +586,7 @@ const parkour = [
     //4-3   [4]
     [
         "                   ",
-        "              !===!",
+        "             !====!",
         "     r             ",
         "  !======!         ",
         "                   ",

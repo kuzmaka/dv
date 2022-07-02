@@ -225,8 +225,8 @@ export function addPlayer(opt) {
                 player.play('dead')
                 shake()
                 const shade = add([
-                    pos(toWorld(vec2(0, 0).sub(100, 100))),
-                    rect(3*W + 200, 3*H + 200),
+                    pos(toWorld(vec2(0, 0).sub(W, H))),
+                    rect(4*W + 200, 4*H + 200),
                     fade(1, {from: 0, to: 0.5}),
                     color(BLACK),
                     z(1000)

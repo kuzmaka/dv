@@ -1,4 +1,4 @@
-import {timedGas} from "./functions";
+import {addKey, timedGas} from "./functions";
 
 export function jitter() {
     let p;
@@ -162,7 +162,7 @@ export function ratBehaviour() {
                 this.play('run')
             })
             this.onStateUpdate('run', () => {
-                let t = this.target.pos.x - this.pos.x + 20
+                let t = this.target.pos.x - this.pos.x + 40
                 if(Math.abs(t) <= 5 || this.pos.dist(this.target.pos) > 500) {
                     this.enterState('idle')
                     return
@@ -179,7 +179,7 @@ export function ratBehaviour() {
                 })
                 if(o) {
                     let check = add([
-                        pos(this.pos.x + 30 * (this.flip ? -0.6 : 1), this.pos.y + 40),
+                        pos(this.pos.x + 30 * (this.flip ? -1 : 1), this.pos.y + 40),
                         area({
                             width: 20,
                             height: 30
@@ -202,7 +202,7 @@ export function ratBehaviour() {
             })
             this.onStateUpdate('idle', () => {
                 if(this.pos.dist(this.target.pos) > 500) return
-                let t = this.target.pos.x - this.pos.x + 20
+                let t = this.target.pos.x - this.pos.x + 40
                 this.flipX(this.flip = t < 0)
                 let o = false
                 let e
@@ -215,7 +215,7 @@ export function ratBehaviour() {
                 })
                 if(o) {
                     let check = add([
-                        pos(this.pos.x + 30 * (this.flip ? -0.6 : 1), this.pos.y + 40),
+                        pos(this.pos.x + 30 * (this.flip ? -1 : 1), this.pos.y + 40),
                         area({
                             width: 20,
                             height: 30
@@ -361,6 +361,7 @@ export function officeBossBehaviour() {
                 this.toDestroy.forEach((d) => {
                     destroy(d)
                 })
+                addKey('blue', this.pos.clone())
             })
             this.enterState('run')
         }
