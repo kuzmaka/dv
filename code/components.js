@@ -186,11 +186,15 @@ export function ratBehaviour() {
                         }),
                         solid()
                     ])
+                    if(check.isColliding(this.target)) {
+                        destroy(check)
+                        return
+                    }
                     let tt = check.pos.clone()
                     check.moveBy(0, 0)
                     tt = tt.dist(check.pos)
                     destroy(check)
-                    if(tt <= 0.5) {
+                    if(tt <= 1) {
                         this.enterState('idle')
                         return
                     }
@@ -222,11 +226,15 @@ export function ratBehaviour() {
                         }),
                         solid()
                     ])
+                    if(check.isColliding(this.target)) {
+                        destroy(check)
+                        return
+                    }
                     let tt = check.pos.clone()
                     check.moveBy(0, 0)
                     tt = tt.dist(check.pos)
                     destroy(check)
-                    if(tt <= 0.5) {
+                    if(tt <= 1) {
                         return
                     }
                 }

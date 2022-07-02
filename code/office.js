@@ -381,7 +381,7 @@ export default () => {
     ])
 
     const player = addPlayer({
-        x: 1300,
+        x: 300,
         y: 540
     })
 
