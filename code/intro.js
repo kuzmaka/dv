@@ -239,7 +239,7 @@ export default ({final}) => {
                                 width: 10,
                                 height: H
                             }),
-                            checkpoint(vec2(x+200, y+H-94-64))
+                            checkpoint(vec2(x+280, y+H-94-64))
                         ])
                     }
                 }
