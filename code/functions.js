@@ -123,12 +123,12 @@ export function addLift(tilePos, player, goesUp, opts = {}) {
         lift.play(state)
         if (state === 'down' || state === 'up') {
             const inLift = player.curPlatform() === floor;
-            const toY = p.y + goesUp ? (state === 'down' ? 0 : -H) : (state === 'down' ? H : 0);
-            lift.moveTo(p.add(0, toY), 100)
+            const dy = goesUp ? (state === 'down' ? 0 : -H) : (state === 'down' ? H : 0)
+            lift.moveTo(p.add(0, dy), 100)
             wall.pos = vec2(lift.pos.x - lift.width, lift.pos.y - 8)
             door.pos = vec2(lift.pos.x, lift.pos.y - 8)
             floor.pos = vec2(lift.pos)
-            if (lift.pos.y === p.y + toY) {
+            if (lift.pos.y === p.y + dy) {
                 state = state === 'down' ? 'bottom' : 'top';
                 door.solid = false
                 door.hidden = true
