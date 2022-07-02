@@ -251,6 +251,7 @@ export function addPlayer(opt) {
                     player.resetArea()
                     this.camSetup()
                     setupCamera(player)
+                    player.trigger('respawned')
                     cnc()
                 })
             },
