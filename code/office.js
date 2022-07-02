@@ -24,19 +24,19 @@ export default () => {
                         solid(),
                         'wall'
                     ])
-                    //boss
-                    let b = add([
-                        pos(x + 200, y + H - 132),
-                        origin('center'),
-                        sprite('office-boss', {flipX: true}),
-                        area({
-                            offset: vec2(-30, 67),
-                            width: 167,
-                            height: 113
-                        }),
-                        state('idle', ['idle', 'attack', 'throw']),
-                        officeBossBehaviour()
-                    ])
+                    // //boss
+                    // let b = add([
+                    //     pos(x + 200, y + H - 132),
+                    //     origin('center'),
+                    //     sprite('office-boss', {flipX: true}),
+                    //     area({
+                    //         offset: vec2(-30, 67),
+                    //         width: 167,
+                    //         height: 113
+                    //     }),
+                    //     state('idle', ['idle', 'attack', 'throw']),
+                    //     officeBossBehaviour()
+                    // ])
                     //camerascale
                     add([
                         pos(x, y),

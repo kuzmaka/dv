@@ -241,10 +241,25 @@ export function officeBossBehaviour() {
         target: undefined,
         throwAngle: deg2rad(30),
         flip: true,
+        cdThrow: 3,
+        cdAtk: 3,
         update() {
             this.target = get('player')[0]
+            let d = this.target.pos.x + this.target.width/2 - this.pos.x
+
+            if(this.cdThrow > 0) this.cdThrow -= dt()
+            if(this.cdAtk > 0) this.cdAtk -= dt()
+            if(this.cdThrow <= 0) {
+                this.enterState('throw')
+                this.cdThrow = 3
+            }
+            else if(this.cdAtk <= 0 && d <= 250) {
+                this.enterState('attack')
+                this.cdAtk = 3
+            }
+
             this.moveTo(this.pos.lerp(vec2(this.target.pos.x + this.target.width/2, this.pos.y), 0.01))
-            if(this.pos.x < this.target.pos.x + this.target.width) this.flipX(this.flip = true)
+            if(d > 0) this.flipX(this.flip = true)
             else this.flipX(this.flip = false)
         },
         load() {
