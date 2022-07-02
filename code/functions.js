@@ -104,7 +104,7 @@ export function addLift(tilePos, player, goesUp, opts = {}) {
     let state = goesUp ? 'bottom' : 'top';
     let fromY;
 
-    lift.onCollide('player', () => {
+    function go() {
         if (state === 'top') {
             state = 'down';
             fromY = lift.pos.y;
@@ -117,7 +117,9 @@ export function addLift(tilePos, player, goesUp, opts = {}) {
             door.solid = true
             door.hidden = false
         }
-    })
+    }
+    lift.on('lift-go', go)
+    lift.onCollide('player', go)
 
     lift.onUpdate(() => {
         lift.play(state)
@@ -140,6 +142,7 @@ export function addLift(tilePos, player, goesUp, opts = {}) {
         }
     })
 
+    return lift
 }
 
 export function addHeli(p) {
