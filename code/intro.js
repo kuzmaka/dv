@@ -161,10 +161,11 @@ export default ({final}) => {
                 name: 'lab1-window',
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    // cabinet
+
+                    // open cage
                     add([
                         pos(x + 300, y + H-8),
-                        sprite('cabinet'),
+                        sprite('cage-open'),
                         origin('botleft')
                     ])
                 }
