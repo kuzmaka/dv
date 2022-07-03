@@ -904,7 +904,6 @@ export default ({final}) => {
         },
     ])
     boss.onCollide('fire', () => {
-        boss.hurt(1)
         if (boss.hp() <= 0) {
             boss.die()
         }

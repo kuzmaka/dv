@@ -120,8 +120,8 @@ export default () => {
                 name: "office4-1",
                 onAdded: (tile) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
-                    table(vec2(x + 40, y + 291))
-                    addSuperFirePepper(x + 65, y + 270)
+                    table(vec2(x + 90, y + 291))
+                    addSuperFirePepper(x + 115, y + 270)
                     addObjects(parkour[5], {pos: vec2(x - 7, y)})
                 }
             },
@@ -382,8 +382,8 @@ export default () => {
 
     const player = DEBUG_MODE
         ? addPlayer({
-            x: 1300,
-            y: 540
+            x: 1800,
+            y: 740
         })
         : addPlayer({
             x: 50,
@@ -599,7 +599,7 @@ const parkour = [
         "                   ",
         "             !====!",
         "     r             ",
-        "  !======!         ",
+        "  !===============!",
         "                   ",
         "                   ",
         "           !=====b!",
@@ -611,7 +611,7 @@ const parkour = [
     [
         "                                      ",
         "                                      ",
-        "                !===============!     ",
+        "                !====================!",
         "                                      ",
         "                                      ",
         "                                      ",
