@@ -382,8 +382,8 @@ export default () => {
 
     const player = DEBUG_MODE
         ? addPlayer({
-            x: 1800,
-            y: 740
+            x: 300,
+            y: 500
         })
         : addPlayer({
             x: 50,

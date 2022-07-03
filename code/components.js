@@ -245,6 +245,9 @@ export function ratBehaviour() {
                 this.enterState('death')
                 this.play('death')
             })
+            this.onHurt(() => {
+                if(this.hp() > 0) this.play('hurt')
+            })
             this.enterState('idle')
         }
     }
