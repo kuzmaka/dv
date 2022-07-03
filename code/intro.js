@@ -912,6 +912,12 @@ export default ({final}) => {
     })
 
     onDraw(() => {
+        if (player.pos.dist(boss.pos) > 450
+            || player.pos.x < bossTilePos.x || player.pos.x > bossTilePos.x+W
+            || player.pos.y < bossTilePos.y || player.pos.y > bossTilePos.y+H
+        ) {
+            return
+        }
         if (boss.hp() > 0) {
             drawRect({
                 pos: camPos().add(-width()/2+100, -height()/2+20),
