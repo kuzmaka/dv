@@ -288,64 +288,72 @@ export function officeBossBehaviour() {
             this.onStateEnter('attack', () => {
                 this.play('atkprep')
                 wait(0.7, () => {
-                    this.play('attack')
-                    let check1 = add([
-                        pos(this.pos.add(this.flip ? 0 : -130, 60)),
-                        area({
-                            width: 150,
-                            height: 50
+                    if(this.hp() > 0) {
+                        this.play('attack')
+                        let check1 = add([
+                            pos(this.pos.add(this.flip ? 0 : -130, 60)),
+                            area({
+                                width: 150,
+                                height: 50
+                            })
+                        ])
+                        let check2 = add([
+                            pos(this.pos.add(this.flip ? 100 : -140, -20)),
+                            area({
+                                width: 50,
+                                height: 120
+                            })
+                        ])
+                        if (check1.isColliding(this.target)) {
+                            this.target.die()
+                        }
+                        if (check2.isColliding(this.target)) {
+                            this.target.die()
+                        }
+                        destroy(check1)
+                        destroy(check2)
+                        wait(0.3, () => {
+                            if(this.hp() > 0) {
+                                this.enterState('run')
+                            }
                         })
-                    ])
-                    let check2 = add([
-                        pos(this.pos.add(this.flip ? 100 : -140, -20)),
-                        area({
-                            width: 50,
-                            height: 120
-                        })
-                    ])
-                    if (check1.isColliding(this.target)) {
-                        this.target.die()
                     }
-                    if (check2.isColliding(this.target)) {
-                        this.target.die()
-                    }
-                    destroy(check1)
-                    destroy(check2)
-                    wait(0.3, () => {
-                        this.enterState('run')
-                    })
                 })
             })
             this.onStateEnter('throw', () => {
                 this.play('throw')
                 wait(1.3, () => {
-                    let x = Math.abs(this.target.pos.x - this.pos.x + 65 + this.target.width/2 * (this.flip ? 1 : -1))
-                    let y = Math.abs(this.target.pos.y - this.pos.y + 70 + this.target.height/2)
-                    let v = Math.sqrt(gravity() / (2*(Math.tan(this.throwAngle)*x + y))) * x / Math.cos(this.throwAngle)
-                    add([
-                        sprite('throwed-pepper', {anim: 'rotating'}),
-                        pos(this.pos.sub(65 * (this.flip ? 1 : -1), 70)),
-                        origin('center'),
-                        area(),
-                        body({solid: false}),
-                        move(this.flip ? -rad2deg(this.throwAngle) : -180 + rad2deg(this.throwAngle), v),
-                        rotate(10),
-                        {
-                            load() {
-                                this.onCollide('wall', () => {
-                                    timedGas(this.pos.x, this.pos.y, 30, 5)
-                                    destroy(this)
-                                })
-                                this.onCollide('player', (p) => {
-                                    p.die()
-                                    timedGas(this.pos.x, this.pos.y, 30, 5)
-                                    destroy(this)
-                                })
+                    if(this.hp() > 0) {
+                        let x = Math.abs(this.target.pos.x - this.pos.x + 65 + this.target.width / 2 * (this.flip ? 1 : -1))
+                        let y = Math.abs(this.target.pos.y - this.pos.y + 70 + this.target.height / 2)
+                        let v = Math.sqrt(gravity() / (2 * (Math.tan(this.throwAngle) * x + y))) * x / Math.cos(this.throwAngle)
+                        add([
+                            sprite('throwed-pepper', {anim: 'rotating'}),
+                            pos(this.pos.sub(65 * (this.flip ? 1 : -1), 70)),
+                            origin('center'),
+                            area(),
+                            body({solid: false}),
+                            move(this.flip ? -rad2deg(this.throwAngle) : -180 + rad2deg(this.throwAngle), v),
+                            rotate(10),
+                            {
+                                load() {
+                                    this.onCollide('wall', () => {
+                                        timedGas(this.pos.x, this.pos.y, 30, 5)
+                                        destroy(this)
+                                    })
+                                    this.onCollide('player', (p) => {
+                                        p.die()
+                                        timedGas(this.pos.x, this.pos.y, 30, 5)
+                                        destroy(this)
+                                    })
+                                }
                             }
-                        }
-                    ])
+                        ])
+                    }
                     wait(0.1, () => {
-                        this.enterState('run')
+                        if(this.hp() > 0) {
+                            this.enterState('run')
+                        }
                     })
                 })
             })
@@ -369,6 +377,7 @@ export function officeBossBehaviour() {
                 this.toDestroy.forEach((d) => {
                     destroy(d)
                 })
+                this.target.onRespawn = []
                 addKey('blue', this.pos.x, this.pos.y)
             })
             this.enterState('run')

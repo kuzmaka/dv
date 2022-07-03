@@ -121,7 +121,7 @@ export function addTiles(tiles, opt = {}) {
         add([
             pos(0, H),  // no wall for lift
             area({
-                width: opt.lwall,
+                width: opt.lwall + 30,
                 height: tiles.length * (H-1)
             }),
             solid(),
@@ -130,9 +130,9 @@ export function addTiles(tiles, opt = {}) {
     }
     if(opt.rwall !== undefined) {
         add([
-            pos(tiles[0].length * W - opt.rwall, 0),
+            pos(tiles[0].length * W - opt.rwall - 30, 0),
             area({
-                width: opt.rwall,
+                width: opt.rwall + 30,
                 height: tiles.length * H
             }),
             solid(),
@@ -278,6 +278,7 @@ export function addPlayer(opt) {
                     play('onCooldown')
                     return
                 }
+                play('fire')
                 const fire = add([
                     sprite('fire', {
                         flipX: player.flip,

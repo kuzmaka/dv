@@ -69,20 +69,12 @@ export default () => {
                     })
 
 
-                    //wall substitude
-                    add([
-                        pos(x - 5, 0),
-                        area({
-                            width: 5,
-                            height: H
-                        }),
-                        'wall'
-                    ])
+
                     //floor
                     add([
                         pos(x, y + 350),
                         area({
-                            width: 1855,
+                            width: 3*W - 124,
                             height: 10
                         }),
                         solid(),
@@ -356,7 +348,7 @@ export default () => {
         "___",
         "___"
     ]
-    play('office', {
+    var music = play('office', {
         loop: true,
         volume: 0.4
     })
@@ -382,13 +374,14 @@ export default () => {
 
     const player = addPlayer({
         x: 1300,
-        y: 180
+        y: 540
     })
 
     lift = addLift(liftTilePos, player, true, {})
     const heli = addHeli(liftTilePos.add(W, -3))
     heli.onCollide('player', () => {
         goto('intro', 1, {final: true})
+        music.stop()
     })
 
     setupCamera(player)
@@ -404,6 +397,11 @@ export default () => {
 
     //boss
     player.onCollide('bossTrigger', (tr) => {
+        music.stop()
+        music = play('boss-1', {
+            loop: true,
+            volume: 0.4
+        })
         let b = add([
             pos(200, H - 132),
             origin('center'),
@@ -427,14 +425,32 @@ export default () => {
             }),
             'camTrigger2'
         ])
-        let f = add([
+        let f1 = add([
             sprite('office-floor'),
             pos(3*W - 64, H - 10),
             area(),
             solid()
         ])
+        let f2 = add([
+            sprite('office-floor'),
+            pos(3*W - 124, H - 10),
+            area(),
+            solid()
+        ])
+        //wall substitude
+        let w = add([
+            pos(0, 0),
+            area({
+                width: 30,
+                height: H
+            }),
+            solid(),
+            'wall'
+        ])
         b.toDestroy.push(c)
-        b.toDestroy.push(f)
+        b.toDestroy.push(f1)
+        b.toDestroy.push(f2)
+        b.toDestroy.push(w)
         player.onRespawn.push(() => {
             b.destroy()
             b = add([
@@ -452,7 +468,9 @@ export default () => {
                 'enemy'
             ])
             b.toDestroy.push(c)
-            b.toDestroy.push(f)
+            b.toDestroy.push(f1)
+            b.toDestroy.push(f2)
+            b.toDestroy.push(w)
         })
         destroy(tr)
     })
