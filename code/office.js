@@ -69,12 +69,20 @@ export default () => {
                     })
 
 
-
+                    //wall substitude
+                    add([
+                        pos(x - 5, 0),
+                        area({
+                            width: 5,
+                            height: H
+                        }),
+                        'wall'
+                    ])
                     //floor
                     add([
                         pos(x, y + 350),
                         area({
-                            width: 3*W - 124,
+                            width: 1855,
                             height: 10
                         }),
                         solid(),
@@ -430,32 +438,14 @@ export default () => {
             }),
             'camTrigger2'
         ])
-        let f1 = add([
+        let f = add([
             sprite('office-floor'),
             pos(3*W - 64, H - 10),
             area(),
             solid()
         ])
-        let f2 = add([
-            sprite('office-floor'),
-            pos(3*W - 124, H - 10),
-            area(),
-            solid()
-        ])
-        //wall substitude
-        let w = add([
-            pos(0, 0),
-            area({
-                width: 30,
-                height: H
-            }),
-            solid(),
-            'wall'
-        ])
         b.toDestroy.push(c)
-        b.toDestroy.push(f1)
-        b.toDestroy.push(f2)
-        b.toDestroy.push(w)
+        b.toDestroy.push(f)
         player.onRespawn.push(() => {
             b.destroy()
             b = add([
@@ -473,9 +463,7 @@ export default () => {
                 'enemy'
             ])
             b.toDestroy.push(c)
-            b.toDestroy.push(f1)
-            b.toDestroy.push(f2)
-            b.toDestroy.push(w)
+            b.toDestroy.push(f)
         })
         destroy(tr)
     })

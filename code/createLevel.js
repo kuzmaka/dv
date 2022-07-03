@@ -121,7 +121,7 @@ export function addTiles(tiles, opt = {}) {
         add([
             pos(0, H),  // no wall for lift
             area({
-                width: opt.lwall + 30,
+                width: opt.lwall,
                 height: tiles.length * (H-1)
             }),
             solid(),
@@ -130,9 +130,9 @@ export function addTiles(tiles, opt = {}) {
     }
     if(opt.rwall !== undefined) {
         add([
-            pos(tiles[0].length * W - opt.rwall - 30, 0),
+            pos(tiles[0].length * W - opt.rwall, 0),
             area({
-                width: opt.rwall + 30,
+                width: opt.rwall,
                 height: tiles.length * H
             }),
             solid(),
