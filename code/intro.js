@@ -467,6 +467,13 @@ export default ({final}) => {
                     door.onCollide('woof', () => {
                         door.play(player.pos.x + player.width/2 < door.pos ? 'left' : 'right')
                         door.solid = false
+                        if (boss.hp() > 0) {
+                            music.stop()
+                            music = play('boss2', {
+                                loop: true,
+                                volume: 0.4
+                            })
+                        }
                     })
 
                     add([
@@ -953,6 +960,11 @@ export default ({final}) => {
 
     const cnc = player.onUpdate(() => {
         if (bossDisappeared) {
+            music.stop()
+            music = play('lab', {
+                loop: true,
+                volume: 0.4
+            })
             // doggy
             const doggy = add([
                 pos(boss.pos),
@@ -976,7 +988,6 @@ export default ({final}) => {
             cnc()
         }
     })
-
 
     // let cooldown = 2;
     // boss.onUpdate(() => {
