@@ -793,6 +793,7 @@ export default ({final}) => {
         scale(),
         {
             cdFire: 0,
+            cdFire2: 2,
             deathTime: 0,
             fire() {
                 const fire = add([
@@ -807,6 +808,29 @@ export default ({final}) => {
                     z(100),
                 ])
                 this.cdFire = 4
+
+                // don't play music outside boss tile
+                if (player.pos.dist(boss.pos) > 450
+                    || player.pos.x < bossTilePos.x || player.pos.x > bossTilePos.x+W
+                    || player.pos.y < bossTilePos.y || player.pos.y > bossTilePos.y+H
+                ) {
+                    return
+                }
+                play('fire')
+            },
+            fire2() {
+                const fire = add([
+                    sprite('fire', {
+                        flipX: true,
+                        anim: 'fire'
+                    }),
+                    pos(boss.pos.add(62, 62)),
+                    rotate(angle),
+                    origin('right'),
+                    lifespan(0.25, { fade: 0.2 }),
+                    z(100),
+                ])
+                this.cdFire2 = 4
 
                 // don't play music outside boss tile
                 if (player.pos.dist(boss.pos) > 450
@@ -839,6 +863,30 @@ export default ({final}) => {
                     this.fire()
                 }
 
+                // fire 2
+                // boss fires from his mouth
+                pa = boss.pos.add(62, 62)
+                // to player center
+                pb = vec2(player.pos.add(player.width/2, player.height/2))
+                // fire angle
+                angle = -Math.acos((pa.x - pb.x) / pb.dist(pa)) / Math.PI * 180
+
+                if (pa.dist(pb) < 80 && 3.75 <= this.cdFire2 && this.cdFire2 <= 3.75+0.0625
+                    || pa.dist(pb) < 120 && 3.75+0.0625 <= this.cdFire2 && this.cdFire2 <= 3.75+0.0625*2
+                    || pa.dist(pb) < 180 && 3.75+0.0625*2 <= this.cdFire2 && this.cdFire2 <= 3.75+0.0625*3
+                    || pa.dist(pb) < 260 && 3.75+0.0625*3 <= this.cdFire2 && this.cdFire2 <= 4
+                ) {
+                    player.die()
+                }
+
+                if(this.cdFire2 > 0) {
+                    this.cdFire2 -= dt()
+                } else {
+                    this.fire2()
+                }
+
+
+
                 if (this.hp()<=0 && time() - this.deathTime <= 3) {
                     boss.scaleTo(mapc(time(), this.deathTime, this.deathTime+3, 1, 0.3))
                 }
@@ -850,6 +898,7 @@ export default ({final}) => {
             die() {
                 this.deathTime = time()
                 boss.cdFire = 999999
+                boss.cdFire2 = 999999
                 boss.play('stop')
                 shakeObj(boss, 3, 50)
             }
