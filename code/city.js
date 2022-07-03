@@ -8,6 +8,11 @@ export default () => {
 
     addUI()
 
+    var music = play('wave', {
+        loop: true
+    })
+
+
     const tiles = [
         [
             {
@@ -141,6 +146,7 @@ export default () => {
 
                     coll.onCollide('player', () => {
                         goto('office', 1)
+                        music.stop()
                     })
                 }
             },
