@@ -19,7 +19,7 @@ scene('win', win)
 debug.inspect = false
 
 // go('win')
-// go('intro', {final: false})
+go('intro', {final: false})
 // go('intro', {final: true})
 // go('city')
-go('office')
+// go('office')
