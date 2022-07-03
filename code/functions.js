@@ -150,7 +150,10 @@ export function addHeli(p) {
         pos(p),
         origin("botleft"),
         sprite('heli'),
-        area(),
+        area({
+            offset: vec2(150, 0),
+            width: 100
+        }),
     ])
 }
 
