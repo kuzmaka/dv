@@ -773,6 +773,7 @@ export default ({final}) => {
             containers.forEach((container) => {
                 container.obj.moveTo(ship.pos.add(container.dp))
             })
+            boss.setHP(10)
         })
     }
 
@@ -909,6 +910,8 @@ export default ({final}) => {
                 move(RIGHT, 100)
             ])
             kitty.jump()
+            // key
+            addKey('red', boss.pos.x, bossTilePos.y+H-40)
             cnc()
         }
     })
