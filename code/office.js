@@ -1,4 +1,4 @@
-import {W, H, gameState} from './init'
+import {W, H, gameState, DEBUG_MODE} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {officeBossBehaviour, swing} from "./components";
 import {addGasLattice, gasSystem, addObjects, addSuperFirePepper, addLift, addHeli, goto} from "./functions";
@@ -372,10 +372,15 @@ export default () => {
         color('black')
     ])
 
-    const player = addPlayer({
-        x: 1300,
-        y: 540
-    })
+    const player = DEBUG_MODE
+        ? addPlayer({
+            x: 1300,
+            y: 540
+        })
+        : addPlayer({
+            x: 50,
+            y: 1800-110
+        })
 
     lift = addLift(liftTilePos, player, true, {})
     const heli = addHeli(liftTilePos.add(W, -3))
