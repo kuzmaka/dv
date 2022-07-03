@@ -477,7 +477,6 @@ export default ({final}) => {
                             music.stop()
                             music = play('boss2', {
                                 loop: true,
-                                volume: 0.4
                             })
                         }
                     })
@@ -783,6 +782,7 @@ export default ({final}) => {
                 })
             }
         })
+
         on('respawned', 'player', () => {
             ship.moveTo(x, y)
             seagull.moveTo(ship.pos.add(318, 94))
@@ -791,7 +791,6 @@ export default ({final}) => {
             containers.forEach((container) => {
                 container.obj.moveTo(ship.pos.add(container.dp))
             })
-            boss.setHP(10)
         })
     }
 
@@ -927,6 +926,10 @@ export default ({final}) => {
         }
     })
 
+    on('respawned', 'player', () => {
+        boss.setHP(10)
+    })
+
     onDraw(() => {
         if (player.pos.x < bossTilePos.x - W || player.pos.x > bossTilePos.x+W
             || player.pos.y < bossTilePos.y || player.pos.y > bossTilePos.y+H
@@ -972,9 +975,8 @@ export default ({final}) => {
     const cnc = player.onUpdate(() => {
         if (bossDisappeared) {
             music.stop()
-            music = play('lab', {
+            music = play('quad', {
                 loop: true,
-                volume: 0.4
             })
             // doggy
             const doggy = add([

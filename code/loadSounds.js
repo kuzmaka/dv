@@ -11,4 +11,5 @@ export default () => {
     loadSound('boss-1', 'boss-1.wav')
     loadSound('boss2', 'boss2.m4a')
     loadSound('wave', 'wave.mp3')
+    loadSound('quad', 'quad.mp3')
 }
