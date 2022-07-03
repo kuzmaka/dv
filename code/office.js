@@ -429,6 +429,25 @@ export default () => {
             officeBossBehaviour(),
             'enemy'
         ])
+        const bossHealth = 10;
+        onDraw(() => {
+            if (b.hp() > 0) {
+                const p =
+                drawRect({
+                    pos: camPos().add(-width()+200, -height()+40),
+                    width: b.hp()/bossHealth*880,
+                    height: 16,
+                    color: rgb(0, 255, 0),
+                });
+                drawRect({
+                    pos: camPos().add(-width()+200-2, -height()+40-2),
+                    width: 884,
+                    height: 18,
+                    fill: false,
+                    outline: {width: 1},
+                });
+            }
+        })
         //camerascale
         let c = add([
             pos(0, 0),
