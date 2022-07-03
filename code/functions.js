@@ -29,12 +29,12 @@ export function shakeObj(obj, time, strength = 4) {
         timer += dt()
         if (timer < time) {
             if (moveOut) {
-                obj.move(choose([LEFT, RIGHT, UP, DOWN]).scale(20))
+                obj.move(choose([LEFT, RIGHT, UP, DOWN]).scale(10 * strength))
                 if (obj.pos.dist(p) > strength) {
                     moveOut = false
                 }
             } else {
-                obj.moveTo(p.x, p.y, 20)
+                obj.moveTo(p.x, p.y)
                 if (obj.pos.dist(p) < 1) {
                     moveOut = true
                 }

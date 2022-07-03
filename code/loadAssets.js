@@ -79,6 +79,20 @@ export default () => {
     loadSprite('lamp', 'lamp.png')
     loadSprite('lamp-off', 'lamp-off.png')
     loadSprite('ketchup', 'ketchup.png')
+    loadSprite('bottle', 'bottle.png', {
+        sliceX: 1,
+        sliceY: 2,
+        anims: {
+            half: {
+                from: 0,
+                to: 0,
+            },
+            full: {
+                from: 1,
+                to: 1,
+            }
+        }
+    })
     loadSprite('xray', 'xray.png')
     loadSprite('lab1', 'lab1.png')
     loadSprite('lab1-window', 'lab1-window.png')
@@ -97,6 +111,10 @@ export default () => {
                 to: 3,
                 loop: true,
                 speed: 1
+            },
+            stop: {
+                from: 1,
+                to: 1,
             },
         }
     })

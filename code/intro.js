@@ -1,7 +1,16 @@
-import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP, DEBUG_HAS_RED_KEY, gameState} from './init'
+import {W, H, DEBUG_NO_ALARM, DEBUG_NO_SLEEP, DEBUG_HAS_RED_KEY, gameState, DEBUG_MODE} from './init'
 import {addPlayer, addTiles, addUI, setupCamera} from "./createLevel";
 import {checkpoint, fade, jitter, myLifespan, swing} from "./components";
-import {addContainer, addHeli, addKey, addLift, addSuperFirePepper, addSuperWoofPepper, goto} from "./functions";
+import {
+    addContainer,
+    addHeli,
+    addKey,
+    addLift,
+    addSuperFirePepper,
+    addSuperWoofPepper,
+    goto,
+    shakeObj
+} from "./functions";
 
 export default ({final}) => {
 
@@ -11,6 +20,7 @@ export default ({final}) => {
     let liftTilePos;
     let switchSnowAtX;
     let dockTilePos;
+    let bossTilePos;
 
     const light = add([
         pos(0),
@@ -466,49 +476,28 @@ export default ({final}) => {
                     ])
                 }
             },
-            'lab-final1',
+            {
+                name: 'lab-final1',
+                checkpoint: vec2(20, H-94),
+            },
             {
                 name: 'lab-final2',
-                // checkpoint: vec2(20, H-110),
                 onAdded: (tile, i, j) => {
                     const [x, y] = [tile.pos.x, tile.pos.y];
 
-                    // playerStartPos = vec2(x + 10, y + 10)
+                    bossTilePos = vec2(tile.pos)
+
+                    // playerStartPos = vec2(x - 100, y + 200)
 
                     // right wall
                     add([
-                        pos(x + W - 8, y),
+                        pos(x + W - 36, y),
                         area({
-                            width: 8,
+                            width: 40,
                             height: H - 8
                         }),
                         solid()
                     ])
-
-                    // boss
-                    const boss = add([
-                        pos(x + W-8-320, y + H-8-194),
-                        sprite('lab-boss', {anim: 'move'}),
-                        area({
-                            height: 182
-                        }),
-                    ])
-                    let bossKilled = false;
-                    boss.onCollide('player', () => {
-                        bossKilled = true
-                    })
-
-                    boss.onUpdate(() => {
-                        if (bossKilled) {
-                            addKey('red', boss.pos.x+boss.width/2, y+H-40)
-                            // add([
-                            //     pos(boss.pos),
-                            //     sprite('puppy', {anim: 'move'}),
-                            // ])
-                            destroy(boss);
-                            return;
-                        }
-                    })
 
                 }
             }
@@ -527,16 +516,19 @@ export default ({final}) => {
     if (final) {
         const heli = addHeli(dockTilePos.add(200, H-1))
 
-        player = addPlayer({
-            x: heli.pos.x + 60,
-            y: H - 94,
-            flip: true
-        })
-        // player = addPlayer({
-        //     x: playerStartPos.x,
-        //     y: playerStartPos.y,
-        //     flip: true
-        // })
+        if (!DEBUG_MODE) {
+            player = addPlayer({
+                x: heli.pos.x + 60,
+                y: H - 94,
+                flip: true
+            })
+        } else {
+            player = addPlayer({
+                x: playerStartPos.x,
+                y: playerStartPos.y,
+                flip: false
+            })
+        }
     } else {
         player = addPlayer({
             x: playerStartPos.x,
@@ -599,7 +591,8 @@ export default ({final}) => {
             sprite('box'),
             origin('center'),
             area(),
-            body()
+            body(),
+            'deflatable'
         ])
     }
 
@@ -782,4 +775,168 @@ export default ({final}) => {
             })
         })
     }
+
+    // boss
+    const bossHealth = 10
+    let angle = 0;
+    let bossDisappeared = false;
+    const boss = add([
+        pos(bossTilePos.add(W-8-320, H-8-182)),
+        sprite('lab-boss', {anim: 'move'}),
+        area({
+            offset: vec2(40, 40),
+            width: 260,
+            height: 142,
+        }),
+        health(bossHealth),
+        scale(),
+        {
+            cdFire: 0,
+            deathTime: 0,
+            fire() {
+                const fire = add([
+                    sprite('fire', {
+                        flipX: true,
+                        anim: 'fire'
+                    }),
+                    pos(boss.pos.add(30, 50)),
+                    rotate(angle),
+                    origin('right'),
+                    lifespan(0.25, { fade: 0.2 }),
+                    z(100),
+                ])
+                this.cdFire = 4
+            },
+            update() {
+                // boss fires from his mouth
+                let pa = boss.pos.add(30, 50)
+                // to player center
+                let pb = vec2(player.pos.add(player.width/2, player.height/2))
+                // fire angle
+                angle = -Math.acos((pa.x - pb.x) / pb.dist(pa)) / Math.PI * 180
+
+                if (pa.dist(pb) < 80 && 3.75 <= this.cdFire && this.cdFire <= 3.75+0.0625
+                    || pa.dist(pb) < 120 && 3.75+0.0625 <= this.cdFire && this.cdFire <= 3.75+0.0625*2
+                    || pa.dist(pb) < 180 && 3.75+0.0625*2 <= this.cdFire && this.cdFire <= 3.75+0.0625*3
+                    || pa.dist(pb) < 260 && 3.75+0.0625*3 <= this.cdFire && this.cdFire <= 4
+                ) {
+                    player.die()
+                }
+
+                if(this.cdFire > 0) {
+                    this.cdFire -= dt()
+                } else {
+                    this.fire()
+                }
+
+                if (this.hp()<=0 && time() - this.deathTime <= 3) {
+                    boss.scaleTo(mapc(time(), this.deathTime, this.deathTime+3, 1, 0.3))
+                }
+                if (this.hp()<=0 && time() - this.deathTime > 3) {
+                    bossDisappeared = true
+                    boss.destroy()
+                }
+            },
+            die() {
+                this.deathTime = time()
+                boss.cdFire = 999999
+                boss.play('stop')
+                shakeObj(boss, 3, 50)
+            }
+        },
+    ])
+    boss.onCollide('fire', () => {
+        boss.hurt(1)
+        if (boss.hp() <= 0) {
+            boss.die()
+        }
+    })
+
+    onDraw(() => {
+        if (boss.hp() > 0) {
+            drawRect({
+                pos: camPos().add(-width()/2+100, -height()/2+20),
+                width: boss.hp()/bossHealth*440,
+                height: 16,
+                color: rgb(0, 255, 0),
+            });
+            drawRect({
+                pos: camPos().add(width()/2+100, -height()/2+20),
+                width: (1-boss.hp()/bossHealth)*440,
+                height: 16,
+                color: rgb(255, 0, 0),
+            });
+            drawRect({
+                pos: camPos().add(-width()/2+100-1, -height()/2+20-1),
+                width: 442,
+                height: 18,
+                fill: false,
+                outline: {width: 1},
+            });
+        }
+    })
+
+    add([
+        pos(boss.pos.x+9, boss.pos.y+125),
+        sprite('bottle', {anim: 'half'}),
+        z(-1)
+
+    ])
+    add([
+        pos(boss.pos.x+59, boss.pos.y+130),
+        sprite('bottle', {anim: 'full'}),
+        z(-1)
+    ])
+
+
+    const cnc = player.onUpdate(() => {
+        if (bossDisappeared) {
+            // doggy
+            const doggy = add([
+                pos(boss.pos),
+                sprite('dog2', {flipX: true}),
+                area(),
+                body({solid: false}),
+                move(LEFT, 100)
+            ])
+            doggy.jump()
+            // kitty
+            const kitty = add([
+                pos(boss.pos),
+                sprite('kitten', {anim: 'move'}),
+                area(),
+                body({solid: false}),
+                move(RIGHT, 100)
+            ])
+            kitty.jump()
+            cnc()
+        }
+    })
+
+
+    // let cooldown = 2;
+    // boss.onUpdate(() => {
+    //     if (bossKilled) {
+    //         addKey('red', boss.pos.x+boss.width/2, y+H-40)
+    //         // add([
+    //         //     pos(boss.pos),
+    //         //     sprite('puppy', {anim: 'move'}),
+    //         // ])
+    //         destroy(boss);
+    //         return;
+    //     }
+    //
+    //     // boss attacks
+    //
+    //     // if (cooldown > 0) {
+    //     //     cooldown -= dt()
+    //     // } else {
+    //     //     const fire = add([
+    //     //         pos(boss.pos),
+    //     //         sprite('fire', {anim: 'fire'}),
+    //     //
+    //     //     ])
+    //     // }
+    // })
+
 }

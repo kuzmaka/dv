@@ -516,9 +516,19 @@ function wave(player)
     wave.onExitView(() => {
         wave.destroy()
     })
-    // wave.onCollide('deflatable', (d) => {
-    //     d.move(dir*200*this.opacity**2, 0)
-    // })
+    wave.onCollide('deflatable', (d) => {
+        // d.move(dir*200*this.opacity**2, 0)
+
+        // if (d.t0 && time() - d.t0 < 3) return;
+        // d.t0 = time()
+        // const cnc = d.onUpdate(() => {
+        //     if (time() - d.t0 < 2) {
+        //         d.moveBy(0, 1 * (time()-d.t0)**2 - 20*(time()-d.t0))
+        //     } else {
+        //         cnc()
+        //     }
+        // })
+    })
 }
 
 function multiWave(player, m = 3)
