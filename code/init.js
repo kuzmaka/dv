@@ -9,8 +9,8 @@ export const DEBUG_HAS_BLUE_KEY = 0
 export const DEBUG_HAS_RED_KEY = 0
 
 export let gameState = {
-    canSuperWoof: !DEBUG_CAN_SUPER_WOOF,
-    canFire: !DEBUG_CAN_FIRE,
+    canSuperWoof: !!DEBUG_CAN_SUPER_WOOF,
+    canFire: !!DEBUG_CAN_FIRE,
     hasBlueKey: !!DEBUG_HAS_BLUE_KEY,
     hasRedKey: !!DEBUG_HAS_RED_KEY,
     freeDoggiesCount: 0

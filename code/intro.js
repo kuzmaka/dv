@@ -519,6 +519,10 @@ export default ({final}) => {
 
     })
 
+    var music = play('lab', {
+        loop: true
+    })
+
     let player;
     if (final) {
         const heli = addHeli(dockTilePos.add(200, H-1))
@@ -552,6 +556,7 @@ export default ({final}) => {
 
         player.onCollide('container', () => {
             goto('city', 1)
+            music.stop()
         })
     }
 
