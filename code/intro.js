@@ -778,7 +778,7 @@ export default ({final}) => {
     }
 
     // boss
-    const bossHealth = 5
+    const bossHealth = 10
     let angle = 0;
     let bossDisappeared = false;
     const boss = add([
@@ -791,6 +791,7 @@ export default ({final}) => {
         }),
         health(bossHealth),
         scale(),
+        'enemy',
         {
             cdFire: 0,
             cdFire2: 2,
@@ -810,8 +811,7 @@ export default ({final}) => {
                 this.cdFire = 4
 
                 // don't play music outside boss tile
-                if (player.pos.dist(boss.pos) > 450
-                    || player.pos.x < bossTilePos.x || player.pos.x > bossTilePos.x+W
+                if (player.pos.x < bossTilePos.x-W || player.pos.x > bossTilePos.x+W
                     || player.pos.y < bossTilePos.y || player.pos.y > bossTilePos.y+H
                 ) {
                     return
@@ -833,8 +833,7 @@ export default ({final}) => {
                 this.cdFire2 = 4
 
                 // don't play music outside boss tile
-                if (player.pos.dist(boss.pos) > 450
-                    || player.pos.x < bossTilePos.x || player.pos.x > bossTilePos.x+W
+                if (player.pos.x < bossTilePos.x - W || player.pos.x > bossTilePos.x+W
                     || player.pos.y < bossTilePos.y || player.pos.y > bossTilePos.y+H
                 ) {
                     return
@@ -912,8 +911,7 @@ export default ({final}) => {
     })
 
     onDraw(() => {
-        if (player.pos.dist(boss.pos) > 450
-            || player.pos.x < bossTilePos.x || player.pos.x > bossTilePos.x+W
+        if (player.pos.x < bossTilePos.x - W || player.pos.x > bossTilePos.x+W
             || player.pos.y < bossTilePos.y || player.pos.y > bossTilePos.y+H
         ) {
             return
