@@ -807,6 +807,15 @@ export default ({final}) => {
                     z(100),
                 ])
                 this.cdFire = 4
+
+                // don't play music outside boss tile
+                if (player.pos.dist(boss.pos) > 450
+                    || player.pos.x < bossTilePos.x || player.pos.x > bossTilePos.x+W
+                    || player.pos.y < bossTilePos.y || player.pos.y > bossTilePos.y+H
+                ) {
+                    return
+                }
+                play('fire')
             },
             update() {
                 // boss fires from his mouth
