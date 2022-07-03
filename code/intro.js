@@ -778,7 +778,7 @@ export default ({final}) => {
     }
 
     // boss
-    const bossHealth = 10
+    const bossHealth = 5
     let angle = 0;
     let bossDisappeared = false;
     const boss = add([
