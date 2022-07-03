@@ -9,5 +9,6 @@ export default () => {
     loadSound('office', 'office.m4a')
     loadSound('lab', 'lab-bg.ogg')
     loadSound('boss-1', 'boss-1.wav')
-    loadSound('1boss2', 'boss2.m4a')
+    loadSound('boss2', 'boss2.m4a')
+    loadSound('wave', 'wave.mp3')
 }

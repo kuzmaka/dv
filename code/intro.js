@@ -306,6 +306,12 @@ export default ({final}) => {
                     //     tile.play( x + 250 < player.pos.x + player.width && player.pos.x < x + 430 ? 'left' : 'close')
                     // })
                     door.onCollide('woof', () => {
+                        if (final) {
+                            music.stop()
+                            music = play('lab', {
+                                loop: true
+                            })
+                        }
                         tile.play(player.pos.x + player.width / 2 < x + 306 ? 'right' : 'left')
                         door.destroy()
                     })
@@ -515,12 +521,13 @@ export default ({final}) => {
 
     })
 
-    var music = play('lab', {
-        loop: true
-    })
-
     let player;
+    let music;
     if (final) {
+        music = play('wave', {
+            loop: true
+        })
+
         const heli = addHeli(dockTilePos.add(200, H-1))
 
         if (!DEBUG_MODE) {
@@ -537,6 +544,10 @@ export default ({final}) => {
             })
         }
     } else {
+        music = play('lab', {
+            loop: true
+        })
+
         player = addPlayer({
             x: playerStartPos.x,
             y: playerStartPos.y,
