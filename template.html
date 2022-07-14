@@ -3,7 +3,7 @@
 <html>
 
 <head>
-	<title>kaboom</title>
+	<title>Dogventure</title>
 	<meta charset="utf-8">
 	<style>
 		html,
@@ -21,6 +21,10 @@
 			-ms-user-select:none;
 			user-select:none;
 			-webkit-tap-highlight-color:rgba(0,0,0,0);
+
+			/*overscroll-behavior-y: none;*/
+			/*overflow: hidden;*/
+			touch-action: none;
 		}
 		main {
 			width: 100%;
@@ -45,6 +49,8 @@
 This script places a badge on your repl's full-browser view back to your repl's cover page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green, teal, blue, blurple, magenta, pink!
 -->
 <!-- script src="https://replit.com/public/js/replit-badge.js" theme="orange" defer></script -->
+
+<!--<script>document.addEventListener("touchmove", function(e){ e.preventDefault(); return false; })</script>-->
 </body>
 
 </html>
