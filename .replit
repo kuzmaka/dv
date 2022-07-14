@@ -6,6 +6,8 @@ hidden = [
 	".config",
 	"learn",
 	"dist",
+	"helper.ts",
+	"run.js",
 	"package.json",
 	"package-lock.json",
 ]
