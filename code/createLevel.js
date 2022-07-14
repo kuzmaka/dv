@@ -313,9 +313,10 @@ export function addPlayer(opt) {
         'player'
     ]);
     player.layArea()
+    let touchDown = false;
     player.onUpdate(() => {
         // stand up after narrow corridor
-        if (!player.dead && !player.sleeping && player.isDown && !isKeyDown('s') && !isKeyDown('down') && canStand(player)) {
+        if (!player.dead && !player.sleeping && player.isDown && !isKeyDown('s') && !isKeyDown('down') && !touchDown && canStand(player)) {
             // copied from onKeyRelease('down')
             player.isDown = false;
             if (player.curPlatform()) {
@@ -387,6 +388,32 @@ export function addPlayer(opt) {
             player.isDown = false
         }
     }
+    function down() {
+        player.isDown = true
+        if (player.dead || player.sleeping || player.lays) return;
+        if (player.curPlatform()) {
+            if (player.speed) {
+                player.speed = player.flip ? -CRAWL_SPEED : CRAWL_SPEED
+                player.play('crawl')
+            } else {
+                player.play('lay')
+            }
+            player.layArea()
+        }
+    }
+    function undown() {
+        player.isDown = !canStand(player)
+        if (player.dead || player.sleeping) return;
+        if (player.curPlatform()) {
+            if (player.speed) {
+                player.speed = (player.flip ? -1 : 1) * (player.isDown ? CRAWL_SPEED : SPEED)
+                player.play(player.isDown ? 'crawl' : 'run')
+            } else {
+                player.play(player.isDown ? 'lay' : 'idle')
+            }
+            player.isDown ? player.layArea() : player.resetArea()
+        }
+    }
     onKeyPress(['a', 'left'], moveLeft)
     onKeyRelease(['a', 'left'], stop)
     onKeyPress(['d', 'right'], moveRight)
@@ -413,10 +440,15 @@ export function addPlayer(opt) {
             touch.s = 'right'
         }
         if (touch.p.y - p.y > 20) {
+            touchDown = false
             jump()
             touch.p.y = p.y
         }
         if (p.y - touch.p.y > 20) {
+            if (!touchDown) {
+                touchDown = true
+                down()
+            }
             touch.p.y = p.y
         }
         if (Math.abs(touch.p.x - p.x) <= 20 && (p.s === 'left' || p.s === 'right')) {
@@ -427,35 +459,12 @@ export function addPlayer(opt) {
     onTouchEnd((id, p) => {
         if (!touches[id]) return;
         delete touches[id]
+        touchDown = false
         stop()
     })
 
-    onKeyPress(['s', 'down'], () => {
-        player.isDown = true
-        if (player.dead || player.sleeping || player.lays) return;
-        if (player.curPlatform()) {
-            if (player.speed) {
-                player.speed = player.flip ? -CRAWL_SPEED : CRAWL_SPEED
-                player.play('crawl')
-            } else {
-                player.play('lay')
-            }
-            player.layArea()
-        }
-    })
-    onKeyRelease(['s', 'down'], () => {
-        player.isDown = !canStand(player)
-        if (player.dead || player.sleeping) return;
-        if (player.curPlatform()) {
-            if (player.speed) {
-                player.speed = (player.flip ? -1 : 1) * (player.isDown ? CRAWL_SPEED : SPEED)
-                player.play(player.isDown ? 'crawl' : 'run')
-            } else {
-                player.play(player.isDown ? 'lay' : 'idle')
-            }
-            player.isDown ? player.layArea() : player.resetArea()
-        }
-    })
+    onKeyPress(['s', 'down'], down)
+    onKeyRelease(['s', 'down'], undown)
     player.onGround(() => {
         if (player.speed) {
             player.play(player.isDown ? 'crawl' : 'run')
