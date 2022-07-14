@@ -414,6 +414,14 @@ export function addPlayer(opt) {
             player.isDown ? player.layArea() : player.resetArea()
         }
     }
+    function woof() {
+        if (player.dead || player.sleeping || !gameState.canSuperWoof) return;
+        player.woof()
+    }
+    function fire() {
+        if (player.dead || player.sleeping || !gameState.canFire) return;
+        player.fire()
+    }
     onKeyPress(['a', 'left'], moveLeft)
     onKeyRelease(['a', 'left'], stop)
     onKeyPress(['d', 'right'], moveRight)
@@ -461,6 +469,13 @@ export function addPlayer(opt) {
         delete touches[id]
         touchDown = false
         stop()
+
+        if (gameState.canSuperWoof && p.x + 2 > 20 && p.x - 2 < 20 + 31 && p.y + 2 > 15 && p.y - 2 < 15 + 22) {
+            woof()
+        }
+        if (gameState.canFire && p.x + 2 > 20 && p.x - 2 < 20 + 31 && p.y + 2 > 41 && p.y - 2 < 41 + 22) {
+            fire()
+        }
     })
 
     onKeyPress(['s', 'down'], down)
@@ -488,15 +503,8 @@ export function addPlayer(opt) {
         fullscreen(!isFullscreen())
     })
 
-    onKeyPress(['q'], () => {
-        if (player.dead || player.sleeping || !gameState.canSuperWoof) return;
-        player.woof()
-    })
-
-    onKeyPress(['e'], () => {
-        if (player.dead || player.sleeping || !gameState.canFire) return;
-        player.fire()
-    })
+    onKeyPress(['q'], woof)
+    onKeyPress(['e'], fire)
 
     return player
 }
