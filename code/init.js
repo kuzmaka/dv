@@ -28,8 +28,10 @@ export default () => {
     kaboom({
         width: W,
         height: H,
-        scale: Math.max(1, Math.min(wScale, hScale)),
-        crisp: true,
+        // scale: Math.max(1, Math.min(wScale, hScale)),
+        // crisp: true,
+        stretch: true,
+        letterbox: true,
         canvas: canvasElem,
         background: [0, 0, 0],
     })

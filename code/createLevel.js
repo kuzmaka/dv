@@ -339,7 +339,7 @@ export function addPlayer(opt) {
 
     const SPEED = PLAYER_SPEED;
     const CRAWL_SPEED = PLAYER_SPEED/4;
-    onKeyPress(['a', 'left'], () => {
+    function moveLeft() {
         if (player.dead || player.sleeping) return;
         player.handleFirstMoved()
         player.speed = player.isDown ? -CRAWL_SPEED : -SPEED;
@@ -348,18 +348,8 @@ export function addPlayer(opt) {
             player.play(player.isDown ? 'crawl' : 'run')
             player.isDown ? player.layArea() : player.resetArea()
         }
-    })
-    onKeyRelease(['a', 'left'], () => {
-        if (player.dead || player.sleeping) return;
-        if (player.speed < 0) {
-            player.speed = 0
-            if (player.curPlatform()) {
-                player.play(player.isDown ? 'lay' : 'idle')
-                player.isDown ? player.layArea() : player.resetArea()
-            }
-        }
-    })
-    onKeyPress(['d', 'right'], () => {
+    }
+    function moveRight() {
         if (player.dead || player.sleeping) return;
         player.handleFirstMoved()
         player.speed = player.isDown ? CRAWL_SPEED : SPEED;
@@ -368,18 +358,18 @@ export function addPlayer(opt) {
             player.play(player.isDown ? 'crawl' : 'run')
             player.isDown ? player.layArea() : player.resetArea()
         }
-    })
-    onKeyRelease(['d', 'right'], () => {
+    }
+    function stop() {
         if (player.dead || player.sleeping) return;
-        if (player.speed > 0) {
+        if (player.speed !== 0) {
             player.speed = 0
             if (player.curPlatform()) {
                 player.play(player.isDown ? 'lay' : 'idle')
                 player.isDown ? player.layArea() : player.resetArea()
             }
         }
-    })
-    onKeyPress(['w', 'up', 'space'], () => {
+    }
+    function jump() {
         if (player.dead || player.isDown && !canStand(player) && !player.lays) return;
         if (player.curPlatform()) {
             if (player.sleeping) {
@@ -396,7 +386,46 @@ export function addPlayer(opt) {
             player.resetArea()
             player.isDown = false
         }
+    }
+    onKeyPress(['a', 'left'], moveLeft)
+    onKeyRelease(['a', 'left'], stop)
+    onKeyPress(['d', 'right'], moveRight)
+    onKeyRelease(['d', 'right'], stop)
+    onKeyPress(['w', 'up', 'space'], jump)
+
+    let touches = {}
+    onTouchStart((id, p) => {
+        touches[id] = {
+            t: time(),
+            p: p,
+            s: null
+        }
     })
+    onTouchMove((id, p) => {
+        if (!touches[id]) return;
+        const touch = touches[id]
+        if (touch.p.x - p.x > 20 && p.s !== 'left') {
+            moveLeft()
+            touch.s = 'left'
+        }
+        if (p.x - touch.p.x > 20 && p.s !== 'right') {
+            moveRight()
+            touch.s = 'right'
+        }
+        if (touch.p.y - p.y > 20) {
+            jump()
+        }
+        if (Math.abs(touch.p.x - p.x) <= 20 && (p.s === 'left' || p.s === 'right')) {
+            stop()
+            touch.s = null
+        }
+    })
+    onTouchEnd((id, p) => {
+        if (!touches[id]) return;
+        delete touches[id]
+        stop()
+    })
+
     onKeyPress(['s', 'down'], () => {
         player.isDown = true
         if (player.dead || player.sleeping || player.lays) return;
