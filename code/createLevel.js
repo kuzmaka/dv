@@ -173,6 +173,7 @@ export function setupCamera(player) {
     })
 }
 
+let shade, hint;
 export function addPlayer(opt) {
     const player = add([
         pos(opt.x, opt.y),
@@ -224,36 +225,19 @@ export function addPlayer(opt) {
                 player.speed = 0
                 player.play('dead')
                 shake()
-                const shade = add([
+                shade = add([
                     pos(toWorld(vec2(0, 0).sub(W, H))),
                     rect(4*W + 200, 4*H + 200),
                     fade(1, {from: 0, to: 0.5}),
                     color(BLACK),
                     z(1000)
                 ])
-                const hint = add([
+                hint = add([
                     pos(toWorld(center())),
                     origin('center'),
-                    text('Press R to restart', {size: 24}),
+                    text('Press R or touch to restart', {size: 24}),
                     z(10000)
                 ])
-                const cnc = onKeyPress('r', () => {
-                    // respawn
-                    player.onRespawn.forEach((f) => {f()})
-                    player.dead = false
-                    player.firstMoved = false
-                    player.speed = 0
-                    player.play('idle')
-                    shade.destroy()
-                    hint.destroy()
-                    player.moveTo(player.lastCheckpoint.playerPos)
-                    player.flipX(player.flip = player.lastCheckpoint.flip)
-                    player.resetArea()
-                    this.camSetup()
-                    setupCamera(player)
-                    player.trigger('respawned')
-                    cnc()
-                })
             },
             handleFirstMoved() {
                 if (!player.firstMoved) {
@@ -422,18 +406,36 @@ export function addPlayer(opt) {
         if (player.dead || player.sleeping || !gameState.canFire) return;
         player.fire()
     }
+    function respawn() {
+        if (!player.dead) return;
+        player.onRespawn.forEach((f) => {f()})
+        player.dead = false
+        player.firstMoved = false
+        player.speed = 0
+        player.play('idle')
+        shade.destroy()
+        hint.destroy()
+        player.moveTo(player.lastCheckpoint.playerPos)
+        player.flipX(player.flip = player.lastCheckpoint.flip)
+        player.resetArea()
+        player.camSetup()
+        setupCamera(player)
+        player.trigger('respawned')
+    }
     onKeyPress(['a', 'left'], moveLeft)
     onKeyRelease(['a', 'left'], stop)
     onKeyPress(['d', 'right'], moveRight)
     onKeyRelease(['d', 'right'], stop)
     onKeyPress(['w', 'up', 'space'], jump)
+    onKeyPress('r', respawn)
 
     let touches = {}
     onTouchStart((id, p) => {
         touches[id] = {
             t: time(),
             p: p,
-            s: null
+            s: null,
+            dead: player.dead ?? false
         }
     })
     onTouchMove((id, p) => {
@@ -465,10 +467,16 @@ export function addPlayer(opt) {
         }
     })
     onTouchEnd((id, p) => {
-        if (!touches[id]) return;
-        delete touches[id]
         touchDown = false
+        if (!touches[id]) return;
+        let dead = touches[id].dead;
+        delete touches[id]
         stop()
+
+        if (dead) {
+            respawn()
+            return
+        }
 
         // adjust letterbox coordinates to detect button clicks
         const r = width()/height();
