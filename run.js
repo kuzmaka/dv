@@ -92,6 +92,60 @@ app.post("/error", (req, res) => {
 	render();
 });
 
+app.get("/user", (req, res) => {
+	if (req.headers["x-replit-user-id"]) {
+		res.json({
+			id: req.headers["x-replit-user-id"] || null,
+			name: req.headers["x-replit-user-name"] || null,
+		});
+	} else {
+		res.json(null);
+	}
+});
+
+app.get("/db", async (req, res) => {
+	try {
+		res.json(await db.list());
+	} catch (e) {
+		res.sendStatus(500);
+	}
+});
+
+app.delete("/db", async (req, res) => {
+	try {
+		await db.empty();
+		res.sendStatus(200);
+	} catch (e) {
+		res.sendStatus(500);
+	}
+});
+
+app.get("/db/:item", async (req, res) => {
+	try {
+		res.json(await db.get(req.params.item));
+	} catch (e) {
+		res.sendStatus(500);
+	}
+});
+
+app.post("/db/:item", async (req, res) => {
+	try {
+		await db.set(req.params.item, req.body);
+		res.sendStatus(200);
+	} catch (e) {
+		res.sendStatus(500);
+	}
+});
+
+app.delete("/db/:item", async (req, res) => {
+	try {
+		await db.delete(req.params.item);
+		res.sendStatus(200);
+	} catch (e) {
+		res.sendStatus(500);
+	}
+});
+
 app.use(express.static(__dirname));
 
 server.listen(port);
