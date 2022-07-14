@@ -7,7 +7,7 @@ export default () => {
     loadSound('onCooldown', 'onCooldown.flac')
 
     loadSound('office', 'office.m4a')
-    loadSound('lab', 'lab-bg.ogg')
+    loadSound('lab', 'lab-bg.mp3')
     loadSound('boss-1', 'boss-1.wav')
     loadSound('boss2', 'boss2.m4a')
     loadSound('wave', 'wave.mp3')

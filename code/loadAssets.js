@@ -71,6 +71,75 @@ export default () => {
             },
         }
     })
+    loadSprite('doggy', 'doggy.png', {
+        sliceX: 1,
+        sliceY: 2,
+        anims: {
+            sit: {
+                from: 0,
+                to: 0,
+            },
+            stay: {
+                from: 1,
+                to: 1,
+            },
+        }
+    })
+    loadSprite('dog2', 'dog2.png', {
+        sliceX: 1,
+        sliceY: 2,
+        anims: {
+            tongue: {
+                from: 0,
+                to: 1,
+                speed: 2,
+                loop: true
+            },
+        }
+    })
+    loadSprite('dog3', 'dog3.png')
+    loadSprite('dog', 'grey.png', {
+        sliceX: 1,
+        sliceY: 13,
+        anims: {
+            idle: {
+                from: 0,
+                to: 1,
+                speed: 1,
+                loop: true
+            },
+            lay: {
+                from: 6,
+                to: 6,
+            },
+            crawl: {
+                from: 7,
+                to: 8,
+                speed: 4,
+                loop: true
+            },
+            run: {
+                from: 2,
+                to: 5,
+                speed: 8,
+                loop: true
+            },
+            jump: {
+                from: 10,
+                to: 10,
+            },
+            fall: {
+                from: 11,
+                to: 12,
+                speed: 12,
+                loop: true
+            },
+            dead: {
+                from: 9,
+                to: 9,
+            }
+        }
+    })
 
     loadRoot('sprites/lab/')
     loadSprite('sky-violet', 'sky-violet.png')
@@ -435,77 +504,4 @@ export default () => {
     loadSprite('liftup', 'liftup.png')
     loadSprite('heli', 'heli.png')
     loadSprite('rooflight', 'rooflight.png')
-
-
-    loadRoot('../../')
-    loadSprite('doggy', 'sprites/doggy.png', {
-        sliceX: 1,
-        sliceY: 2,
-        anims: {
-            sit: {
-                from: 0,
-                to: 0,
-            },
-            stay: {
-                from: 1,
-                to: 1,
-            },
-        }
-    })
-    loadSprite('dog2', 'sprites/dog2.png', {
-        sliceX: 1,
-        sliceY: 2,
-        anims: {
-            tongue: {
-                from: 0,
-                to: 1,
-                speed: 2,
-                loop: true
-            },
-        }
-    })
-    loadSprite('dog3', 'sprites/dog3.png')
-
-    loadSprite('dog', 'sprites/grey.png', {
-        sliceX: 1,
-        sliceY: 13,
-        anims: {
-            idle: {
-                from: 0,
-                to: 1,
-                speed: 1,
-                loop: true
-            },
-            lay: {
-                from: 6,
-                to: 6,
-            },
-            crawl: {
-                from: 7,
-                to: 8,
-                speed: 4,
-                loop: true
-            },
-            run: {
-                from: 2,
-                to: 5,
-                speed: 8,
-                loop: true
-            },
-            jump: {
-                from: 10,
-                to: 10,
-            },
-            fall: {
-                from: 11,
-                to: 12,
-                speed: 12,
-                loop: true
-            },
-            dead: {
-                from: 9,
-                to: 9,
-            }
-        }
-    })
 }
