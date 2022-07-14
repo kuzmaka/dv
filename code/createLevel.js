@@ -414,6 +414,10 @@ export function addPlayer(opt) {
         }
         if (touch.p.y - p.y > 20) {
             jump()
+            touch.p.y = p.y
+        }
+        if (p.y - touch.p.y > 20) {
+            touch.p.y = p.y
         }
         if (Math.abs(touch.p.x - p.x) <= 20 && (p.s === 'left' || p.s === 'right')) {
             stop()
