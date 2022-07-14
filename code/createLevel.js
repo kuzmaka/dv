@@ -470,10 +470,19 @@ export function addPlayer(opt) {
         touchDown = false
         stop()
 
-        if (gameState.canSuperWoof && p.x + 2 > 20 && p.x - 2 < 20 + 31 && p.y + 2 > 15 && p.y - 2 < 15 + 22) {
+        // adjust letterbox coordinates to detect button clicks
+        const r = width()/height();
+        const rc = canvas.width/canvas.height;
+        const s = r < rc ? canvas.height/height() : canvas.width/width();
+        const dx = r < rc ? (canvas.width - width() * s)/2 : 0;
+        const dy = r < rc ? 0 : (canvas.height - height() * s)/2;
+        debug.log(r+' '+rc+' '+s+' '+dx+' '+dy)
+        const x = (p.x - dx)/s
+        const y = (p.y - dy)/s
+        if (gameState.canSuperWoof && x + 2 > 20 && x - 2 < 20 + 50 && y + 2 > 15 && y - 2 < 15 + 22) {
             woof()
         }
-        if (gameState.canFire && p.x + 2 > 20 && p.x - 2 < 20 + 31 && p.y + 2 > 41 && p.y - 2 < 41 + 22) {
+        if (gameState.canFire && x + 2 > 20 && x - 2 < 20 + 50 && y + 2 > 41 && y - 2 < 41 + 22) {
             fire()
         }
     })
