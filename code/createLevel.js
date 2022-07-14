@@ -476,7 +476,6 @@ export function addPlayer(opt) {
         const s = r < rc ? canvas.height/height() : canvas.width/width();
         const dx = r < rc ? (canvas.width - width() * s)/2 : 0;
         const dy = r < rc ? 0 : (canvas.height - height() * s)/2;
-        debug.log(r+' '+rc+' '+s+' '+dx+' '+dy)
         const x = (p.x - dx)/s
         const y = (p.y - dy)/s
         if (gameState.canSuperWoof && x + 2 > 20 && x - 2 < 20 + 50 && y + 2 > 15 && y - 2 < 15 + 22) {
